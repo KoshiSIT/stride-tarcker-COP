@@ -67,15 +67,15 @@ export default function ResultScreen({}){
                         ref={textInputRef}
                     />
                 </TouchableOpacity>
-                <View style={styles.pictureContainer}>
-                    <TouchableOpacity style={styles.resultReviewItem1}>
+                <TouchableOpacity style={styles.pictureContainer}>
+                    <View style={styles.resultReviewItem1}>
                         <MaterialCommunityIcons name="camera-outline" size={30} color= "black" />
                         <Text style={styles.activityText}>写真を追加</Text>
-                    </TouchableOpacity>
+                    </View>
                      <View style={styles.resultReviewItem2}>
                         <FeatherIcon name="plus" size={30} color= "black" />
                      </View>
-                </View>
+                </TouchableOpacity>
                 <View style={[styles.memoContainer, {height : memoHeight(memo)}]}>
                     <TouchableOpacity style={styles.resultReviewItem1} onPress={toggleModal}>
                         <MaterialCommunityIcons name="clipboard-text-outline" size={30} color= "black" />

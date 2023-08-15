@@ -10,7 +10,7 @@ import { Page1, Page2, Page3, Page4 } from '../components/start/RunSettings';
 import { useNavigation } from '@react-navigation/native';
 
 import { useStartScreenContext } from '../contexts/StartScreenContext';
-
+import { useAppContext } from '../contexts/AppContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
@@ -19,7 +19,9 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function StartScreenMain({}){
     // map state
-    const [currentLocation, setCurrentLocation] = useState(null);
+    const {
+      currentLocation, handleSetCurrentLocation,
+    } = useAppContext();
     const {
       // page 1
       stopWatchMode, handleStopWatchMode,
@@ -45,7 +47,7 @@ export default function StartScreenMain({}){
         { accuracy: Location.Accuracy.High, timeInterval: 1000 },
         position => {
           const { latitude, longitude } = position.coords;
-          setCurrentLocation({ latitude, longitude });
+          handleSetCurrentLocation({ latitude, longitude } );
         }
       );
     };

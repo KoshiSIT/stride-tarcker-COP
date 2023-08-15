@@ -7,6 +7,8 @@ export function useAppContext() {
 }
 
 export function AppProvider({ children }) {
+    // map current location state
+    const [currentLocation, setCurrentLocation] = useState(null);
     const [isAccountPublic, setIsAccountPublic] = useState(false);
     const [language, setLanguage] = useState('日本語');
     // notification settings state
@@ -21,8 +23,13 @@ export function AppProvider({ children }) {
     const [withCharrengeNotification, setWithCharrengeNotification] = useState(false);
     const [withMotivationNotification, setWithMotivationNotification] = useState(false);
 
+    const handleSetCurrentLocation = (location) => {
+        setCurrentLocation(location);
+    };
+
     const value = {
         language, setLanguage,
+        currentLocation, handleSetCurrentLocation,
     }
     return (
         <AppContext.Provider value={value}>{children}</AppContext.Provider>

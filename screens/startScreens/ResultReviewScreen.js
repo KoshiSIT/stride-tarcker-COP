@@ -1,6 +1,11 @@
 import { StyleSheet, Text, View ,Image, FlatList, SafeAreaView, TouchableOpacity , Animated, ScrollView, Dimensions, Touchable} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import React,{useEffect, useState, useRef} from 'react';
+
+import MapView,{ Marker }  from 'react-native-maps';
+import { Svg, Circle } from 'react-native-svg';
+import * as Location from 'expo-location';
+import { useAppContext } from '../../contexts/AppContext';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import FonttistoIcon from 'react-native-vector-icons/Fontisto';
@@ -11,6 +16,29 @@ import Constants from 'expo-constants';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 export default function ResultReviewScreen({}){
     const navigation = useNavigation();
+    const { currentLocation, handleSetCurrentLocation } = useAppContext();
+
+    useEffect(() => {
+        getLocationPermission();
+      }, []);
+  
+      const getLocationPermission = async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status === 'granted') {
+          startLocationUpdates();
+        }
+      };
+    
+      const startLocationUpdates = async () => {
+        Location.watchPositionAsync(
+          { accuracy: Location.Accuracy.High, timeInterval: 1000 },
+          position => {
+            const { latitude, longitude } = position.coords;
+            handleSetCurrentLocation({ latitude, longitude } );
+          }
+        );
+      };
+
     return(
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -30,7 +58,33 @@ export default function ResultReviewScreen({}){
                     </View>
                 </View>
                 <View style={styles.pictureContainer}>
-                    <Text style={styles.activityText}>結果写真</Text>
+                     {currentLocation && (
+                <MapView
+                    scrollEnabled={false} 
+                    zoomEnabled={false}
+                    style={styles.map}
+                    region={{
+                        latitude: currentLocation.latitude,
+                        longitude: currentLocation.longitude,
+                        latitudeDelta: 0.01,
+                        longitudeDelta: 0.01,
+                    }}
+                    >
+                  <Marker
+                      coordinate={{
+                          latitude : currentLocation.latitude,
+                          longitude : currentLocation.longitude,
+                      }}
+                      anchor={{ x: 0.5, y: 0.5 }}
+                  >
+                      <View>
+                          <Svg width={24} height={24} viewBox="0 0 24 24">
+                              <Circle cx={12} cy={12} r={10} stroke="white" strokeWidth={2} fill="#3366CC" />
+                          </Svg>
+                      </View>
+                  </Marker>
+                </MapView>
+                )}
                 </View>
                 <View style={styles.dataContainer}>
                     <Text style={styles.activityText}>データ</Text>
@@ -212,5 +266,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
       },
-      
+      map: {
+        height: '100%',
+        width: '100%',
+      },
 });
