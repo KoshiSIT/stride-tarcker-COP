@@ -14,10 +14,31 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Constants from 'expo-constants';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import * as ImagePicker from 'expo-image-picker';
 export default function ResultReviewScreen({}){
+    const [selectedImage, setSelectedImage] = useState(null);
+    const handleImagePick = async () => {
+        const permissonResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (permissonResult.granted === false) {
+            alert('Permission to access camera roll is required!');
+            return;
+        }
+
+        const pickerResult = await ImagePicker.launchImageLibraryAsync({
+            madiaTypes : ImagePicker.MediaTypeOptions.Images,
+            quality : 0.8,
+        });
+
+        if (!pickerResult.canceled){
+            setSelectedImage({localUri : pickerResult.uri});
+        }
+    };
+
     const navigation = useNavigation();
     const { currentLocation, handleSetCurrentLocation } = useAppContext();
-
+    const [pictureIndex, setPictureIndex] = useState(0);
+    const scrollViewRef = useRef();
     useEffect(() => {
         getLocationPermission();
       }, []);
@@ -38,7 +59,6 @@ export default function ResultReviewScreen({}){
           }
         );
       };
-
     return(
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -58,33 +78,64 @@ export default function ResultReviewScreen({}){
                     </View>
                 </View>
                 <View style={styles.pictureContainer}>
-                     {currentLocation && (
-                <MapView
-                    scrollEnabled={false} 
-                    zoomEnabled={false}
-                    style={styles.map}
-                    region={{
-                        latitude: currentLocation.latitude,
-                        longitude: currentLocation.longitude,
-                        latitudeDelta: 0.01,
-                        longitudeDelta: 0.01,
+               <ScrollView 
+                    horizontal
+                    pagingEnabled
+                    style={styles.pictureScroll}
+                    onMomentumScrollEnd={(event) => {
+                        const contentOffsetx = event.nativeEvent.contentOffset.x;
+                        const index = Math.floor(contentOffsetx*2 / Dimensions.get('window').width);
+                        setPictureIndex(index);
                     }}
+                >
+                     {currentLocation && (
+                    <MapView
+                        scrollEnabled={false} 
+                        zoomEnabled={false}
+                        style={styles.map}
+                        region={{
+                            latitude: currentLocation.latitude,
+                            longitude: currentLocation.longitude,
+                            latitudeDelta: 0.01,
+                            longitudeDelta: 0.01,
+                        }}
+                        >
+                    <Marker
+                        coordinate={{
+                            latitude : currentLocation.latitude,
+                            longitude : currentLocation.longitude,
+                        }}
+                        anchor={{ x: 0.5, y: 0.5 }}
                     >
-                  <Marker
-                      coordinate={{
-                          latitude : currentLocation.latitude,
-                          longitude : currentLocation.longitude,
-                      }}
-                      anchor={{ x: 0.5, y: 0.5 }}
-                  >
-                      <View>
-                          <Svg width={24} height={24} viewBox="0 0 24 24">
-                              <Circle cx={12} cy={12} r={10} stroke="white" strokeWidth={2} fill="#3366CC" />
-                          </Svg>
-                      </View>
-                  </Marker>
-                </MapView>
+                        <View>
+                            <Svg width={24} height={24} viewBox="0 0 24 24">
+                                <Circle cx={12} cy={12} r={10} stroke="white" strokeWidth={2} fill="#3366CC" />
+                            </Svg>
+                        </View>
+                    </Marker>
+                    </MapView>
                 )}
+                {selectedImage !== null &&(
+                    <View style={styles.pictureItem}>
+                        <Image
+                            source={{ uri: selectedImage.localUri }}
+                            style = {{width : '100%', height : '100%'}}
+                        />
+                    </View>
+                    )}
+                    </ScrollView>
+                    <View style={styles.pictureContainerBottom}>
+                        <View></View>
+                        <View style ={styles.dotContainer}>
+                            <View style={[styles.dot, pictureIndex === 0 && styles.activeDot]}></View>
+                            <View style={[styles.dot, pictureIndex === 1 && styles.activeDot]}></View>
+                        </View>
+                        <View style ={styles.Circle}>
+                            <TouchableOpacity onPress ={()=>handleImagePick()}>
+                                <MaterialCommunityIcons name="camera-outline" size={30} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
                 <View style={styles.dataContainer}>
                     <Text style={styles.activityText}>データ</Text>
@@ -107,7 +158,7 @@ export default function ResultReviewScreen({}){
                         <AntDesignIcon name="right" size={20} color="gray" />
                     </View>
                 </View>
-                <View style={styles.mapContainer}>
+                <View style={styles.detailContainer}>
                     <Text style={styles.activityText}>更に詳しく</Text>
                 </View>
                 <View style={styles.memoContainer}>
@@ -189,7 +240,14 @@ const styles = StyleSheet.create({
         height: 300,
         borderWidth: 1,
         borderColor: '#F5F5F5',
-        justifyContent: 'center',
+    },
+    pictureContainerBottom: {
+        position: 'absolute',
+        top: 250,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     splitContainer: {
         height: 60,
@@ -207,7 +265,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    mapContainer: {
+    detailContainer: {
         height: 60,
         borderWidth: 1,
         borderColor: '#F5F5F5',
@@ -246,6 +304,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    dotContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        marginLeft: 20,
+        width: 50,
+        height: 15,
+        backgroundColor: 'white',
+        borderRadius: 10,
+    },
     activityText: {
         fontSize: 17,
         fontWeight: 'bold',
@@ -266,8 +335,33 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
       },
-      map: {
+    map: {
         height: '100%',
-        width: '100%',
-      },
+        width: Dimensions.get('window').width,
+    },
+    pictureItem : {
+        height : '100%',
+        width : Dimensions.get('window').width,
+    },
+    pictureScroll : {
+        height : '100%',
+    },
+    dot : {
+        height : 8,
+        width : 8,
+        borderRadius : 4,
+        backgroundColor : 'lightgray',
+        marginHorizontal : 4,
+    },
+    activeDot : {
+        backgroundColor : 'gray',
+    },
+    Circle : {
+        height : 50,
+        width : 50,
+        borderRadius : 25,
+        backgroundColor : 'white',
+        justifyContent : 'center',
+        alignItems : 'center',
+    },
 });

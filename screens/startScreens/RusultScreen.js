@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 
 import React,{useEffect, useState, useRef} from 'react';
+import PhotoPicker from '../../components/start/PhotoPicker';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -67,15 +68,7 @@ export default function ResultScreen({}){
                         ref={textInputRef}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.pictureContainer}>
-                    <View style={styles.resultReviewItem1}>
-                        <MaterialCommunityIcons name="camera-outline" size={30} color= "black" />
-                        <Text style={styles.activityText}>写真を追加</Text>
-                    </View>
-                     <View style={styles.resultReviewItem2}>
-                        <FeatherIcon name="plus" size={30} color= "black" />
-                     </View>
-                </TouchableOpacity>
+                <PhotoPicker />
                 <View style={[styles.memoContainer, {height : memoHeight(memo)}]}>
                     <TouchableOpacity style={styles.resultReviewItem1} onPress={toggleModal}>
                         <MaterialCommunityIcons name="clipboard-text-outline" size={30} color= "black" />
