@@ -4,7 +4,7 @@ import React,{useEffect, useState} from 'react';
 import Constants from 'expo-constants';
 import axios from 'axios';
 
-export default function intervalScreen({}){
+export default function IntervalScreen({}){
     const [withWarmUp, setWithWarmUp] = useState(false);
     const [withCoolDown, setWithCoolDown] = useState(false);
     const navigation = useNavigation();

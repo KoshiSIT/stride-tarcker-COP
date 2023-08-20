@@ -11,7 +11,7 @@ const Insite =  () => {
                 <Fontisto name='bar-chart' size={20} color = 'gray'/>
                 <View style = {{justifyContent: 'center', alignItems: 'center', marginLeft: 10,}}>
                 <  Text style={styles.contentText}>過去のデータを見てみよう</Text>
-                <  Text style={{fontsize : 15, color : '#888888'}}>{10}件のアクティビティを分析してみよう</Text>
+                <  Text style={{fontSize : 15, color : '#888888'}}>{10}件のアクティビティを分析してみよう</Text>
                 </View>
             </TouchableOpacity>
         </View>

@@ -6,6 +6,7 @@ import MapView,{ Marker }  from 'react-native-maps';
 import { Svg, Circle } from 'react-native-svg';
 import * as Location from 'expo-location';
 import { useAppContext } from '../../contexts/AppContext';
+import { useActivityContext } from '../../contexts/ActivityContext';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import FonttistoIcon from 'react-native-vector-icons/Fontisto';
@@ -37,6 +38,8 @@ export default function ResultReviewScreen({}){
 
     const navigation = useNavigation();
     const { currentLocation, handleSetCurrentLocation } = useAppContext();
+    const { time, pace, locationLog, calorie} = useActivityContext();
+
     const [pictureIndex, setPictureIndex] = useState(0);
     const scrollViewRef = useRef();
     useEffect(() => {
@@ -67,7 +70,7 @@ export default function ResultReviewScreen({}){
                 </TouchableOpacity>
                 <Text style={{fontWeight : 'bold', fontSize : '16'}}>結果</Text>
                 <TouchableOpacity onPress={()=>{navigation.navigate('StartRun');}}>
-                    <FontAwesomeIcon name='trash' size={30} color = 'black'/>
+                    <FeatherIcon name="share" size={30} color= "black" />
                 </TouchableOpacity>
             </View>
             <ScrollView style={styles.mainContainer}>
@@ -82,6 +85,7 @@ export default function ResultReviewScreen({}){
                     horizontal
                     pagingEnabled
                     style={styles.pictureScroll}
+                    scrollEnabled={selectedImage !== null}
                     onMomentumScrollEnd={(event) => {
                         const contentOffsetx = event.nativeEvent.contentOffset.x;
                         const index = Math.floor(contentOffsetx*2 / Dimensions.get('window').width);
@@ -126,10 +130,12 @@ export default function ResultReviewScreen({}){
                     </ScrollView>
                     <View style={styles.pictureContainerBottom}>
                         <View></View>
+                        {selectedImage !== null ? (
                         <View style ={styles.dotContainer}>
                             <View style={[styles.dot, pictureIndex === 0 && styles.activeDot]}></View>
                             <View style={[styles.dot, pictureIndex === 1 && styles.activeDot]}></View>
                         </View>
+                        ):(<View></View>)}
                         <View style ={styles.Circle}>
                             <TouchableOpacity onPress ={()=>handleImagePick()}>
                                 <MaterialCommunityIcons name="camera-outline" size={30} color="black" />
@@ -138,7 +144,14 @@ export default function ResultReviewScreen({}){
                     </View>
                 </View>
                 <View style={styles.dataContainer}>
-                    <Text style={styles.activityText}>データ</Text>
+                <   View style={styles.dataSubItem}>
+                        <Text style={{fontSize : 20}}>{time.toFixed(2)}</Text>
+                        <Text>タイム</Text>
+                    </View>
+                    <View style={styles.dataSubItem}>
+                        <Text style={{fontSize : 20}}>{calorie}</Text>
+                        <Text>カロリー</Text>
+                    </View>
                 </View>
                 <View style={styles.splitContainer}>
                     <View style={styles.resultItem1}>
@@ -228,7 +241,13 @@ const styles = StyleSheet.create({
         height: 60,
         borderWidth: 1,
         borderColor: '#F5F5F5',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    dataSubItem: {
+        width: '20%',
         justifyContent: 'center',
+        alignItems: 'center',
     },
     activityContainer: {
         height: 60,

@@ -22,14 +22,18 @@ export function AppProvider({ children }) {
     const [withShoesNotification, setWithShoesNotification] = useState(false);
     const [withCharrengeNotification, setWithCharrengeNotification] = useState(false);
     const [withMotivationNotification, setWithMotivationNotification] = useState(false);
-
+    // user profile state
+    const [weight, setWeight] = useState(60);
     const handleSetCurrentLocation = (location) => {
         setCurrentLocation(location);
     };
-
+    const handleSetWeight = (weight) => {
+        setWeight(weight);
+    };
     const value = {
         language, setLanguage,
         currentLocation, handleSetCurrentLocation,
+        weight, handleSetWeight,
     }
     return (
         <AppContext.Provider value={value}>{children}</AppContext.Provider>

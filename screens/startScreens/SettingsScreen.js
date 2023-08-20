@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 import axios from 'axios';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-export default function settingsScreen({  }){
+export default function SettingsScreen({  }){
     const [withWarmUp, setWithWarmUp] = useState(false);
     const [withCoolDown, setWithCoolDown] = useState(false);
     const navigation = useNavigation();

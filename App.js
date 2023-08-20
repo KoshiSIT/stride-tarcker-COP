@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StartScreenProvider } from './contexts/StartScreenContext';
+import { ActivityProvider } from './contexts/ActivityContext';
 import { AppProvider } from './contexts/AppContext';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -29,7 +30,7 @@ import CustomScreen from './screens/startScreens/CustomScreen';
 import StartRunScreen from './screens/startScreens/StartRunScreen';
 import RusultScreen from './screens/startScreens/RusultScreen';
 import RusultReviewScreen from './screens/startScreens/ResultReviewScreen';
-import intervalScreen from './screens/startScreens/workOutScreens/intervalScreen';
+import IntervalScreen from './screens/startScreens/workOutScreens/IntervalScreen';
 import CommunityScreen from './screens/CommunityScreen';
 import ExplorerScreen from './screens/ExplorerScreen';
 import { Settings } from 'react-native';
@@ -58,29 +59,32 @@ const TrainingStack = () => {
 const StartStack = () => {
   return (
     <StartScreenProvider>
-      <Stack.Navigator  
-      screenOptions={{
-        headerShown: false,
-        ...TransitionPresets.ModalSlideFromBottomIOS,
-      }}
-      mode="modal"
-      >
-        <Stack.Screen name="Start" component={StartScreenMain} options={ {headerShown: false }}/>
-        <Stack.Screen name="Settings" component={SettingsScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name='TypeSetting' component={TypeSettingScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name='RouteSetting' component={RouteSettingScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name='TrackingSetting' component={TrackingSettingScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name='PocketTrackingSetting' component={PocketTrackingSettingScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name='AudioGuideSetting' component={AudioGuideSettingScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name='AnnoucementFrequencySetting' component={AnnoucementFrequencySettingScreen} options={ {headerShown: false }}/>
-          <Stack.Screen name='IntervalTimeSetting' component={IntervalTimeSettingScreen} options={ {headerShown: false }}/>
-          <Stack.Screen name='IntervalDistanceSetting' component={IntervalDistanceSettingScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name='StartRun' component={StartRunScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name="Result" component={RusultScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name="ResultReview" component={RusultReviewScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name="Custom" component={CustomScreen} options={ {headerShown: false }}/>
-        <Stack.Screen name="Interval" component={intervalScreen} options={ {headerShown: false }}/>
-    </Stack.Navigator>
+      <ActivityProvider>
+        <Stack.Navigator  
+          screenOptions={{
+            headerShown: false,
+            ...TransitionPresets.ModalSlideFromBottomIOS,
+            presentation: 'modal',
+          }}
+          
+          >
+            <Stack.Screen name="Start" component={StartScreenMain} options={ {headerShown: false }}/>
+            <Stack.Screen name="Settings" component={SettingsScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name='TypeSetting' component={TypeSettingScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name='RouteSetting' component={RouteSettingScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name='TrackingSetting' component={TrackingSettingScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name='PocketTrackingSetting' component={PocketTrackingSettingScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name='AudioGuideSetting' component={AudioGuideSettingScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name='AnnoucementFrequencySetting' component={AnnoucementFrequencySettingScreen} options={ {headerShown: false }}/>
+              <Stack.Screen name='IntervalTimeSetting' component={IntervalTimeSettingScreen} options={ {headerShown: false }}/>
+              <Stack.Screen name='IntervalDistanceSetting' component={IntervalDistanceSettingScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name='StartRun' component={StartRunScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name="Result" component={RusultScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name="ResultReview" component={RusultReviewScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name="Custom" component={CustomScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name="Interval" component={IntervalScreen} options={ {headerShown: false }}/>
+        </Stack.Navigator>
+        </ActivityProvider>
     </StartScreenProvider>
   );
 };
@@ -147,3 +151,4 @@ export default function App() {
     </NavigationContainer>
   );
 }
+

@@ -10,7 +10,7 @@ const ShoeTracker =  () => {
                 <MaterialCommunityIcons name="shoe-sneaker" size={30} color="black" />
                 <View style = {{justifyContent: 'center', alignItems: 'center', marginLeft: 10,}}>
                 <  Text style={styles.contentText}>シューズトラッカーを使用してください</Text>
-                <  Text style={{fontsize : 15, color : '#888888'}}>シューズの走行距離をトラッキングします</Text>
+                <  Text style={{fontSize : 15, color : '#888888'}}>シューズの走行距離をトラッキングします</Text>
                 </View>
             </TouchableOpacity>
         </View>

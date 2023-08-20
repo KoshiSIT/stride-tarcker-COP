@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 
 import React,{useEffect, useState, useRef} from 'react';
+import { useActivityContext } from '../../contexts/ActivityContext';
 import PhotoPicker from '../../components/start/PhotoPicker';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -11,8 +12,10 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Constants from 'expo-constants';
 import RNPickerSelect from 'react-native-picker-select';
+
 export default function ResultScreen({}){
     const navigation = useNavigation();
+    const { time, pace, locationLog, calorie } = useActivityContext();
     const [mapSelected, setMapSelected] = useState(null);
     const [activityName, setActivityName] = useState('');
     const textInputRef = useRef(null);
@@ -50,11 +53,11 @@ export default function ResultScreen({}){
             <ScrollView style={styles.mainContainer}>
                 <View style={styles.dataContainer}>
                     <View style={styles.dataSubItem}>
-                        <Text style={{fontSize : 20}}>0:02</Text>
+                        <Text style={{fontSize : 20}}>{time.toFixed(2)}</Text>
                         <Text>タイム</Text>
                     </View>
                     <View style={styles.dataSubItem}>
-                        <Text style={{fontSize : 20}}>0</Text>
+                        <Text style={{fontSize : 20}}>{calorie}</Text>
                         <Text>カロリー</Text>
                     </View>
                 </View>
