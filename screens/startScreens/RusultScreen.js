@@ -15,8 +15,8 @@ import RNPickerSelect from 'react-native-picker-select';
 
 export default function ResultScreen({}){
     const navigation = useNavigation();
-    const { time, pace, locationLog, calorie } = useActivityContext();
-    const [mapSelected, setMapSelected] = useState(null);
+    const { time, pace, locationLog, calorie, resetAllState} = useActivityContext();
+    const [mapSelected, setMapSelected] = useState('フォロワー');
     const [activityName, setActivityName] = useState('');
     const textInputRef = useRef(null);
     const [isDammy, setIsDammy] = useState(false);
@@ -38,15 +38,24 @@ export default function ResultScreen({}){
     };
     const memoHeight = () => {
         const lineHeigh = 40;
-        const lines = Math.ceil(memo.length / 20);
-        return lineHeigh + 10 * lines;
+        if (memo.length !== 0) {
+            const lines = Math.ceil(memo.length / 20);
+            return lineHeigh + 10 * lines;
+        }else{
+            return 60;
+        }
     };
+    const notSave = () => {
+        resetAllState();
+        navigation.navigate('Start');
+    }
+
     return(
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <View></View>
                 <Text style={{fontWeight : 'bold', fontSize : 16}}>結果のレビュー</Text>
-                <TouchableOpacity onPress={()=>{navigation.navigate('StartRun');}}>
+                <TouchableOpacity onPress={()=>notSave()}>
                     <FontAwesomeIcon name='trash' size={30} color = 'black'/>
                 </TouchableOpacity>
             </View>
@@ -72,15 +81,15 @@ export default function ResultScreen({}){
                     />
                 </TouchableOpacity>
                 <PhotoPicker />
-                <View style={[styles.memoContainer, {height : memoHeight(memo)}]}>
-                    <TouchableOpacity style={styles.resultReviewItem1} onPress={toggleModal}>
+                <TouchableOpacity style={[styles.memoContainer, {height : memoHeight(memo)}]} onPress={toggleModal}>
+                    <View style={styles.resultReviewItem1}>
                         <MaterialCommunityIcons name="clipboard-text-outline" size={30} color= "black" />
                         <View style={{alignItems : 'start'}}>
                             <Text style={styles.activityText}>メモ</Text>
-                            <Text style={{color : 'gray'}}>{memo}</Text>
+                            <Text style={{color : 'gray'}}>{memo.length ===0 ? 'メモはありません' : memo}</Text>
                         </View>
-                    </TouchableOpacity>                   
-                </View >
+                    </View>
+                </TouchableOpacity>               
                 <View style={styles.detailContainer}>
                     <Text style={styles.activityText}>更に詳しく</Text>
                 </View>
@@ -243,6 +252,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
+        height: 60,
     },
     memoTitleContainer: {
         flexDirection: 'row',

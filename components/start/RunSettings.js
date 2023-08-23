@@ -221,7 +221,7 @@ const Page3 = ( {handleClosePopup }) => {
     </View>
   );
 };
-const Page4 = ({ handleClosePopup, handleWithMusicGuide, handleVolumeChange, withMusicGuide, volume}) => {
+const Page4 = ({ handleClosePopup, handleWithAudioGuide, handleVolumeChange, withAudioGuide, volume}) => {
 
   return(
     <View style={styles.pageContainer}>
@@ -234,30 +234,30 @@ const Page4 = ({ handleClosePopup, handleWithMusicGuide, handleVolumeChange, wit
           <View style={styles.rowContainer}>
             <Text style={styles.pageDescription} >有効にする</Text>
             <Switch 
-              value={withMusicGuide}
-              onValueChange={handleWithMusicGuide}
+              value={withAudioGuide}
+              onValueChange={handleWithAudioGuide}
               trackColor={{ false: "#767577", true: "#20B2AA" }}
-              thumbColor={withMusicGuide ? "#f4f3f4" : "#f4f3f4"}
+              thumbColor={withAudioGuide ? "#f4f3f4" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
             />
           </View>
-        <TouchableOpacity style={styles.workOutContainer} disabled={!withMusicGuide}>
+        <TouchableOpacity style={styles.workOutContainer} disabled={!withAudioGuide}>
           <View style={styles.rowContainer}>
-            <Text style={[styles.pageDescription, !withMusicGuide && styles.disabledPageDescription]} >音声</Text>
+            <Text style={[styles.pageDescription, !withAudioGuide && styles.disabledPageDescription]} >音声</Text>
           </View>
-            <Text style={[styles.subText, !withMusicGuide && styles.disabledSubText]} >kat(デフォルト)</Text>
+            <Text style={[styles.subText, !withAudioGuide && styles.disabledSubText]} >kat(デフォルト)</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.workOutContainer} disabled={!withMusicGuide}>
+        <TouchableOpacity style={styles.workOutContainer} disabled={!withAudioGuide}>
           <View style={styles.rowContainer}>
-            <Text style={[styles.pageDescription, !withMusicGuide && styles.disabledPageDescription]} >アナウンスの頻度</Text>
+            <Text style={[styles.pageDescription, !withAudioGuide && styles.disabledPageDescription]} >アナウンスの頻度</Text>
           </View>
-          <Text style={[styles.subText, !withMusicGuide && styles.disabledSubText]} >5分</Text>
+          <Text style={[styles.subText, !withAudioGuide && styles.disabledSubText]} >5分</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.workOutContainer} disabled={!withMusicGuide}>
+        <TouchableOpacity style={styles.workOutContainer} disabled={!withAudioGuide}>
           <View style={styles.rowContainer}>
-            <Text style={[styles.pageDescription, !withMusicGuide && styles.disabledPageDescription]} >アナウンスする情報を選択</Text>
+            <Text style={[styles.pageDescription, !withAudioGuide && styles.disabledPageDescription]} >アナウンスする情報を選択</Text>
           </View>
-          <Text style={[styles.subText, !withMusicGuide && styles.disabledSubText]} >タイム,距離,平均ペース</Text>
+          <Text style={[styles.subText, !withAudioGuide && styles.disabledSubText]} >タイム,距離,平均ペース</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.workOutContainer}>
           <View style={styles.rowContainer}>

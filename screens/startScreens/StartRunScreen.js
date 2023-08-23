@@ -2,9 +2,10 @@ import { StyleSheet, Text, View ,Image, FlatList, SafeAreaView, TouchableOpacity
 import { useNavigation } from '@react-navigation/native';
 import { useAppContext } from '../../contexts/AppContext';
 import { useActivityContext } from '../../contexts/ActivityContext';
+import { useStartScreenContext } from '../../contexts/StartScreenContext';
 import React,{useEffect, useState, useRef} from 'react';
 import Constants from 'expo-constants';
-import axios from 'axios';
+import * as Speech from 'expo-speech';
 import * as Location from 'expo-location';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -13,6 +14,14 @@ import {Svg, Circle} from 'react-native-svg';
 import * as Run from '../../functions/Run';
 export default function StartRunScreencreen({}){
     const [withPause, setWithPause] = useState(false);
+
+    const {
+        withAudioGuide,
+        volume,
+        slectedActivity,
+        typeOfAudioGuide,
+        // add other state
+    } = useStartScreenContext();
     const {
         time, handleSetTime,
         pace, handleSetPace,
@@ -23,6 +32,7 @@ export default function StartRunScreencreen({}){
     const { 
         currentLocation, handleSetCurrentLocation,
         weight,
+        language,
     } = useAppContext();
 
     const [initialPosition, setInitialPosition] = useState(null);
@@ -32,6 +42,15 @@ export default function StartRunScreencreen({}){
     const animatedButtonContainerFlex = new Animated.Value(buttonContainerFlex);
     const scrollViewRef = useRef(null);
 
+    
+    useEffect(() => {
+        getLocationPermission();
+        console.log(volume)
+        if(withAudioGuide){
+            speakText('アクティビティを開始します。', language, volume);
+        }
+    }, []);
+    
     useEffect(() => {
         let timerInterval = null;
         if(withPause){
@@ -41,10 +60,10 @@ export default function StartRunScreencreen({}){
         }else {
             clearInterval(timerInterval);
         }
-
+        
         return () => clearInterval(timerInterval);
     }, [withPause]);
-
+    
     useEffect(() => {
         if(initialPosition && currentLocation){
             distance = Run.getDistanceBetweenPoints(initialPosition.latitude, initialPosition.longitude, currentLocation.latitude, currentLocation.longitude);
@@ -55,15 +74,15 @@ export default function StartRunScreencreen({}){
             handleSetPace(Run.getPace(distance, time));
         }
     }, [currentLocation]);
-
+    
     useEffect(() => {
         const toValue = buttonContainerFlex === 2 ? 3 : 2;
         Animated.timing(animatedButtonContainerFlex, {
-          toValue: toValue,
-          duration: 500,
+            toValue: toValue,
+            duration: 500,
           useNativeDriver: false,
         }).start();
-      }, [buttonContainerFlex]);
+    }, [buttonContainerFlex]);
     
     useEffect(() => {
         if(time !== 0 && time % 180 === 0){
@@ -71,9 +90,9 @@ export default function StartRunScreencreen({}){
                 // 新しいlocationLogの値を計算
                 let newLocationLog = [];
                 if (movingdistance !== 0){
-                     newLocationLog = [...locationLog, currentLocation];
+                    newLocationLog = [...locationLog, currentLocation];
                 }else{
-                     newLocationLog = [...locationLog, {latitude : currentLocation.latitude+0.0005, longitude : currentLocation.longitude+0.0005}];
+                    newLocationLog = [...locationLog, {latitude : currentLocation.latitude+0.0005, longitude : currentLocation.longitude+0.0005}];
                 }
                 // 新しいlocationLogの値を使って他の計算を行う
                 //console.log(newLocationLog);
@@ -83,18 +102,38 @@ export default function StartRunScreencreen({}){
                     console.log(`longitude:${newLocationLog[i].longitude}`);
                 }
                 */
-                const distanceIn3min = Run.getDistanceBetweenPoints(
-                    currentLocation.latitude,
-                    currentLocation.longitude, 
-                    newLocationLog[newLocationLog.length-1].latitude, 
-                    newLocationLog[newLocationLog.length-1].longitude
-                );
-                setCurrentPace(Run.getPace(distanceIn3min, 180));
-    
-                return newLocationLog;
-            });
+               const distanceIn3min = Run.getDistanceBetweenPoints(
+                   currentLocation.latitude,
+                   currentLocation.longitude, 
+                   newLocationLog[newLocationLog.length-1].latitude, 
+                   newLocationLog[newLocationLog.length-1].longitude
+                   );
+                   setCurrentPace(Run.getPace(distanceIn3min, 180));
+                   
+                   return newLocationLog;
+                });
+            }
+        }, [time]);
+
+    const getLocationPermission = async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status === 'granted') {
+            startLocationUpdates();
         }
-    }, [time]);
+    };
+    
+    const startLocationUpdates = async () => {
+        Location.watchPositionAsync(
+            { accuracy: Location.Accuracy.High, timeInterval: 1000 },
+            position => {
+                const { latitude, longitude } = position.coords;
+                if(!initialPosition){
+                    setInitialPosition({ latitude, longitude });
+                }
+                handleSetCurrentLocation({ latitude, longitude });
+            }
+            );
+    };
 
     const formatTime = (time) => {
         const minutes = Math.floor(time / 60);
@@ -107,10 +146,23 @@ export default function StartRunScreencreen({}){
         setWithPause((withPause) => !withPause);
         setButtonContainerFlex((prevFlex) => (prevFlex === 2 ? 3 : 2));    
     };
-
+    const speakText = (text, language, volume) => {
+        const languageCode ={
+            '日本語' : 'ja',
+            'English' : 'en',
+        };
+        Speech.speak(text,{
+            language : languageCode[language],
+            volume : volume/100,
+        });
+    };
     const handleResultOpen = () => {
         handleSetCalorie(Run.getCalorie(weight, movingdistance, pace));
         navigation.navigate('Result');
+        console.log(volume);
+        if (withAudioGuide){
+            speakText('アクティビティを終了します。', language, volume);
+        }
     };
     
     return(
@@ -199,47 +251,14 @@ export default function StartRunScreencreen({}){
     );
 };
 
-export const Map = ({scrollViewRef, currentLocation, handleSetCurrentLocation, initialPosition, setInitialPosition, locationLog, handleSetLocationLog}) =>{
+export const Map = ({scrollViewRef, currentLocation,  initialPosition,  locationLog}) =>{
     const mapRef = useRef(null);
 
-    useEffect(() => {
-        getLocationPermission();
-        handleSetLocationLog((locationLog) => {
-            const newLocationLog = [...locationLog, currentLocation];
-            return newLocationLog;
-        });
-    }, []);
-
-    const getLocationPermission = async () => {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status === 'granted') {
-          startLocationUpdates();
-        }
-    };
-
-    useEffect(() => {
-        for (let i=0; i<locationLog.length; i++){
-            console.log(`latitude:${locationLog[i].latitude}`);
-            console.log(`longitude:${locationLog[i].longitude}`);
-        }
-    }, [locationLog]);
 
     const backToTimer = () => {
         scrollViewRef.current.scrollTo({ x: Dimensions.get('window').width, y: 0, animated: true });
     };
 
-    const startLocationUpdates = async () => {
-        Location.watchPositionAsync(
-            { accuracy: Location.Accuracy.High, timeInterval: 1000 },
-            position => {
-                const { latitude, longitude } = position.coords;
-                if(!initialPosition){
-                    setInitialPosition({ latitude, longitude });
-                }
-                handleSetCurrentLocation({ latitude, longitude });
-            }
-          );
-    };
 
     const goToCurrentLocation = () => {
         if (mapRef.current && mapRef.current) {

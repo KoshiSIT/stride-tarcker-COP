@@ -62,6 +62,7 @@ export default function ResultReviewScreen({}){
           }
         );
       };
+      
     return(
         <View style={styles.container}>
             <View style={styles.titleContainer}>

@@ -23,12 +23,30 @@ export function ActivityProvider({children}) {
     const handleSetCalorie = (calorie) => {
         setCalorie(calorie);
     }
-
+    const resetTime= () => {
+        setTime(0);
+    }
+    const resetPace= () => {
+        setPace(0);
+    }
+    const resetLocationLog= () => {
+        setLocationLog([]);
+    }
+    const resetCalorie= () => {
+        setCalorie(0);
+    }
+    const resetAllState = () => {
+        resetTime();
+        resetPace();
+        resetLocationLog();
+        resetCalorie();
+    }
     const value = {
         time, handleSetTime,
         pace, handleSetPace,
         locationLog, handleSetLocationLog,
         calorie, handleSetCalorie,
+        resetAllState,
     }
 
     return (

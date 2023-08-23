@@ -173,7 +173,7 @@ export default function SettingsScreen({  }){
                                 <Text style={styles.detailItemText}>音量</Text>
                             </View>
                             <View style = {styles.optionItem2}>
-                                <Text style={styles.optionText}>{volume}%</Text>
+                                <Text style={styles.optionText}>{volume.toFixed(0)}%</Text>
                                 <AntDesignIcon name="right" size={20} color="lightgray" />
                             </View>
                         </TouchableOpacity>

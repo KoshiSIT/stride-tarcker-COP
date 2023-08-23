@@ -179,11 +179,9 @@ export default function StartScreenMain({}){
                           </TouchableOpacity>
                         </View>
                 </View>
-                <View style = { styles.startButton }>
-                  <TouchableOpacity onPress={()=>handleStartRunOpen()}>
-                    <Text style = { styles.startButtonText }>スタート</Text>
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={()=>handleStartRunOpen()} style = {styles.startButton}> 
+                  <Text style = { styles.startButtonText }>スタート</Text>
+                </TouchableOpacity>
                 {showPopup && (
                     <Animated.View style={[styles.popupScreen, { transform: [{ translateY: fadeAnim }] }]}>
                       <View style={styles.popupContainer}>
@@ -202,10 +200,20 @@ export default function StartScreenMain({}){
                           }}
                           scrollEventThrottle={200}
                         >
-                          <Page1  handleClosePopup = { handleClosePopup } stopWatchMode={stopWatchMode} handleStopWatchMode={handleStopWatchMode}/>
+                          <Page1  
+                            handleClosePopup = { handleClosePopup } 
+                            stopWatchMode={stopWatchMode} 
+                            handleStopWatchMode={handleStopWatchMode} 
+                            selectedActivity={selectedActivity}
+                            handleSelectActivity={handleSelectActivity}
+                            />
                           <Page2  handleClosePopup = { handleClosePopup }/>
                           <Page3  handleClosePopup = { handleClosePopup }/>
-                          <Page4  handleClosePopup = { handleClosePopup }/>
+                          <Page4  
+                            handleClosePopup = { handleClosePopup }
+                            withAudioGuide={withAudioGuide} handleWithAudioGuide={handleWithAudioGuide}
+                            volume={volume} handleVolumeChange={handleVolumeChange}
+                          />
           
                         </ScrollView>
                       </View>
