@@ -19,7 +19,6 @@ export const getPace = (distance, time) => {
     }else{
         var timeInHour = time/3600;
         var pace = timeInHour/distance;
-        console.log(pace);
         return pace;
     }
 }

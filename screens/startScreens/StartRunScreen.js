@@ -6,7 +6,7 @@ import React,{useEffect, useState, useRef} from 'react';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import * as Location from 'expo-location';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import {Svg, Circle} from 'react-native-svg';
@@ -19,6 +19,7 @@ export default function StartRunScreencreen({}){
         locationLog, handleSetLocationLog,
         handleSetCalorie,
     } = useActivityContext();
+    
     const { 
         currentLocation, handleSetCurrentLocation,
         weight,
@@ -68,14 +69,20 @@ export default function StartRunScreencreen({}){
         if(time !== 0 && time % 180 === 0){
             handleSetLocationLog((locationLog) => {
                 // 新しいlocationLogの値を計算
+                let newLocationLog = [];
                 if (movingdistance !== 0){
-                    const newLocationLog = [...locationLog, currentLocation];
+                     newLocationLog = [...locationLog, currentLocation];
                 }else{
-                    const newLocationLog = [...locationLog, {latitude : currentLocation.latitude+0.05, longitude : currentLocation.longitude+0.05}];
+                     newLocationLog = [...locationLog, {latitude : currentLocation.latitude+0.0005, longitude : currentLocation.longitude+0.0005}];
                 }
                 // 新しいlocationLogの値を使って他の計算を行う
                 //console.log(newLocationLog);
-                //console.log(newLocationLog[newLocationLog.length-1].latitude);
+                /*
+                for (let i=0; i<newLocationLog.length; i++){
+                    console.log(`latitude:${newLocationLog[i].latitude}`);
+                    console.log(`longitude:${newLocationLog[i].longitude}`);
+                }
+                */
                 const distanceIn3min = Run.getDistanceBetweenPoints(
                     currentLocation.latitude,
                     currentLocation.longitude, 
@@ -103,10 +110,6 @@ export default function StartRunScreencreen({}){
 
     const handleResultOpen = () => {
         handleSetCalorie(Run.getCalorie(weight, movingdistance, pace));
-        for (let i=0; i<locationLog.length; i++){
-            console.log(locationLog[i].latitude);
-            console.log(locationLog[i].longitude);
-        }
         navigation.navigate('Result');
     };
     
@@ -127,6 +130,8 @@ export default function StartRunScreencreen({}){
                     handleSetCurrentLocation={handleSetCurrentLocation}
                     initialPosition={initialPosition}
                     setInitialPosition={setInitialPosition}
+                    locationLog={locationLog}
+                    handleSetLocationLog={handleSetLocationLog}
                 />
                 <View style={styles.timerContainer}>
                     <View style={styles.topContainer}>
@@ -194,10 +199,15 @@ export default function StartRunScreencreen({}){
     );
 };
 
-export const Map = ({scrollViewRef, currentLocation, handleSetCurrentLocation, initialPosition, setInitialPosition}) =>{
+export const Map = ({scrollViewRef, currentLocation, handleSetCurrentLocation, initialPosition, setInitialPosition, locationLog, handleSetLocationLog}) =>{
     const mapRef = useRef(null);
+
     useEffect(() => {
         getLocationPermission();
+        handleSetLocationLog((locationLog) => {
+            const newLocationLog = [...locationLog, currentLocation];
+            return newLocationLog;
+        });
     }, []);
 
     const getLocationPermission = async () => {
@@ -206,6 +216,13 @@ export const Map = ({scrollViewRef, currentLocation, handleSetCurrentLocation, i
           startLocationUpdates();
         }
     };
+
+    useEffect(() => {
+        for (let i=0; i<locationLog.length; i++){
+            console.log(`latitude:${locationLog[i].latitude}`);
+            console.log(`longitude:${locationLog[i].longitude}`);
+        }
+    }, [locationLog]);
 
     const backToTimer = () => {
         scrollViewRef.current.scrollTo({ x: Dimensions.get('window').width, y: 0, animated: true });
@@ -248,19 +265,31 @@ export const Map = ({scrollViewRef, currentLocation, handleSetCurrentLocation, i
                         longitudeDelta : 0.002,
                     }}
                 >
-                <Marker
-                    coordinate={{
-                        latitude : currentLocation.latitude,
-                        longitude : currentLocation.longitude,
-                    }}
-                    anchor={{ x: 0.5, y: 0.5 }}
-                >
+                {locationLog.map((location,index) => (
+                    <Marker
+                        key={index}
+                        coordinate={{
+                            latitude : location.latitude,
+                            longitude : location.longitude,
+                        }}
+                        anchor={{ x: 0.5, y: 0.5 }}
+                    >
                     <View>
                         <Svg width={24} height={24} viewBox="0 0 24 24">
+                            { index === 0 ? (
                             <Circle cx={12} cy={12} r={10} stroke="white" strokeWidth={2} fill="#3366CC" />
+                            ) : (
+                            <Circle cx={12} cy={12} r={10} stroke="white" strokeWidth={2} fill="green" />
+                            )}
                         </Svg>
                     </View>
-                </Marker>
+                    </Marker>
+                ))}
+                <Polyline
+                    coordinates={locationLog}
+                    strokeWidth={2}
+                    strokeColor="lightgray"
+                />
                 </MapView>
             )}
             <TouchableOpacity onPress={backToTimer}>

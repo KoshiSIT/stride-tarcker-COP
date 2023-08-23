@@ -33,7 +33,7 @@ export default function ResultScreen({}){
     const handleActivityName = () => { 
         textInputRef.current.focus();
     };
-    const handleDammy = () => {
+    const handleDammy = () => { 
         setIsDammy(!isDammy);
     };
     const memoHeight = () => {
@@ -45,7 +45,7 @@ export default function ResultScreen({}){
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <View></View>
-                <Text style={{fontWeight : 'bold', fontSize : '16'}}>結果のレビュー</Text>
+                <Text style={{fontWeight : 'bold', fontSize : 16}}>結果のレビュー</Text>
                 <TouchableOpacity onPress={()=>{navigation.navigate('StartRun');}}>
                     <FontAwesomeIcon name='trash' size={30} color = 'black'/>
                 </TouchableOpacity>

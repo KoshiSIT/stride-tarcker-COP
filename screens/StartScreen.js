@@ -13,7 +13,7 @@ import { useStartScreenContext } from '../contexts/StartScreenContext';
 import { useAppContext } from '../contexts/AppContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -30,7 +30,7 @@ export default function StartScreenMain({}){
       withAudioGuide, handleWithAudioGuide,
       volume, handleVolumeChange
     } = useStartScreenContext();
-
+    const mapRef = useRef(null);
     useEffect(() => {
       getLocationPermission();
     }, []);
@@ -79,7 +79,17 @@ export default function StartScreenMain({}){
       }).start(() => {setShowPopup(false)});
     };
     
-  
+    const goToCurrentLocation = () => {
+      if (mapRef.current && mapRef.current) {
+          mapRef.current.animateToRegion({
+              latitude : currentLocation.latitude,
+              longitude : currentLocation.longitude,
+              latitudeDelta : 0.002,
+              longitudeDelta : 0.002,
+          });
+      }
+  };
+
         return (
             <View style={styles.container}>
               <View style={styles.titleContainer}>
@@ -95,6 +105,7 @@ export default function StartScreenMain({}){
                       {currentLocation && (
                 <MapView
                     style={styles.map}
+                    ref={mapRef}
                     region={{
                         latitude: currentLocation.latitude,
                         longitude: currentLocation.longitude,
@@ -117,6 +128,11 @@ export default function StartScreenMain({}){
                   </Marker>
                 </MapView>
                 )}
+              <View style={styles.currentLocationButton}>                
+                  <TouchableOpacity onPress={goToCurrentLocation}>
+                      <FontAwesomeIcon name="location-arrow" size={30} color="gray" />
+                  </TouchableOpacity>
+              </View>
                 <View style = {styles.buttonContainer}>
                       <View style={styles.activityButton}>
                         <TouchableOpacity onPress={()=>handleOpenPopup(0) } style={styles.button}>
@@ -168,7 +184,6 @@ export default function StartScreenMain({}){
                     <Text style = { styles.startButtonText }>スタート</Text>
                   </TouchableOpacity>
                 </View>
-          
                 {showPopup && (
                     <Animated.View style={[styles.popupScreen, { transform: [{ translateY: fadeAnim }] }]}>
                       <View style={styles.popupContainer}>
@@ -187,7 +202,7 @@ export default function StartScreenMain({}){
                           }}
                           scrollEventThrottle={200}
                         >
-                          <Page1  handleClosePopup = { handleClosePopup }/>
+                          <Page1  handleClosePopup = { handleClosePopup } stopWatchMode={stopWatchMode} handleStopWatchMode={handleStopWatchMode}/>
                           <Page2  handleClosePopup = { handleClosePopup }/>
                           <Page3  handleClosePopup = { handleClosePopup }/>
                           <Page4  handleClosePopup = { handleClosePopup }/>
@@ -318,6 +333,17 @@ const styles = StyleSheet.create({
       borderRadius: 20,
       justifyContent: 'center',
     },
+    currentLocationButton:{
+      position : 'absolute',
+      top : '60%',
+      left : '80%',
+      backgroundColor: 'white',
+      borderRadius: 30,
+      height : 40,
+      width : 40,
+      justifyContent : 'center',
+      alignItems : 'center',
+  },
     startButtonText: {
       color: 'white',
       fontSize: 16,
