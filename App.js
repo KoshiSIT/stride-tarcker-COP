@@ -130,7 +130,7 @@ export default function App() {
       setLoading(false);
       setUser(user);
       if (user) {
-        console.log(user);
+        console.log(user.uid);
       }
     });
     return ()=>{

@@ -12,31 +12,12 @@ import Insite from '../components/user/Insite';
 import WeeklyWorkout from '../components/user/WeeklyWorkout';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-
-
 export default function UserScreen({}){
     const [stepCount,setStepCount] = useState(0);
     const navigation = useNavigation();
     useEffect(()=>{
-        getStepCount();
     },[]);
 
-    const getStepCount= async()=>{
-        const isAvailable = await Pedometer.isAvailableAsync();
-        const end = new Date();
-        const start = new Date();
-        start.setDate(end.getDate() - 1);
-        if(isAvailable){
-            try {
-                const stepResult = await Pedometer.getStepCountAsync(start, end);
-                console.log(stepResult.steps);
-                setStepCount(stepResult.steps);
-            }catch(e){
-                console.log(e);
-            }
-        }
-        
-    };
     const goAppSettings = () => {
         navigation.navigate('AppSettings');
     };

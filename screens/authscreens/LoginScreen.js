@@ -6,18 +6,23 @@ import { useAppContext } from '../../contexts/AppContext';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../../firebase'
 import Loading from "../../components/Loading";
+import { FIRESTORE_DB, STORAGE_REF } from '../../firebase';
+import {addDoc, collection, onSnapshot, where, query} from 'firebase/firestore';
+import {getDownloadURL, ref, uploadBytes} from 'firebase/storage';
 export default function LoginScreen() {
     const navigation = useNavigation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [userinfo, setUserinfo] = useState([]);
     const  auth = FIREBASE_AUTH;
-
+    const { initailizeUserInfoContext } = useAppContext();
     const signIn = async() => {
         setLoading(true);
         try{
-            await signInWithEmailAndPassword(auth, email, password);
-            navigation.navigate('User');
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            await getUserInfo(userCredential);
+            await initailizeUserInfoContext(userinfo);
         }catch(error) {
             console.log(error);
         }finally{
@@ -26,15 +31,54 @@ export default function LoginScreen() {
     }
     const signUp = async() => {
         setLoading(true);
+        const storageRef = ref(STORAGE_REF, 'images/' + 'r1280x720l.jpeg');
         try{
-            await createUserWithEmailAndPassword(auth, email, password);
-            navigation.navigate('User');
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const url = await getDownloadURL(storageRef);
+            await addDoc(collection(FIRESTORE_DB, 'user_info'), {
+                user : userCredential.user.uid,
+                firstName : 'Ayre',
+                lastName : 'Nile',
+                birthday : '1999/01/01',
+                gender : 'woman',
+                language : 'jp',
+                weight : 60,
+                height : 170,
+                firstDayOfWeek : 'sunday',
+                profileImage : url,
+            }).then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+            }).catch((error) => {
+                console.error("Error adding document: ", error);
+            }
+            );
         }catch(error) {
             console.log(error);
         }finally{
             setLoading(false);
         }
     }
+    const getUserInfo = async(userCredential) => {
+        const userRef = query(
+            collection(FIRESTORE_DB, 'user_info'),
+            where('user', '==', userCredential.user.uid),
+            )
+        const subscrier = onSnapshot(userRef,{
+            next : (snapshot) => {
+                const userinfos = [];
+                snapshot.forEach((doc) => {
+                    console.log(doc.data());
+                    userinfos.push({
+                        id : doc.id,
+                        ...doc.data(),
+                    });
+                });
+                setUserinfo(userinfos);
+            }   
+        });
+        return subscrier;
+    }
+
     return (
         <View style={styles.container}>
             <View>

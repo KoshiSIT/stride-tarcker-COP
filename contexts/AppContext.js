@@ -24,22 +24,71 @@ export function AppProvider({ children }) {
     const [withMotivationNotification, setWithMotivationNotification] = useState(false);
     // user profile state
     const [user, setUser] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [birthday, setBirthday] = useState('');
+    const [gender, setGender] = useState('');
+    const [height, setHeight] = useState(170);
     const [weight, setWeight] = useState(60);
+    const [firstDayOfWeek, setFirstDayOfWeek] = useState('');
+    const [profileImage, setProfileImage] = useState('');
     const handleSetCurrentLocation = (location) => {
         setCurrentLocation(location);
     };
+    const handleSetUser = (user) => {
+        setUser(user);
+        console.log('sign in')
+        console.log(`user_id : ${user}`);
+    };
+    const handleSetFirstName = (firstName) => {
+        setFirstName(firstName);
+    }
+    const handleSetLastName = (lastName) => {
+        setLastName(lastName);
+    }
+    const handleSetBirthday = (birthday) => {
+        setBirthday(birthday);
+    }
+    const handleSetHeight = (height) => {
+        setHeight(height);
+    }
     const handleSetWeight = (weight) => {
         setWeight(weight);
     };
-    const handleSetUser = (user) => {
-        setUser(user);
+    const handleSetFirstDayOfWeek = (firstDayOfWeek) => {
+        setFirstDayOfWeek(firstDayOfWeek);
     };
-    
+    const handleSetProfileImage = (profileImage) => {
+        setProfileImage(profileImage);
+    };
+
+    const initailizeUserInfoContext = (userinfos) => {
+        console.log('call');
+        userinfos.forEach((userinfo) => {
+            handleSetFirstName(userinfo.firstName);
+            handleSetLastName(userinfo.lastName);
+            handleSetBirthday(userinfo.birthday);
+            handleSetHeight(userinfo.height);
+            handleSetWeight(userinfo.weight);
+            handleSetFirstDayOfWeek(userinfo.firstDayOfWeek);
+            handleSetProfileImage(userinfo.profileImage);
+            console.log('initailize user info context');
+            console.log(firstName);
+            console.log(lastName);
+            console.log(birthday);
+            console.log(height);
+            console.log(weight);
+            console.log(firstDayOfWeek);
+            console.log(profileImage);
+        });
+
+    }
     const value = {
         language, setLanguage,
         currentLocation, handleSetCurrentLocation,
         weight, handleSetWeight,
         user, handleSetUser,
+        initailizeUserInfoContext,
     }
     return (
         <AppContext.Provider value={value}>{children}</AppContext.Provider>

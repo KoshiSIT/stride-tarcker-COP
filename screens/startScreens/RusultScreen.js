@@ -4,6 +4,7 @@ import Modal from 'react-native-modal';
 
 import React,{useEffect, useState, useRef} from 'react';
 import { useActivityContext } from '../../contexts/ActivityContext';
+import { useAppContext } from '../../contexts/AppContext';
 import PhotoPicker from '../../components/start/PhotoPicker';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
@@ -19,6 +20,7 @@ import {getDownloadURL, ref, uploadBytes} from 'firebase/storage';
 export default function ResultScreen({}){
     const navigation = useNavigation();
     const { time, pace, locationLog, calorie, resetAllState} = useActivityContext();
+    const { user } = useAppContext();
     const [mapSelected, setMapSelected] = useState('フォロワー');
     const [activityName, setActivityName] = useState('running');
     const textInputRef = useRef(null);
@@ -59,6 +61,7 @@ export default function ResultScreen({}){
         if (imageBlob !== null){
             uploadImage(imageBlob).then((url)=>{
             addDoc(collection(FIRESTORE_DB, 'stride-tracker_DB'), {
+                user : user,
                 activityName : activityName,
                 locationLog : locationLog,
                 time : time,
@@ -77,6 +80,7 @@ export default function ResultScreen({}){
             });
         }else{
             addDoc(collection(FIRESTORE_DB, 'stride-tracker_DB'), {
+                user : user,
                 activityName : activityName,
                 locationLog : locationLog,
                 time : time,

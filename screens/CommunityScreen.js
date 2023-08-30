@@ -7,7 +7,7 @@ import { Svg, Circle, Polyline} from 'react-native-svg';
 import * as Location from 'expo-location';
 import { useAppContext } from '../contexts/AppContext';
 import { FIRESTORE_DB, FIREBASE_STORAGE, STORAGE_REF } from '../firebase';
-import {addDoc, collection, onSnapshot} from 'firebase/firestore';
+import {addDoc, collection, onSnapshot, where, query} from 'firebase/firestore';
 import {getDownloadURL, ref} from 'firebase/storage';
 
 import * as Date from '../functions/Date';
@@ -19,10 +19,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 export default function CommunityScreen({navigation}){
     const [selectedTab, setSelectedTab] = useState('feed');
     const [activities, setActivities] = useState([]);
-    const { currentLocation, handleSetCurrentLocation } = useAppContext();
+    const { currentLocation, handleSetCurrentLocation, user} = useAppContext();
     const [pictureIndex, setPictureIndex] = useState(0);
     useEffect(() => {
-        const activitiesRef = collection(FIRESTORE_DB, 'stride-tracker_DB');
+        const activitiesRef = query(
+            collection(FIRESTORE_DB, 'stride-tracker_DB'),
+            where('user', '==', user),
+        );
         const subscriber = onSnapshot(activitiesRef,{
             next: (snapshot) => {
                 const activities = [];
@@ -83,7 +86,7 @@ export default function CommunityScreen({navigation}){
                 </TouchableOpacity>
             </View>
             { selectedTab === 'feed' && 
-            <ScrollView style={{backgroundColor : '#F0F8FF', paddingTop : 20}}>
+            <ScrollView style={{backgroundColor : '#F0F8FF', paddingTop : 20}} nestedScrollEnabled={true}>
                 { activities.length > 0 && (
                     <FlatList
                         data={activities}
@@ -94,8 +97,10 @@ export default function CommunityScreen({navigation}){
                                         <FontAwesome5Icon name='grin-wink' size={25} color = 'black'/>
                                     </View>
                                     <View style={styles.item2}>
-                                        <Text>{item.activity}</Text>
-                                        <Text>{Date.formatDate(item.datetime)}</Text>
+                                        <Text>{item.activityName}</Text>
+                                        <View>
+                                            <Text>{Date.formatDate(item.datetime)}</Text>
+                                        </View>
                                     </View>
                                 </View>
                                 <View style={styles.dateTimeContainer}>
@@ -109,7 +114,6 @@ export default function CommunityScreen({navigation}){
                                 <ScrollView 
                                     horizontal
                                     pagingEnabled
-                                    nestedScrollEnabled={true}
                                     style={styles.pictureScroll}
                                     scrollEnabled={item.image !== ''}
                                     onMomentumScrollEnd={(event) => {
@@ -174,12 +178,16 @@ export default function CommunityScreen({navigation}){
                                     </View>
                                 ):(<View></View>)}
                                 <View style={styles.bottomContainer}>
-                                    <View style={styles.button}>
-                                        <FontAwesomeIcon name='heart-o' size={25} color = 'black'/>
-                                    </View>
-                                    <View style={styles.button}>
-                                        <AntDesign name='message1' size={25} color = 'black'/>
-                                    </View>
+                                    <TouchableOpacity>
+                                        <View style={styles.button}>
+                                            <FontAwesomeIcon name='heart-o' size={25} color = 'black'/>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <View style={styles.button}>
+                                            <AntDesign name='message1' size={25} color = 'black'/>
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         )}
