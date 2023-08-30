@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-const PhotoPicker = () => {
+const PhotoPicker = ({setImageBlob}) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const handleImagePick = async () => {
         const permissonResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -21,6 +21,9 @@ const PhotoPicker = () => {
 
         if (!pickerResult.canceled){
             setSelectedImage({localUri : pickerResult.uri});
+            const localUri = await fetch(pickerResult.uri);
+            const localBlob = await localUri.blob();
+            setImageBlob(localBlob);
         }
     };
 

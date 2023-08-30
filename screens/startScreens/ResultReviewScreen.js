@@ -15,9 +15,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Constants from 'expo-constants';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+
 import * as ImagePicker from 'expo-image-picker';
 export default function ResultReviewScreen({}){
     const [selectedImage, setSelectedImage] = useState(null);
+
     const handleImagePick = async () => {
         const permissonResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -41,35 +43,34 @@ export default function ResultReviewScreen({}){
     const { time, pace, locationLog, calorie} = useActivityContext();
 
     const [pictureIndex, setPictureIndex] = useState(0);
-    const scrollViewRef = useRef();
     useEffect(() => {
         getLocationPermission();
       }, []);
   
-      const getLocationPermission = async () => {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status === 'granted') {
-          startLocationUpdates();
+    const getLocationPermission = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status === 'granted') {
+        startLocationUpdates();
+    }
+    };
+
+    const startLocationUpdates = async () => {
+    Location.watchPositionAsync(
+        { accuracy: Location.Accuracy.High, timeInterval: 1000 },
+        position => {
+        const { latitude, longitude } = position.coords;
+        handleSetCurrentLocation({ latitude, longitude } );
         }
-      };
+    );
+    };
     
-      const startLocationUpdates = async () => {
-        Location.watchPositionAsync(
-          { accuracy: Location.Accuracy.High, timeInterval: 1000 },
-          position => {
-            const { latitude, longitude } = position.coords;
-            handleSetCurrentLocation({ latitude, longitude } );
-          }
-        );
-      };
-      
     return(
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <TouchableOpacity onPress={()=>{navigation.navigate('コミュニティ');}}>
                     <FontAwesomeIcon name='chevron-left' size={30} color = 'black'/>
                 </TouchableOpacity>
-                <Text style={{fontWeight : 'bold', fontSize : '16'}}>結果</Text>
+                <Text style={{fontWeight : 'bold', fontSize : 16}}>結果</Text>
                 <TouchableOpacity onPress={()=>{navigation.navigate('StartRun');}}>
                     <FeatherIcon name="share" size={30} color= "black" />
                 </TouchableOpacity>

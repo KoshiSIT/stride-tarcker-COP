@@ -1,5 +1,5 @@
-import { createContext, useState, useContext } from 'react';
-
+import { createContext, useState, useEffect, useContext } from 'react';
+import { auth } from '../firebase';
 const AppContext = createContext();
 
 export function useAppContext() {
@@ -23,6 +23,7 @@ export function AppProvider({ children }) {
     const [withCharrengeNotification, setWithCharrengeNotification] = useState(false);
     const [withMotivationNotification, setWithMotivationNotification] = useState(false);
     // user profile state
+    const [user, setUser] = useState('');
     const [weight, setWeight] = useState(60);
     const handleSetCurrentLocation = (location) => {
         setCurrentLocation(location);
@@ -30,10 +31,15 @@ export function AppProvider({ children }) {
     const handleSetWeight = (weight) => {
         setWeight(weight);
     };
+    const handleSetUser = (user) => {
+        setUser(user);
+    };
+    
     const value = {
         language, setLanguage,
         currentLocation, handleSetCurrentLocation,
         weight, handleSetWeight,
+        user, handleSetUser,
     }
     return (
         <AppContext.Provider value={value}>{children}</AppContext.Provider>

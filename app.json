@@ -15,13 +15,15 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "host.exp.Exponent",
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "host.exp.Exponent"
     },
     "web": {
       "favicon": "./assets/favicon.png"

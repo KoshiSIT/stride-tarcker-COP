@@ -5,11 +5,14 @@ import { createStackNavigator, TransitionPresets} from '@react-navigation/stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StartScreenProvider } from './contexts/StartScreenContext';
 import { ActivityProvider } from './contexts/ActivityContext';
-import { AppProvider } from './contexts/AppContext';
+import { AppProvider, useAppContext } from './contexts/AppContext';
+import { useState, useEffect } from 'react';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import UserScreen from './screens/UserScreen';
+  //user screens
+  import AppSettingsScreen from './screens/userscreens/AppSettingsScreen';
 
 import TrainingScreen from './screens/TrainingScreen';
 
@@ -33,8 +36,13 @@ import RusultReviewScreen from './screens/startScreens/ResultReviewScreen';
 import IntervalScreen from './screens/startScreens/workOutScreens/IntervalScreen';
 import CommunityScreen from './screens/CommunityScreen';
 import ExplorerScreen from './screens/ExplorerScreen';
+import LoginScreen from './screens/authscreens/LoginScreen';
+// components
+import Loading from './components/Loading';
 import { Settings } from 'react-native';
 
+import { onAuthStateChanged } from 'firebase/auth';
+import { FIREBASE_AUTH } from './firebase';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -44,6 +52,7 @@ const UserStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="User" component={UserScreen} options={ {headerShown: false }}/>
+      <Stack.Screen name="AppSettings" component={AppSettingsScreen} options={ {headerShown: false }}/>
     </Stack.Navigator>
   );
 };
@@ -104,51 +113,84 @@ const ExplorerStack = () => {
     </Stack.Navigator>
   );
 };
-
-export default function App() {
+const AuthStack = () => {
   return (
-    <NavigationContainer>
-      <AppProvider>
-        <Tab.Navigator
-          screenOptions = {({ route }) => ({
-            tabBarStyle: { 
-              height: 70,
-            },
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              if (route.name === 'ユーザー') {
-                return <FontAwesome5Icon name='smile-wink' size={size} color={color} />;
-              } else if (route.name === 'トレーニング') {
-                return <FontAwesomeIcon name='calendar-check-o' size={size} color={color} />;
-              } else if (route.name === 'スタート') {
-                return <EntypoIcon name='location-pin' size={size} color={color} />;
-              } else if (route.name === 'コミュニティ') {
-                return <FontAwesomeIcon name='group' size={size} color={color} />;
-              } else if (route.name === 'エクスプローラー') {
-                return <FontAwesome5Icon name='mountain' size={size} color={color} />;
-              }
-            },
-          })}
-        >
-          <Tab.Screen name="ユーザー" 
-          component={UserStack} 
-          />
-          <Tab.Screen name="トレーニング" 
-            component={TrainingStack} 
-          />
-          <Tab.Screen name="スタート" 
-            component={StartStack}
-            options={{ headerShown: false}} 
-          />
-          <Tab.Screen name="コミュニティ" 
-          component={CommunityStack} 
-          />
-          <Tab.Screen name="エクスプローラー" 
-            component={ExplorerStack} 
-          />
-        </Tab.Navigator>
-      </AppProvider>
-    </NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Login" component={LoginScreen} options={ {headerShown: false }}/>
+    </Stack.Navigator>
   );
+};
+export default function App() {
+  const auth = FIREBASE_AUTH;
+  const [user, setUser] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const undubscrbed = onAuthStateChanged(auth, (user) => {
+      setLoading(false);
+      setUser(user);
+      if (user) {
+        console.log(user);
+      }
+    });
+    return ()=>{
+        undubscrbed();
+    }
+  }, []);
+  if(loading) {
+    return (
+      <Loading/>
+    );
+  }else{
+    return (
+      <NavigationContainer>
+        <AppProvider>
+          {!user ? (
+            <AuthStack/>
+          ) : (
+            <Tab.Navigator
+              screenOptions = {({ route }) => ({
+                tabBarStyle: { 
+                  height: 70,
+                },
+                tabBarIcon: ({ focused, color, size }) => {
+                  let iconName;
+                  if (route.name === 'ユーザー') {
+                    return <FontAwesome5Icon name='smile-wink' size={size} color={color} />;
+                  } else if (route.name === 'トレーニング') {
+                    return <FontAwesomeIcon name='calendar-check-o' size={size} color={color} />;
+                  } else if (route.name === 'スタート') {
+                    return <EntypoIcon name='location-pin' size={size} color={color} />;
+                  } else if (route.name === 'コミュニティ') {
+                    return <FontAwesomeIcon name='group' size={size} color={color} />;
+                  } else if (route.name === 'エクスプローラー') {
+                    return <FontAwesome5Icon name='mountain' size={size} color={color} />;
+                  }
+                },
+              })}
+            >
+              <Tab.Screen name="ユーザー" 
+              component={UserStack}
+              options={{ headerShown: false}} 
+              />
+              <Tab.Screen name="トレーニング" 
+                component={TrainingStack} 
+              />
+              <Tab.Screen name="スタート" 
+                component={StartStack}
+                options={{ headerShown: false}} 
+              />
+              <Tab.Screen name="コミュニティ" 
+              component={CommunityStack} 
+              />
+              <Tab.Screen name="エクスプローラー" 
+                component={ExplorerStack} 
+              />
+            </Tab.Navigator>
+            )}
+          </AppProvider>
+      </NavigationContainer>
+    );
+  }
 }
 

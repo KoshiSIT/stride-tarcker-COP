@@ -14,7 +14,6 @@ import {Svg, Circle} from 'react-native-svg';
 import * as Run from '../../functions/Run';
 export default function StartRunScreencreen({}){
     const [withPause, setWithPause] = useState(false);
-
     const {
         withAudioGuide,
         volume,
@@ -45,6 +44,7 @@ export default function StartRunScreencreen({}){
     
     useEffect(() => {
         getLocationPermission();
+        handleSetLocationLog((locationLog) => [...locationLog, currentLocation]);
         console.log(volume)
         if(withAudioGuide){
             speakText('アクティビティを開始します。', language, volume);

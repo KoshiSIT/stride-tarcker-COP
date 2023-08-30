@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View ,Image, FlatList, SafeAreaView, ScrollView} from 'react-native';
+import { StyleSheet, Text, View , Image, FlatList, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
 import React,{useEffect, useState} from 'react';
 import Constants from 'expo-constants';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 import Data from '../components/user/Data';
 import Achivements from '../components/user/Achievements';
 import Activity from '../components/user/Activity';
@@ -9,13 +10,13 @@ import ShoeTracker from '../components/user/ShoeTracker';
 import Goal from '../components/user/Goal';
 import Insite from '../components/user/Insite';
 import WeeklyWorkout from '../components/user/WeeklyWorkout';
-import { Pedometer } from 'expo-sensors';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 
 
 
-export default function NewsScreen({navigation}){
+export default function UserScreen({}){
     const [stepCount,setStepCount] = useState(0);
-
+    const navigation = useNavigation();
     useEffect(()=>{
         getStepCount();
     },[]);
@@ -36,8 +37,17 @@ export default function NewsScreen({navigation}){
         }
         
     };
+    const goAppSettings = () => {
+        navigation.navigate('AppSettings');
+    };
+
     return(
         <SafeAreaView style={styles.container}>
+            <View style={styles.titleContainer}>
+                <TouchableOpacity onPress={()=> goAppSettings()}>
+                    <FeatherIcon name="settings" size={30} color= "black" />
+                </TouchableOpacity>
+            </View>
             <ScrollView>
                 <Data/>
                 <Achivements/>
@@ -56,5 +66,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         borderWidth: 0,
+    },
+    titleContainer:{
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginBottom: 10,
     },
 });

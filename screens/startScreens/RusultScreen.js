@@ -12,17 +12,21 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Constants from 'expo-constants';
 import RNPickerSelect from 'react-native-picker-select';
+import { FIRESTORE_DB, STORAGE_REF } from '../../firebase';
+import {addDoc, collection, onSnapshot} from 'firebase/firestore';
+import {getDownloadURL, ref, uploadBytes} from 'firebase/storage';
 
 export default function ResultScreen({}){
     const navigation = useNavigation();
     const { time, pace, locationLog, calorie, resetAllState} = useActivityContext();
     const [mapSelected, setMapSelected] = useState('フォロワー');
-    const [activityName, setActivityName] = useState('');
+    const [activityName, setActivityName] = useState('running');
     const textInputRef = useRef(null);
     const [isDammy, setIsDammy] = useState(false);
     const [bpm, setBpm] = useState('');
     const [memo, setMemo] = useState('');
     const [isModalVisible, setModalVisible] = useState(false);
+    const [imageBlob, setImageBlob] = useState(null);
     const mapItems = [
         {label : 'マップはフォロワーに表示される', value : 'フォロワー'},
         {label : 'マップは自分の身に表示される', value : '自分のみ'},
@@ -49,7 +53,60 @@ export default function ResultScreen({}){
         resetAllState();
         navigation.navigate('Start');
     }
-
+    const saveResult = () => {
+        datetime=new Date();
+        navigation.navigate('ResultReview');
+        if (imageBlob !== null){
+            uploadImage(imageBlob).then((url)=>{
+            addDoc(collection(FIRESTORE_DB, 'stride-tracker_DB'), {
+                activityName : activityName,
+                locationLog : locationLog,
+                time : time,
+                pace : pace,
+                calorie : calorie,
+                bpm : bpm,
+                memo : memo,
+                map : mapSelected,
+                image : url,
+                datetime : datetime,
+            }).then((docRef)=>{
+                console.log('Document written with ID: ', docRef.id);
+            }).catch((error)=>{
+                console.log(error);
+            });
+            });
+        }else{
+            addDoc(collection(FIRESTORE_DB, 'stride-tracker_DB'), {
+                activityName : activityName,
+                locationLog : locationLog,
+                time : time,
+                pace : pace,
+                calorie : calorie,
+                bpm : bpm,
+                memo : memo,
+                map : mapSelected,
+                datetime : datetime,
+                image : '',
+            }).then((docRef)=>{
+                console.log('Document written with ID: ', docRef.id);
+            }).catch((error)=>{
+                console.log(error);
+            });
+        }
+        resetAllState();
+    }
+    const uploadImage = async (blob) => {
+        const imageRef = ref(STORAGE_REF, 'images/' + blob._data.name)
+        console.log(`ref:${imageRef}`);
+        const uploadSnapshot = await uploadBytes(imageRef, blob, {
+            contentType: blob._data.type || 'image/jpeg' 
+        });
+        console.log(blob._data.name);
+        console.log(blob._data.size);
+        const url = await getDownloadURL(imageRef);
+        console.log(url);
+        return url;
+    }
     return(
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -80,7 +137,7 @@ export default function ResultScreen({}){
                         ref={textInputRef}
                     />
                 </TouchableOpacity>
-                <PhotoPicker />
+                <PhotoPicker setImageBlob={setImageBlob}/>
                 <TouchableOpacity style={[styles.memoContainer, {height : memoHeight(memo)}]} onPress={toggleModal}>
                     <View style={styles.resultReviewItem1}>
                         <MaterialCommunityIcons name="clipboard-text-outline" size={30} color= "black" />
@@ -169,7 +226,7 @@ export default function ResultScreen({}){
                     </View>
                 </View>
             </ScrollView>
-            <TouchableOpacity style={styles.saveButton} onPress={()=>{navigation.navigate('ResultReview');}}>
+            <TouchableOpacity style={styles.saveButton} onPress={()=>saveResult()}>
                 <Text style={styles.saveButtonText}>保存</Text>
             </TouchableOpacity>
             <Modal isVisible={isModalVisible} style={styles.memoPopContainer} backdropOpacity={1}>
