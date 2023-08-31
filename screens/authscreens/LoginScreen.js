@@ -14,15 +14,14 @@ export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [userinfo, setUserinfo] = useState([]);
     const  auth = FIREBASE_AUTH;
     const { initailizeUserInfoContext } = useAppContext();
     const signIn = async() => {
         setLoading(true);
         try{
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            await getUserInfo(userCredential);
-            await initailizeUserInfoContext(userinfo);
+            const userInfos = await getUserInfo(userCredential);
+            await initailizeUserInfoContext(userInfos);
         }catch(error) {
             console.log(error);
         }finally{
@@ -59,24 +58,29 @@ export default function LoginScreen() {
         }
     }
     const getUserInfo = async(userCredential) => {
+        return new Promise((resolve, reject) => {
         const userRef = query(
             collection(FIRESTORE_DB, 'user_info'),
             where('user', '==', userCredential.user.uid),
             )
         const subscrier = onSnapshot(userRef,{
             next : (snapshot) => {
-                const userinfos = [];
+                const userInfos = [];
                 snapshot.forEach((doc) => {
                     console.log(doc.data());
-                    userinfos.push({
+                    userInfos.push({
                         id : doc.id,
                         ...doc.data(),
                     });
                 });
-                setUserinfo(userinfos);
-            }   
+                resolve(userInfos);
+            },
+            error : (error) => {
+                reject(error);
+            },
         });
         return subscrier;
+    });
     }
 
     return (

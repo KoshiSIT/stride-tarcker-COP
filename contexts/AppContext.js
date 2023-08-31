@@ -64,6 +64,7 @@ export function AppProvider({ children }) {
 
     const initailizeUserInfoContext = (userinfos) => {
         console.log('call');
+        console.log(userinfos.length);
         userinfos.forEach((userinfo) => {
             handleSetFirstName(userinfo.firstName);
             handleSetLastName(userinfo.lastName);
@@ -73,13 +74,6 @@ export function AppProvider({ children }) {
             handleSetFirstDayOfWeek(userinfo.firstDayOfWeek);
             handleSetProfileImage(userinfo.profileImage);
             console.log('initailize user info context');
-            console.log(firstName);
-            console.log(lastName);
-            console.log(birthday);
-            console.log(height);
-            console.log(weight);
-            console.log(firstDayOfWeek);
-            console.log(profileImage);
         });
 
     }
@@ -89,6 +83,13 @@ export function AppProvider({ children }) {
         weight, handleSetWeight,
         user, handleSetUser,
         initailizeUserInfoContext,
+        firstName, handleSetFirstName,
+        lastName, handleSetLastName,
+        birthday, handleSetBirthday,
+        height, handleSetHeight,
+        firstDayOfWeek, handleSetFirstDayOfWeek,
+        profileImage, handleSetProfileImage,
+
     }
     return (
         <AppContext.Provider value={value}>{children}</AppContext.Provider>
