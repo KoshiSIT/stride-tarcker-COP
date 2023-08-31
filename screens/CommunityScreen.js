@@ -19,7 +19,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 export default function CommunityScreen({navigation}){
     const [selectedTab, setSelectedTab] = useState('feed');
     const [activities, setActivities] = useState([]);
-    const { currentLocation, handleSetCurrentLocation, user} = useAppContext();
+    const { currentLocation, handleSetCurrentLocation, user, profileImage, firstName, lastName} = useAppContext();
     const [pictureIndex, setPictureIndex] = useState(0);
     useEffect(() => {
         const activitiesRef = query(
@@ -94,12 +94,23 @@ export default function CommunityScreen({navigation}){
                             <View>
                                 <View style={styles.userContainer}>
                                     <View style={styles.item1}>
-                                        <FontAwesome5Icon name='grin-wink' size={25} color = 'black'/>
+                                        {profileImage !== '' ? (
+                                            <Image
+                                                source={{uri: profileImage}}
+                                                style={{width: 25, height: 25, borderRadius: 25}}
+                                            />
+                                            ):(
+                                            <FontAwesome5Icon name='grin-wink' size={25} color = 'black'/>
+                                            )
+                                        }
                                     </View>
                                     <View style={styles.item2}>
-                                        <Text>{item.activityName}</Text>
-                                        <View>
-                                            <Text>{Date.formatDate(item.datetime)}</Text>
+                                        <Text style={styles.userNameText}>{firstName} {lastName}</Text>
+                                        <View style={{flexDirection : 'row'}}>
+                                            <Text>{item.activityName}-</Text>
+                                            <View>
+                                                <Text>{Date.formatDate(item.datetime)}</Text>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
@@ -304,6 +315,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 10,
         position: 'absolute',
+    },
+    userNameText : {
+        fontWeight : 'bold',
+        fontSize : 14,
     },
 
 });

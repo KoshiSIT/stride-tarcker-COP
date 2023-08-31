@@ -13,6 +13,8 @@ import Insite from '../components/user/Insite';
 import WeeklyWorkout from '../components/user/WeeklyWorkout';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function UserScreen({}){
     const { firstName, profileImage, lastName } = useAppContext();
@@ -27,18 +29,35 @@ export default function UserScreen({}){
     return(
         <SafeAreaView style={styles.container}>
             <View style={styles.titleContainer}>
-                <TouchableOpacity onPress={()=> goAppSettings()}>
-                    <FeatherIcon name="settings" size={30} color= "black" />
+                <TouchableOpacity>
+                    <Ionicons name="notifications-outline" size={30} color= "black" />
                 </TouchableOpacity>
+                <View style={{flexDirection : 'row'}}>
+                    <TouchableOpacity>
+                        <AntDesign name="adduser" size={30} color= "black" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=> goAppSettings()}>
+                        <FeatherIcon name="settings" size={30} color= "black" />
+                    </TouchableOpacity>
+                </View>
             </View>
             <ScrollView>
                 <View style={styles.userContainer}>
                     <View style={styles.nameContainer}>
-                        <View style ={styles.circle}>
-                            <TouchableOpacity onPress ={()=>handleImagePick()}>
-                                <MaterialCommunityIcons name="camera-outline" size={30} color="black" />
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity style ={styles.circle}>
+                            {profileImage ? (
+                                <View>
+                                    <Image
+                                        source={{uri: profileImage}}
+                                        style={{width: 50, height: 50, borderRadius: 25}}
+                                    />
+                                </View>
+                            ):(
+                                <View>
+                                    <MaterialCommunityIcons name="camera-outline" size={30} color="black" />
+                                </View>
+                            )}
+                        </TouchableOpacity>
                         <Text style={styles.name}>{firstName+lastName}</Text>
                     </View>
                     <View style={styles.followContainer}>
@@ -78,7 +97,7 @@ const styles = StyleSheet.create({
     },
     titleContainer:{
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 10,
     },
