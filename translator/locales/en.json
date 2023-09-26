@@ -1,0 +1,130 @@
+{
+  "Appjs": {
+    "user": "User",
+    "training": "Training",
+    "start": "Start",
+    "community": "Community",
+    "explorer": "Explorer"
+  },
+  "UserScreenjs": {
+    "total": "total",
+    "followers": "followers",
+    "following": "following"
+  },
+  "Datajs": {
+    "data": "Data",
+    "totalToDate": "Total to date"
+  },
+  "Achievementsjs": {
+    "achievements": "Achievements"
+  },
+  "Activityjs": {
+    "activity": "Activity",
+    "totalToDate": "Total to date",
+    "times": "times"
+  },
+  "ShoeTrackerjs": {
+    "shoeTracker": "Shoe Tracker",
+    "pleaseUseTracker": "Please utilize the shoe tracker" ,
+    "startShoeTracker": "Track shoe mileage"
+  },
+  "Goaljs": {
+    "goal": "Goal",
+    "noGoal": "No goal set",
+    "setGoal": "Set a goal"
+  },
+  "Insitejs": {
+    "insights": "Insights",
+    "totalKilometers": "Total {count} Kilometer",
+    "viewPastData": "Check past data",
+    "analyzeActivity": "Analyze {count} activities"
+  },
+  "WeeklyWorkoutjs": {
+    "weeklyWorkout": "Weekly Workout",
+    "workoutsThisWeek": "Workouts this week: {count}",
+    "times": "times"
+  },
+  "StartScreenjs": {
+    "RunKeeper": "RunKeeper",
+    "activity": "Activity",
+    "workout": "Workout",
+    "music": "Music",
+    "musicGuide": "Music Guide",
+    "with": "With",
+    "without": "Without",
+    "start": "Start",
+    "points": "{count} points"
+  },
+  "CommunityScreenjs": {
+    "feed": "Feed",
+    "group": "Group",
+    "time": "Time",
+    "groupName": "Group Name"
+  },
+  "AnnoucementFrequencySettingjs": {
+    "onDemandOnly": "On Demand Only",
+    "time": "Time",
+    "distance": "Distance",
+    "detailedSettings": "Detailed Settings",
+    "minute": "Minutes"
+  },
+  "RunSettingsjs": {
+    "activity": "Activity",
+    "stopWatch": "Stopwatch mode",
+    "running": "Running",
+    "cycling": "Cycling",
+    "walking": "Walking",
+    "mountainBiking": "Mountain Biking",
+    "biking": "Biking",
+    "downhillSkiing": "Downhill Skiing",
+    "snowboarding": "Snowboarding",
+    "swimming": "Swimming",
+    "wheelchair": "Wheelchair",
+    "rowing": "Rowing",
+    "beginnerWorkout": "Beginner Workout",
+    "distance": "Distance",
+    "workout": "Workout",
+    "none": "None",
+    "startTrainingPlan": "Start Training Plan",
+    "winTheLongRun": "WIN THE LONG RUN",
+    "custom": "Custom",
+    "time": "Time",
+    "pace": "Pace",
+    "ok": "OK",
+    "music": "Music",
+    "musicLibraryApp": "Music Library App",
+    "spotify": "Spotify",
+    "audioGuide": "Audio Guide",
+    "enable": "Enable",
+    "voice": "Voice",
+    "defaultVoice": "kat(Default)",
+    "announcementFrequency": "Announcement Frequency",
+    "fiveMinutes": "5 Minutes",
+    "selectInfoToAnnounce": "Select Information to Announce",
+    "timeDistanceAvgPace": "Time, Distance, Average Pace",
+    "volume": "Volume",
+
+    "activitySettings": "Activity Settings",
+    "type": "Type",
+    "route": "Route",
+    "tracking": "Tracking",
+    "autoPause": "Auto Pause",
+    "countdownSettings": "Countdown Settings",
+    "trackingMode": "Tracking Mode",
+    "liveTrackingFunction": "Live Tracking Function",
+    "pocketTrack": "Pocket Track",
+    "coaching": "Coaching",
+    "audioGuide": "Audio Guide",
+    "voice": "Voice",
+    "display": "Display",
+    "distance": "Distance",
+    "speed": "Speed",
+    "gpsMode": "GPS Mode"
+  },
+  "AppSettingsjs": {
+    "settings": "Settings",
+    "display": "Display",
+    "profile": "Profile Settings",
+    "logout": "Logout"
+  }
+}

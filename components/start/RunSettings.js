@@ -1,37 +1,41 @@
 import { StyleSheet, Text, View ,Image, FlatList, SafeAreaView, Dimensions, TouchableOpacity, ScrollView, Switch, Animated} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import React,{useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useContext} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Slider from '@react-native-community/slider';
 import {BeginnerWorkOut, Distance} from './WorkOut';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import TranslationContext from "../../translator/TranslationContext";
 
 const Page1 = ({ handleClosePopup, handleStopWatchMode, handleSelectActivity, stopWatchMode, selectedActivity}) => {
-  const activites = [
-    {label: 'ランニング', value: 'ランニング'},
-    {label: 'サイクリング', value: 'サイクリング'},
-    {label: 'ウォーキング', value: 'ウォーキング'},
-    {label: 'マウンテンバイキング', value: 'マウンテンバイキング'},
-    {label: 'バイキング', value: 'バイキング'},
-    {label: 'ダウンヒルスキー', value: 'ダウンヒルスキー'},
-    {label: 'スノーボード', value: 'スノーボード'},
-    {label: 'スイミング', value: 'スイミング'},
-    {label: '車椅子', value: '車椅子'},
-    {label: 'ローイング', value: 'ローイング'},
-  ]
-  
+
+  const { translations: { RunSettingsjs: translated } } = useContext(TranslationContext);
+
+
+  const allowedKeys = [
+    "running", "cycling", "walking", "mountainBiking", "biking",
+    "downhillSkiing", "snowboarding", "swimming", "wheelchair", "rowing"
+  ];
+
+  const activities = allowedKeys
+      .filter(key => translated[key])
+      .map(key => {
+        const activityValue = translated[key];
+        return { label: activityValue, value: activityValue };
+      });
+
   return(
     <View style={styles.pageContainer}>
       <View>
       <View style={styles.pageTitleContainer}>
         <MaterialCommunityIcons name="shoe-sneaker" size={50} color= "#000033" />
-        <Text style={styles.pageTitle}>アクティビティ</Text>
+        <Text style={styles.pageTitle}>{translated.activity}</Text>
       </View>
       {stopWatchMode ?(
       <ScrollView style={styles.scrollContainer}>
           <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription}>ストップウォッチモード</Text>
+          <Text style={styles.pageDescription}>{translated.stopWatch}</Text>
           <Switch 
             value={stopWatchMode} 
             onValueChange={handleStopWatchMode}
@@ -40,7 +44,7 @@ const Page1 = ({ handleClosePopup, handleStopWatchMode, handleSelectActivity, st
             ios_backgroundColor="#3e3e3e"
             />
           </View>
-        {activites.map((activity) => (
+        {activities.map((activity) => (
 
                   <TouchableOpacity 
                     style={styles.choiceContainerOn} 
@@ -58,7 +62,7 @@ const Page1 = ({ handleClosePopup, handleStopWatchMode, handleSelectActivity, st
       ):(
         <ScrollView style={styles.scrollContainer}>
           <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription}>ストップウォッチモード</Text>
+          <Text style={styles.pageDescription}>{translated.stopWatch}</Text>
           <Switch 
             value={stopWatchMode} 
             onValueChange={handleStopWatchMode}
@@ -67,7 +71,7 @@ const Page1 = ({ handleClosePopup, handleStopWatchMode, handleSelectActivity, st
             ios_backgroundColor="#3e3e3e"
             />
           </View>
-        {activites.map((activity) => (
+        {activities.map((activity) => (
           <TouchableOpacity 
             style={styles.choiceContainerOff} 
             kwy={activity.value}
@@ -120,58 +124,60 @@ const Page2 = ({ handleClosePopup }) => {
     navigation.navigate('Custom');
   };
 
+  const { translations: { RunSettingsjs: translated } } = useContext(TranslationContext);
+
   return(
     <View style={styles.pageContainer}>
-    {showModal === '初心者向けワークアウト' ? (
+    {showModal === translated.beginnerWorkout ? (
       <BeginnerWorkOut handleModaleClose={handleModaleClose} fadeAnim={fadeAnim}/>
-      ):showModal === '距離' ? (
+      ):showModal === translated.distance ? (
         <Distance handleModaleClose={handleModaleClose} fadeAnim={fadeAnim} distance={distance} setDistance={setDistance}/>
       ):(
       <Animated.View>
       <View style={styles.pageTitleContainer}>
         <MaterialCommunityIcons name="clipboard-text-outline" size={50} color= "#000033" />
-        <Text style={styles.pageTitle}>ワークアウト</Text>
+        <Text style={styles.pageTitle}>{translated.workout}</Text>
       </View>
       <ScrollView style={styles.scrollContainer}>
       <TouchableOpacity style={styles.workOutContainer} onPress = { () => handleWithWorkOut()}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >なし</Text>
+          <Text style={styles.pageDescription} >{translated.none}</Text>
           {withWorkOut ==  true && <Icon name="check" size={30} color="#20B2AA" />}
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.workOutContainer}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >トレーニングプランを開始する</Text>
+          <Text style={styles.pageDescription} >{translated.startTrainingPlan}</Text>
         </View> 
       </TouchableOpacity>
       <TouchableOpacity style={styles.workOutContainer} onPress = { () => handleModaleOpen('初心者向けワークアウト')}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >初心者向けワークアウト</Text>
+          <Text style={styles.pageDescription} >{translated.beginnerWorkout}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.workOutContainer}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >WIN THE LONG RUN</Text>
+          <Text style={styles.pageDescription} >{translated.winTheLongRun}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.workOutContainer} onPress = { () => handleCustomOpen()}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >カスタム</Text>
+          <Text style={styles.pageDescription} >{translated.custom}</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.workOutContainer} onPress = {() => handleModaleOpen('距離')}>
+      <TouchableOpacity style={styles.workOutContainer} onPress = {() => handleModaleOpen(translated.distance)}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >距離</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.workOutContainer}>
-        <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >時間</Text>
+          <Text style={styles.pageDescription} >{translated.distance}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.workOutContainer}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >ペース</Text>
+          <Text style={styles.pageDescription} >{translated.time}</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.workOutContainer}>
+        <View style={styles.rowContainer}>
+          <Text style={styles.pageDescription} >{translated.pace}</Text>
         </View>
       </TouchableOpacity>
       </ScrollView>
@@ -186,6 +192,8 @@ const Page2 = ({ handleClosePopup }) => {
 const Page3 = ( {handleClosePopup }) => {
   const [withMusic, setWithMusic] = useState(false);
 
+  const { translations: { RunSettingsjs: translated } } = useContext(TranslationContext);
+
   const handleWithMusic = () => {
     setWithMusic(true);
   };
@@ -194,22 +202,22 @@ const Page3 = ( {handleClosePopup }) => {
     <View>
     <View style={styles.pageTitleContainer}>
       <MaterialCommunityIcons name="music" size={50} color= "#000033" />
-      <Text style={styles.pageTitle}>音楽</Text>
+      <Text style={styles.pageTitle}>{translated.music}</Text>
     </View>
     <ScrollView style={styles.scrollContainer}>
       <TouchableOpacity style={styles.workOutContainer}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >Spotify</Text>
+          <Text style={styles.pageDescription} >{translated.spotify}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.workOutContainer}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >ミュージックライブラリアプリ</Text>
+          <Text style={styles.pageDescription} >{translated.musicLibraryApp}</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity style={styles.workOutContainer} onPress = { () =>handleWithMusic()} activeOpacity = {withMusic ? 1 : 0.2}>
         <View style={styles.rowContainer}>
-          <Text style={styles.pageDescription} >なし</Text>
+          <Text style={styles.pageDescription} >{translated.none}</Text>
           {withMusic ==  true && <Icon name="check" size={30} color="#20B2AA" />}
         </View>
       </TouchableOpacity>
@@ -223,16 +231,18 @@ const Page3 = ( {handleClosePopup }) => {
 };
 const Page4 = ({ handleClosePopup, handleWithAudioGuide, handleVolumeChange, withAudioGuide, volume}) => {
 
+  const { translations: { RunSettingsjs: translated } } = useContext(TranslationContext);
+
   return(
     <View style={styles.pageContainer}>
       <View>
       <View style={styles.pageTitleContainer}>
         <MaterialCommunityIcons name="volume-high" size={50} color= "#000033" />
-        <Text style={styles.pageTitle}>音声ガイド</Text>
+        <Text style={styles.pageTitle}>{translated.audioGuide}</Text>
       </View>
       <ScrollView style={styles.scrollContainer}>
           <View style={styles.rowContainer}>
-            <Text style={styles.pageDescription} >有効にする</Text>
+            <Text style={styles.pageDescription} >{translated.enable}</Text>
             <Switch 
               value={withAudioGuide}
               onValueChange={handleWithAudioGuide}
@@ -243,25 +253,25 @@ const Page4 = ({ handleClosePopup, handleWithAudioGuide, handleVolumeChange, wit
           </View>
         <TouchableOpacity style={styles.workOutContainer} disabled={!withAudioGuide}>
           <View style={styles.rowContainer}>
-            <Text style={[styles.pageDescription, !withAudioGuide && styles.disabledPageDescription]} >音声</Text>
+            <Text style={[styles.pageDescription, !withAudioGuide && styles.disabledPageDescription]} >{translated.voice}</Text>
           </View>
-            <Text style={[styles.subText, !withAudioGuide && styles.disabledSubText]} >kat(デフォルト)</Text>
+            <Text style={[styles.subText, !withAudioGuide && styles.disabledSubText]} >{translated.defaultVoice}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.workOutContainer} disabled={!withAudioGuide}>
           <View style={styles.rowContainer}>
-            <Text style={[styles.pageDescription, !withAudioGuide && styles.disabledPageDescription]} >アナウンスの頻度</Text>
+            <Text style={[styles.pageDescription, !withAudioGuide && styles.disabledPageDescription]} >{translated.announcementFrequency}</Text>
           </View>
-          <Text style={[styles.subText, !withAudioGuide && styles.disabledSubText]} >5分</Text>
+          <Text style={[styles.subText, !withAudioGuide && styles.disabledSubText]} >{translated.fiveMinutes}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.workOutContainer} disabled={!withAudioGuide}>
           <View style={styles.rowContainer}>
-            <Text style={[styles.pageDescription, !withAudioGuide && styles.disabledPageDescription]} >アナウンスする情報を選択</Text>
+            <Text style={[styles.pageDescription, !withAudioGuide && styles.disabledPageDescription]} >{translated.selectInfoToAnnounce}</Text>
           </View>
-          <Text style={[styles.subText, !withAudioGuide && styles.disabledSubText]} >タイム,距離,平均ペース</Text>
+          <Text style={[styles.subText, !withAudioGuide && styles.disabledSubText]} >{translated.timeDistanceAvgPace}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.workOutContainer}>
           <View style={styles.rowContainer}>
-            <Text style={styles.pageDescription} >音量</Text>
+            <Text style={styles.pageDescription} >{translated.volume}</Text>
             <Text style={styles.pageDescription} >{ Math.trunc(volume) }%</Text>
           </View>
           <Slider

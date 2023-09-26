@@ -1,14 +1,18 @@
 import { StyleSheet, Text, View ,Image, FlatList, SafeAreaView, TouchableOpacity, ScrollView, Switch} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useStartScreenContext } from '../../../contexts/StartScreenContext';
-import React,{useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Constants from 'expo-constants';
 import axios from 'axios';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import {TranslationContext} from "../../../translator";
 
 export default function AnnoucementFrequencySettingScreen({}){
+
+    const { translations: { AnnoucementFrequencySettingjs: translated } } = useContext(TranslationContext);
+
     const navigation = useNavigation();
     const {
         withAnnouncement, handleWithAnnouncement,
@@ -65,6 +69,7 @@ export default function AnnoucementFrequencySettingScreen({}){
         }
     },[withIntervalTime, withIntervalDistance]);
     return(
+        <TranslationProvider>
         <View style={styles.container}>
             <View style={styles.topContainer}>
                 <View style={styles.cancelContainer}>
@@ -76,34 +81,34 @@ export default function AnnoucementFrequencySettingScreen({}){
             <ScrollView style={{marginTop : 30}}>
                 <TouchableOpacity style={styles.selectItemContainer} onPress={()=>handleAnnouncement()}>
                     <View style={styles.selectSubContainer}>
-                        <Text style={styles.activityText}>オンデマンドのみ</Text>
+                        <Text style={styles.activityText}>{translated.onDemandOnly}</Text>
                     </View>
                     {withAnnouncement === true && <FontAwesomeIcon name="check" size={30} color="#20B2AA" />}
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.selectItemContainer} onPress={()=>handleIntervalTimeAnnouncement()}>
                     <View style={styles.selectSubContainer}>
-                        <Text style={styles.activityText}>タイム</Text>
+                        <Text style={styles.activityText}>{translated.time}</Text>
                     </View>
                     {withIntervalTime === true && <FontAwesomeIcon name="check" size={30} color="#20B2AA" />}
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.selectItemContainer} onPress={()=>handleIntervalDistanceAnnouncement()}>
                     <View style={styles.selectSubContainer}>
-                        <Text style={styles.activityText}>距離</Text>
+                        <Text style={styles.activityText}>{translated.distance}</Text>
                     </View>
                     {withIntervalDistance === true && <FontAwesomeIcon name="check" size={30} color="#20B2AA" />}
                 </TouchableOpacity>
                 {withAnnouncement === false && 
                     <View>
                         <View style={styles.subContainer}>
-                            <Text style={styles.optionTitleText}>詳細設定</Text>
+                            <Text style={styles.optionTitleText}>{translated.detailedSettings}</Text>
                         </View>
                         {withIntervalTime === true &&
                             <TouchableOpacity style={styles.detailItem} onPress={()=>{navigation.navigate('IntervalTimeSetting')}}>
                                 <View style={styles.optionItem1}>
-                                        <Text style={styles.activityText}>タイム</Text>
+                                        <Text style={styles.activityText}>{translated.time}</Text>
                                 </View>
                                 <View style={styles.optionItem2}>
-                                    <Text style={styles.optionText}>{intervalTime}分</Text>
+                                    <Text style={styles.optionText}>{intervalTime}[translated.minute]</Text>
                                     <AntDesignIcon name="right" size={20} color="lightgray" />
                                 </View>
                             </TouchableOpacity>
@@ -111,7 +116,7 @@ export default function AnnoucementFrequencySettingScreen({}){
                         {withIntervalDistance === true &&
                             <TouchableOpacity style={styles.detailItem} onPress={()=>{navigation.navigate('IntervalDistanceSetting')}}>
                                 <View style={styles.optionItem1}>
-                                        <Text style={styles.activityText}>距離</Text>
+                                        <Text style={styles.activityText}>{translated.distance}</Text>
                                 </View>
                                 <View style={styles.optionItem2}>
                                     <Text style={styles.optionText}>{intervalDistance.toFixed(2)}km</Text>
@@ -123,6 +128,7 @@ export default function AnnoucementFrequencySettingScreen({}){
                 }
             </ScrollView>
         </View>
+        </TranslationProvider>
     );
 };
 

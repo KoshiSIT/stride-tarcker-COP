@@ -1,18 +1,22 @@
 import {StyleSheet, Text, View ,Image, FlatList, SafeAreaView, TouchableOpacity} from 'react-native';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import {useContext} from "react";
+import {TranslationContext} from "../../translator";
 
 const WeeklyWorkout =  () => {
+    const { translations: { WeeklyWorkoutjs: translated } } = useContext(TranslationContext);
+
     return(
         <View style={styles.box}>
             <View style={styles.headlineBackground}>
-                <Text style={styles.headlineText}>週ごとのワークアウト</Text>
-                 <Text>今週は{1}件</Text>
+                <Text style={styles.headlineText}>{translated.weeklyWorkout}</Text>
+                 <Text style={styles.leftHeadlineText}>{translated.workoutsThisWeek.replace('{count}', 1)}</Text>
             </View>
             <TouchableOpacity style={styles.content}>
                 <FontAwesome5Icon name='list-ul' size={20} color = '#000033'/>
                 <View style = {{justifyContent: 'center', alignItems: 'center', marginLeft: 10,}}>
                     <Text style={styles.contentText}>0</Text>
-                    <Text style={{fontSize : 15, color : '#888888'}}>回</Text>
+                    <Text style={{fontSize : 15, color : '#888888'}}>{translated.times}</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -42,6 +46,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'black',
         fontWeight: 'bold',
+        marginLeft: 5
+    },
+    leftHeadlineText: {
+        marginRight: 5
     },
     content: {
         flex: 1,

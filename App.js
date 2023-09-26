@@ -11,11 +11,9 @@ import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import UserScreen from './screens/UserScreen';
-  //user screens
-  import AppSettingsScreen from './screens/userscreens/AppSettingsScreen';
-
+//user screens
+import AppSettingsScreen from './screens/userscreens/AppSettingsScreen';
 import TrainingScreen from './screens/TrainingScreen';
-
 import StartScreenMain from './screens/StartScreen';
 import SettingsScreen from './screens/startScreens/SettingsScreen';
 // setting screens
@@ -25,15 +23,15 @@ import TrackingSettingScreen from './screens/startScreens/settingsScreens/GPSSet
 import PocketTrackingSettingScreen from './screens/startScreens/settingsScreens/PocketTrackSetting';
 import AudioGuideSettingScreen from './screens/startScreens/settingsScreens/AuidioGuideSetting';
 import AnnoucementFrequencySettingScreen from './screens/startScreens/settingsScreens/AnnoucementFrequencySetting';
-  // intervalSettings screens
-  import IntervalTimeSettingScreen from './screens/startScreens/settingsScreens/intervalSettingScreens/IntervalTimeSettingScreen';
-  import IntervalDistanceSettingScreen from './screens/startScreens/settingsScreens/intervalSettingScreens/IntervalDistanceSettingScreen';
+// intervalSettings screens
+import IntervalTimeSettingScreen from './screens/startScreens/settingsScreens/intervalSettingScreens/IntervalTimeSettingScreen';
+import IntervalDistanceSettingScreen from './screens/startScreens/settingsScreens/intervalSettingScreens/IntervalDistanceSettingScreen';
 // workOut screens
 import CustomScreen from './screens/startScreens/CustomScreen';
 import StartRunScreen from './screens/startScreens/StartRunScreen';
 import RusultScreen from './screens/startScreens/RusultScreen';
 import RusultReviewScreen from './screens/startScreens/ResultReviewScreen';
-import IntervalScreen from './screens/startScreens/workOutScreens/IntervalScreen';
+import IntervalScreen from './screens/startScreens/workOutScreens/intervalScreen';
 import CommunityScreen from './screens/CommunityScreen';
 import ExplorerScreen from './screens/ExplorerScreen';
 import LoginScreen from './screens/authscreens/LoginScreen';
@@ -41,12 +39,13 @@ import LoginScreen from './screens/authscreens/LoginScreen';
 import Loading from './components/Loading';
 import { Settings } from 'react-native';
 
+import { TranslationProvider, TranslationContext } from './translator';
+import { useContext } from 'react';
+
 import { onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './firebase';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
-
 
 const UserStack = () => {
   return (
@@ -69,13 +68,12 @@ const StartStack = () => {
   return (
     <StartScreenProvider>
       <ActivityProvider>
-        <Stack.Navigator  
+        <Stack.Navigator
           screenOptions={{
             headerShown: false,
             ...TransitionPresets.ModalSlideFromBottomIOS,
             presentation: 'modal',
           }}
-          
           >
             <Stack.Screen name="Start" component={StartScreenMain} options={ {headerShown: false }}/>
             <Stack.Screen name="Settings" component={SettingsScreen} options={ {headerShown: false }}/>
@@ -85,8 +83,8 @@ const StartStack = () => {
             <Stack.Screen name='PocketTrackingSetting' component={PocketTrackingSettingScreen} options={ {headerShown: false }}/>
             <Stack.Screen name='AudioGuideSetting' component={AudioGuideSettingScreen} options={ {headerShown: false }}/>
             <Stack.Screen name='AnnoucementFrequencySetting' component={AnnoucementFrequencySettingScreen} options={ {headerShown: false }}/>
-              <Stack.Screen name='IntervalTimeSetting' component={IntervalTimeSettingScreen} options={ {headerShown: false }}/>
-              <Stack.Screen name='IntervalDistanceSetting' component={IntervalDistanceSettingScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name='IntervalTimeSetting' component={IntervalTimeSettingScreen} options={ {headerShown: false }}/>
+            <Stack.Screen name='IntervalDistanceSetting' component={IntervalDistanceSettingScreen} options={ {headerShown: false }}/>
             <Stack.Screen name='StartRun' component={StartRunScreen} options={ {headerShown: false }}/>
             <Stack.Screen name="Result" component={RusultScreen} options={ {headerShown: false }}/>
             <Stack.Screen name="ResultReview" component={RusultReviewScreen} options={ {headerShown: false }}/>
@@ -120,10 +118,12 @@ const AuthStack = () => {
     </Stack.Navigator>
   );
 };
-export default function App() {
+
+function MainContent() {
   const auth = FIREBASE_AUTH;
   const [user, setUser] = useState('');
   const [loading, setLoading] = useState(true);
+  const { translations: { Appjs: translated } } = useContext(TranslationContext);
 
   useEffect(() => {
     const undubscrbed = onAuthStateChanged(auth, (user) => {
@@ -142,7 +142,7 @@ export default function App() {
       <Loading/>
     );
   }else{
-    return (
+  return (
       <NavigationContainer>
         <AppProvider>
           {!user ? (
@@ -150,47 +150,42 @@ export default function App() {
           ) : (
             <Tab.Navigator
               screenOptions = {({ route }) => ({
-                tabBarStyle: { 
+                tabBarStyle: {
                   height: 70,
                 },
                 tabBarIcon: ({ focused, color, size }) => {
                   let iconName;
-                  if (route.name === 'ユーザー') {
+                  if (route.name === translated.user) {
                     return <FontAwesome5Icon name='smile-wink' size={size} color={color} />;
-                  } else if (route.name === 'トレーニング') {
+                  } else if (route.name === translated.training) {
                     return <FontAwesomeIcon name='calendar-check-o' size={size} color={color} />;
-                  } else if (route.name === 'スタート') {
+                  } else if (route.name === translated.start) {
                     return <EntypoIcon name='location-pin' size={size} color={color} />;
-                  } else if (route.name === 'コミュニティ') {
+                  } else if (route.name === translated.community) {
                     return <FontAwesomeIcon name='group' size={size} color={color} />;
-                  } else if (route.name === 'エクスプローラー') {
+                  } else if (route.name === translated.explorer) {
                     return <FontAwesome5Icon name='mountain' size={size} color={color} />;
                   }
                 },
               })}
             >
-              <Tab.Screen name="ユーザー" 
-              component={UserStack}
-              options={{ headerShown: false}} 
-              />
-              <Tab.Screen name="トレーニング" 
-                component={TrainingStack} 
-              />
-              <Tab.Screen name="スタート" 
-                component={StartStack}
-                options={{ headerShown: false}} 
-              />
-              <Tab.Screen name="コミュニティ" 
-              component={CommunityStack} 
-              />
-              <Tab.Screen name="エクスプローラー" 
-                component={ExplorerStack} 
-              />
+              <Tab.Screen name={translated.user} component={UserStack} options={{headerShown: false}}/>
+              <Tab.Screen name={translated.training} component={TrainingStack} />
+              <Tab.Screen name={translated.start} component={StartStack} options={{headerShown: false}}/>
+              <Tab.Screen name={translated.community} component={CommunityStack} />
+              <Tab.Screen name={translated.explorer} component={ExplorerStack} />
             </Tab.Navigator>
-            )}
-          </AppProvider>
+          )}
+        </AppProvider>
       </NavigationContainer>
     );
   }
 }
 
+export default function App() {
+  return (
+      <TranslationProvider>
+        <MainContent/>
+      </TranslationProvider>
+  );
+}

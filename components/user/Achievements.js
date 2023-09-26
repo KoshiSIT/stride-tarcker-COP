@@ -1,10 +1,14 @@
 import {StyleSheet, Text, View ,Image, FlatList,SafeAreaView} from 'react-native';
+import {useContext} from "react";
+import {TranslationContext} from "../../translator";
 
 const Achievements =  () => {
+    const { translations: { Achievementsjs: translated } } = useContext(TranslationContext);
+
     return(
         <View style={styles.box}>
             <View style={styles.headlineBackground}>
-                <Text style={styles.headlineText}>達成内容</Text>
+                <Text style={styles.headlineText}>{translated.achievements}</Text>
             </View>
             <View style={styles.content}>
             </View>
@@ -34,6 +38,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'black',
         fontWeight: 'bold',
+        marginLeft: 5
     },
     content: {
         height: 30,

@@ -1,17 +1,21 @@
 import {StyleSheet, Text, View ,Image, FlatList, SafeAreaView, TouchableOpacity} from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import {useContext} from "react";
+import {TranslationContext} from "../../translator";
 const Insite =  () => {
+    const { translations: { Insitejs: translated } } = useContext(TranslationContext);
+
     return(
         <View style={styles.box}>
             <View style={styles.headlineBackground}>
-                <Text style={styles.headlineText}>アクティビティ</Text>
-                 <Text>合計1キロメートル</Text>
+                <Text style={styles.headlineText}>{translated.insights}</Text>
+                 <Text style={styles.leftHeadlineText}>{translated.totalKilometers.replace('{count}', 1)}</Text>
             </View>
             <TouchableOpacity style={styles.content}>
                 <Fontisto name='bar-chart' size={20} color = 'gray'/>
                 <View style = {{justifyContent: 'center', alignItems: 'center', marginLeft: 10,}}>
-                <  Text style={styles.contentText}>過去のデータを見てみよう</Text>
-                <  Text style={{fontSize : 15, color : '#888888'}}>{10}件のアクティビティを分析してみよう</Text>
+                    <Text style={styles.contentText}>{translated.viewPastData}</Text>
+                    <Text style={{fontSize : 15, color : '#888888'}}>{translated.analyzeActivity.replace('{count}', 10)}</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -41,6 +45,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'black',
         fontWeight: 'bold',
+        marginLeft: 5
+    },
+    leftHeadlineText: {
+        marginRight: 5
     },
     content: {
         flex: 1,

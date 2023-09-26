@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View ,Image, FlatList, SafeAreaView, ScrollView, TouchableOpacity, Dimensions} from 'react-native';
-import React,{useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import MapView,{ Marker }  from 'react-native-maps';
@@ -14,9 +14,12 @@ import * as Date from '../functions/Date';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {TranslationContext, TranslationProvider} from "../translator";
 
 
 export default function CommunityScreen({navigation}){
+    const { translations: { CommunityScreenjs: translated } } = useContext(TranslationContext);
+
     const [selectedTab, setSelectedTab] = useState('feed');
     const [activities, setActivities] = useState([]);
     const { currentLocation, handleSetCurrentLocation, user, profileImage, firstName, lastName} = useAppContext();
@@ -70,19 +73,20 @@ export default function CommunityScreen({navigation}){
     }
 
     return(
+    <TranslationProvider>
         <View style={styles.container}>
             <View style={styles.tabContainer}>
                 <TouchableOpacity 
                     style={[styles.tabButton, selectedTab === 'feed' && styles.selectedTabButton]}
                     onPress={() => handleTabChange('feed')}
                     >
-                    <Text style={styles.tabText}>フィード</Text>
+                    <Text style={styles.tabText}>{translated.feed}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
                     style={[styles.tabButton, selectedTab === 'group' && styles.selectedTabButton]}
                     onPress={() => handleTabChange('group')}
                 >
-                    <Text style={styles.tabText}>グループ</Text>
+                    <Text style={styles.tabText}>{translated.group}</Text>
                 </TouchableOpacity>
             </View>
             { selectedTab === 'feed' && 
@@ -119,7 +123,7 @@ export default function CommunityScreen({navigation}){
                                 </View>
                                 <View style={styles.timeContainer}>
                                     <Text style={{fontSize : 20, fontWeight: 'bold',}}>{item.time}</Text>
-                                    <Text style={{fontSize : 8}}>タイム</Text>
+                                    <Text style={{fontSize : 8}}>{translated.time}</Text>
                                 </View>
                                 <View style={styles.imageContainer}>
                                 <ScrollView 
@@ -210,11 +214,12 @@ export default function CommunityScreen({navigation}){
             { selectedTab === 'group' &&
             <ScrollView>
                 <View style={styles.feedContainer}>
-                    <Text>グループ名</Text>
+                    <Text>{translated.groupName}</Text>
                 </View>
             </ScrollView>
             }
         </View>
+    </TranslationProvider>
     );
 };
 

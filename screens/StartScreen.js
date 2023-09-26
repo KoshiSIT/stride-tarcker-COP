@@ -17,7 +17,14 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+import { useContext } from 'react';
+import TranslationContext from '../translator/TranslationContext';
+
+
 export default function StartScreenMain({}){
+
+    const { translations: { StartScreenjs: translated } } = useContext(TranslationContext);
+
     // map state
     const {
       currentLocation, handleSetCurrentLocation,
@@ -96,7 +103,7 @@ export default function StartScreenMain({}){
                 <TouchableOpacity onPress={()=>{navigation.navigate('Settings');}} style={{marginLeft : 15}}>
                   <FeatherIcon name="settings" size={30} color= "black" />
                 </TouchableOpacity>
-                <Text style={{fontWeight : 'bold', fontSize : 16}}>RunKeeper</Text>
+                  <Text style={{fontWeight : 'bold', fontSize : 16}}>{translated.RunKeeper}</Text>
                 <TouchableOpacity onPress={()=>{navigation.navigate('StartRun');}} style={{marginRight : 15}}>
                   <FeatherIcon name="plus" size={30} color= "black" />
                 </TouchableOpacity>
@@ -140,7 +147,7 @@ export default function StartScreenMain({}){
                             <MaterialCommunityIcons name="shoe-sneaker" size={30} color= "#000033" />
                           </View>
                           <View style={styles.textContainer}>
-                            <Text style={styles.buttonText }>アクティビティ</Text>
+                              <Text style={styles.buttonText }>{translated.activity}</Text>
                             <Text style={styles.buttonSubText}>{selectedActivity}</Text>
                           </View>
                         </TouchableOpacity>
@@ -151,8 +158,8 @@ export default function StartScreenMain({}){
                               <MaterialCommunityIcons name="clipboard-text-outline" size={30} color= "#000033" />
                             </View>
                             <View style={styles.textContainer}>
-                              <Text style={styles.buttonText }>ワークアウト</Text>
-                              <Text style={styles.buttonSubText}>20分</Text>
+                                <Text style={styles.buttonText }>{translated.workout}</Text>
+                              <Text style={styles.buttonSubText}>{translated.points.replace('{count}', 15)}</Text>
                             </View>
                           </TouchableOpacity>
                         </View>
@@ -162,8 +169,8 @@ export default function StartScreenMain({}){
                               <MaterialCommunityIcons name="music" size={30} color= "#000033" />
                             </View>
                             <View style={styles.textContainer}>
-                              <Text style={styles.buttonText }>音楽</Text>
-                              <Text style={styles.buttonSubText}>なし</Text>
+                                <Text style={styles.buttonText }>{translated.music}</Text>
+                              <Text style={styles.buttonSubText}>{translated.without}</Text>
                             </View>
                           </TouchableOpacity>
                         </View>
@@ -173,14 +180,14 @@ export default function StartScreenMain({}){
                               <MaterialCommunityIcons name="volume-high" size={30} color= "#000033" />
                             </View>
                             <View style={styles.textContainer}>
-                              <Text style={styles.buttonText }>音楽ガイド</Text>
-                              <Text style={styles.buttonSubText}>{withAudioGuide ? 'あり' : 'なし'}</Text>
+                                <Text style={styles.buttonText }>{translated.musicGuide}</Text>
+                                <Text style={styles.buttonSubText}>{withAudioGuide ? translated.with : translated.without}</Text>
                             </View>
                           </TouchableOpacity>
                         </View>
                 </View>
-                <TouchableOpacity onPress={()=>handleStartRunOpen()} style = {styles.startButton}> 
-                  <Text style = { styles.startButtonText }>スタート</Text>
+                <TouchableOpacity onPress={()=>handleStartRunOpen()} style = {styles.startButton}>
+                    <Text style = { styles.startButtonText }>{translated.start}</Text>
                 </TouchableOpacity>
                 {showPopup && (
                     <Animated.View style={[styles.popupScreen, { transform: [{ translateY: fadeAnim }] }]}>

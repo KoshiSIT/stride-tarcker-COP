@@ -1,12 +1,17 @@
 import { StyleSheet, Text, View ,Image, FlatList, SafeAreaView, TouchableOpacity, ScrollView, Switch} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useStartScreenContext } from '../../contexts/StartScreenContext';
-import React,{useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import translations from "../../translator/languages";
+import {TranslationContext} from "../../translator";
 export default function SettingsScreen({  }){
+
+    const { translations: { RunSettingsjs: translated } } = useContext(TranslationContext);
+
     const [withWarmUp, setWithWarmUp] = useState(false);
     const [withCoolDown, setWithCoolDown] = useState(false);
     const navigation = useNavigation();
@@ -41,7 +46,7 @@ export default function SettingsScreen({  }){
                 </TouchableOpacity>
                 </View>
                 <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>アクティビティ設定</Text>
+                <Text style={styles.titleText}>{translated.activitySettings}</Text>
                 </View>
                 <View style={styles.saveContainer}>
                 </View>
@@ -49,12 +54,12 @@ export default function SettingsScreen({  }){
             <ScrollView>
                 <View style={styles.detailContainer}>
                     <View style={styles.subContainer}>
-                        <Text style={styles.optionTitleText}>アクティビティ</Text>
+                        <Text style={styles.optionTitleText}>{translated.activity}</Text>
                     </View>
                     <View style={styles.detailContent}>
                         <TouchableOpacity style={styles.detailItem} onPress={()=>{navigation.navigate('TypeSetting')}}>
                             <View style={styles.optionItem1}>
-                                    <Text style={styles.detailItemText}>タイプ</Text>
+                                    <Text style={styles.detailItemText}>{translated.type}</Text>
                             </View>
                             <View style={styles.optionItem2}>
                                 <Text style={styles.optionText}>{selectedActivity}</Text>
@@ -63,7 +68,7 @@ export default function SettingsScreen({  }){
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.detailItem} onPress={()=>(navigation.navigate('RouteSetting'))}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>ルート</Text>
+                                <Text style={styles.detailItemText}>{translated.route}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
                                 <Text style={styles.optionText}>{rroute}</Text>
@@ -74,11 +79,11 @@ export default function SettingsScreen({  }){
                 </View>
                 <View style={styles.detailContainer}>
                     <View style={styles.subContainer}>
-                        <Text style={styles.optionTitleText}>トラッキング</Text>
+                        <Text style={styles.optionTitleText}>{translated.tracking}</Text>
                     </View>
                     <View style={styles.optionContent}>
                         <View style={styles.detailItem}>
-                            <Text style={styles.detailItemText}>オートポーズ</Text>
+                            <Text style={styles.detailItemText}>{translated.autoPause}</Text>
                             <Switch 
                                 value={withAutoPause}
                                 onValueChange={handleWithAutoPause}
@@ -88,7 +93,7 @@ export default function SettingsScreen({  }){
                             />
                         </View>
                         <View style={styles.detailItem}>
-                            <Text style={styles.detailItemText}>カウントダウンの設定</Text>
+                            <Text style={styles.detailItemText}>{translated.countdownSettings}</Text>
                             <Switch 
                                 value={withCountDown}
                                 onValueChange={handleWithCountDown}
@@ -99,16 +104,16 @@ export default function SettingsScreen({  }){
                         </View>
                         <TouchableOpacity style={styles.detailItem} onPress={()=>{navigation.navigate('TrackingSetting')}}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>トラッキングモード</Text>
+                                <Text style={styles.detailItemText}>{translated.trackingMode}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
-                                <Text style={styles.optionText}>{stopWatchMode ? 'ストップウォッチモード' : 'GPSモード'}</Text>
+                                <Text style={styles.optionText}>{stopWatchMode ? translated.stopWatch : translated.gpsMode}</Text>
                                 <AntDesignIcon name="right" size={20} color="lightgray" />
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.detailItem}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>ライブトラッキング機能</Text>
+                                <Text style={styles.detailItemText}>{translated.liveTrackingFunction}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
                                 <Text style={styles.optionText}>{withLiveTracking}</Text>
@@ -117,10 +122,10 @@ export default function SettingsScreen({  }){
                         </TouchableOpacity>
                          <TouchableOpacity style={styles.detailItem} onPress={()=>{navigation.navigate('PocketTrackingSetting')}}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>ポケットトラック</Text>
+                                <Text style={styles.detailItemText}>{translated.pocketTrack}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
-                                <Text style={styles.optionText}>{withPocketTrack ? 'オン' : 'オフ'}</Text>
+                                <Text style={styles.optionText}>{withPocketTrack ? translated.on : translated.off}</Text>
                                 <AntDesignIcon name="right" size={20} color="lightgray" />
                             </View>
                         </TouchableOpacity>
@@ -128,11 +133,11 @@ export default function SettingsScreen({  }){
                 </View>
                 <View style={styles.detailContainer}>
                     <View style={styles.subContainer}>
-                        <Text style={styles.optionTitleText}>コーチング</Text>
+                        <Text style={styles.optionTitleText}>{translated.coaching}</Text>
                     </View>
                     <View style={styles.detailContent}>
                         <View style={styles.detailItem}>
-                            <Text style={styles.detailItemText}>音声ガイド</Text>
+                            <Text style={styles.detailItemText}>{translated.audioGuide}</Text>
                             <Switch 
                                 value={withAudioGuide}
                                 onValueChange={handleWithAudioGuide}
@@ -143,7 +148,7 @@ export default function SettingsScreen({  }){
                         </View>
                         <TouchableOpacity style={styles.detailItem} onPress={()=>{navigation.navigate('AudioGuideSetting')}}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>音声</Text>
+                                <Text style={styles.detailItemText}>{translated.voice}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
                                 <Text style={styles.optionText}>{typeOfAudioGuide}</Text>
@@ -152,7 +157,7 @@ export default function SettingsScreen({  }){
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.detailItem} onPress={()=>{navigation.navigate('AnnoucementFrequencySetting')}}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>アナウンスの頻度</Text>
+                                <Text style={styles.detailItemText}>{translated.announcementFrequency}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
                                 <Text style={styles.optionText}></Text>
@@ -161,7 +166,7 @@ export default function SettingsScreen({  }){
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.detailItem}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>アナウンスする情報を選択</Text>
+                                <Text style={styles.detailItemText}>{translated.selectInfoToAnnounce}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
                                 <Text style={styles.optionText}></Text>
@@ -170,7 +175,7 @@ export default function SettingsScreen({  }){
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.detailItem}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>音量</Text>
+                                <Text style={styles.detailItemText}>{translated.volume}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
                                 <Text style={styles.optionText}>{volume.toFixed(0)}%</Text>
@@ -181,12 +186,12 @@ export default function SettingsScreen({  }){
                 </View>
                 <View style={styles.detailContainer}>
                     <View style={styles.subContainer}>
-                        <Text style={styles.optionTitleText}>表示</Text>
+                        <Text style={styles.optionTitleText}>{translated.display}</Text>
                     </View>
                     <View style={styles.detailContent}>
                         <TouchableOpacity style={styles.detailItem}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>距離</Text>
+                                <Text style={styles.detailItemText}>{translated.distance}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
                                 <Text style={styles.optionText}>{unitOfDistance}</Text>
@@ -195,7 +200,7 @@ export default function SettingsScreen({  }){
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.detailItem}>
                             <View style = {styles.optionItem1}>
-                                <Text style={styles.detailItemText}>速度</Text>
+                                <Text style={styles.detailItemText}>{translated.speed}</Text>
                             </View>
                             <View style = {styles.optionItem2}>
                                 <Text style={styles.optionText}>{unitOfSpeed}</Text>

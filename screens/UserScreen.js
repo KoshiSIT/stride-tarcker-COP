@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View , Image, FlatList, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
-import React,{useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
@@ -15,10 +15,12 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {TranslationContext} from "../translator";
 
 export default function UserScreen({}){
     const { firstName, profileImage, lastName } = useAppContext();
     const navigation = useNavigation();
+    const { translations: { UserScreenjs: translated } } = useContext(TranslationContext);
     useEffect(()=>{
     },[]);
 
@@ -62,16 +64,16 @@ export default function UserScreen({}){
                     </View>
                     <View style={styles.followContainer}>
                         <View style={styles.followItem1}>
-                            <Text style={styles.followText}>1km</Text>
-                            <Text style={styles.followText2}>合計(km)</Text>
+                            <Text style={styles.followText}>1 km</Text>
+                            <Text style={styles.followText2}>{translated.total}</Text>
                         </View>
                         <View style={styles.followItem2}>
                             <Text style={styles.followText}>0</Text>
-                            <Text style={styles.followText2}>フォロワー</Text>
+                            <Text style={styles.followText2}>{translated.followers}</Text>
                         </View>
                         <View style={styles.followItem3}>
                             <Text style={styles.followText}>0</Text>
-                            <Text style={styles.followText2}>フォロー中</Text>
+                            <Text style={styles.followText2}>{translated.following}</Text>
                         </View>
                     </View>
                     <View style ={styles.subscribeContainer}>
@@ -100,12 +102,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 10,
+        marginTop: 50,
+        marginHorizontal: 10,
     },
     subscribeContainer:{
         height: 40,
     },
     userContainer:{
         height: 180,
+        marginHorizontal: 5,
     },
     nameContainer:{
         flex: 1,
@@ -160,9 +165,14 @@ const styles = StyleSheet.create({
     followText:{
         fontSize: 15,
         fontWeight: 'bold',
+        marginLeft: 5
     },
     followText2:{
         fontSize: 13,
+        marginLeft: 5
     },
+    iconStyle: {
+        marginTop: 20,
+    }
 
 });

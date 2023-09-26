@@ -9,10 +9,10 @@ export function useStartScreenContext() {
 export function StartScreenProvider({ children }) {
     //page 1 state
     const [stopWatchMode, setStopWatchMode] = useState(false);
-    const [selectedActivity, setSelectedActivity] = useState('ウォーキング');
+    const [selectedActivity, setSelectedActivity] = useState('Walking');
     //page 4 state
     const [withAudioGuide, setWithAudioGuide] = useState(false);
-    const [typeOfAudioGuide, setTypeOfAudioGuide] = useState('kat(デフォルト)');
+    const [typeOfAudioGuide, setTypeOfAudioGuide] = useState('kat(Default)');
     const [withAnnouncement, setWithAnnouncement] = useState(false);
     const [withIntervalTime, setWithIntervalTime] = useState(false);
     const [withIntervalDistance, setWithIntervalDistance] = useState(false);
@@ -21,7 +21,7 @@ export function StartScreenProvider({ children }) {
     const [announcementInfo, setAnnouncementInfo] = useState('');
     const [volume, setVolume] = useState(50);
     // other state
-    const [rroute, setRroute] = useState('なし');
+    const [rroute, setRroute] = useState('Without');
     const [withAutoPause, setWithAutoPause] = useState(false);
     const [withCountDown, setWithCountDown] = useState(false);
     const [withLiveTracking, setWithLiveTracking] = useState(false);

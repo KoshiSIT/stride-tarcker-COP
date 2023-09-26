@@ -1,0 +1,128 @@
+{
+  "Appjs": {
+    "user": "ユーザー",
+    "training": "トレーニング",
+    "start": "スタート",
+    "community": "コミュニティ",
+    "explorer": "エクスプローラー"
+  },
+  "UserScreenjs": {
+    "total": "合計",
+    "followers": "フォロワー",
+    "following": "フォロー中"
+  },
+  "Datajs": {
+    "data": "データ",
+    "totalToDate": "今までの合計"
+  },
+  "Achievementsjs": {
+    "achievements": "達成内容"
+  },
+  "Activityjs": {
+    "activity": "アクティビティ",
+    "totalToDate": "今までの合計",
+    "times": "回"
+  },
+  "ShoeTrackerjs": {
+    "shoeTracker": "シューズトラッカー",
+    "pleaseUseTracker": "シューズトラッカーを使用してください" ,
+    "startShoeTracker": "シューズの走行距離をトラッキングします"
+  },
+  "Goaljs": {
+    "goal": "ゴール",
+    "noGoal": "ゴールを設定していません",
+    "setGoal": "ゴールを設定する"
+  },
+  "Insitejs": {
+    "insights": "アクティビティ",
+    "totalKilometers": "合計1キロメートル",
+    "viewPastData": "過去のデータを見てみよう",
+    "analyzeActivity": "{count}件のアクティビティを分析してみよう"
+  },
+  "WeeklyWorkoutjs": {
+    "weeklyWorkout": "週ごとのワークアウト",
+    "workoutsThisWeek": "今週は{count}件",
+    "times": "回"
+  },
+  "StartScreenjs": {
+    "RunKeeper": "RunKeeper",
+    "activity": "アクティビティ",
+    "workout": "ワークアウト",
+    "music": "音楽",
+    "musicGuide": "音楽ガイド",
+    "with": "あり",
+    "without": "なし",
+    "start": "スタート",
+    "points": "{count}分"
+  },
+    "CommunityScreenjs": {
+      "feed": "フィード",
+      "group": "グループ",
+      "time": "タイム",
+      "groupName": "グループ名"
+    },
+    "AnnoucementFrequencySettingjs": {
+      "onDemandOnly": "オンデマンドのみ",
+      "time": "タイム",
+      "distance": "距離",
+      "detailedSettings": "詳細設定",
+      "minute": "分"
+    },
+    "RunSettingsjs": {
+      "activity": "アクティビティ",
+      "stopWatch": "ストップウォッチモード",
+      "running": "ランニング",
+      "cycling": "サイクリング",
+      "walking": "ウォーキング",
+      "mountainBiking": "マウンテンバイキング",
+      "biking": "バイキング",
+      "downhillSkiing": "ダウンヒルスキー",
+      "snowboarding": "スノーボード",
+      "swimming": "スイミング",
+      "wheelchair": "車椅子",
+      "rowing": "ローイング",
+      "beginnerWorkout": "初心者向けワークアウト",
+      "distance": "距離",
+      "workout": "ワークアウト",
+      "none": "なし",
+      "startTrainingPlan": "トレーニングプランを開始する",
+      "winTheLongRun": "WIN THE LONG RUN",
+      "custom": "カスタム",
+      "time": "時間",
+      "pace": "ペース",
+      "ok": "OK",
+      "music": "音楽",
+      "musicLibraryApp": "ミュージックライブラリアプリ",
+      "spotify": "Spotify",
+      "audioGuide": "音声ガイド",
+      "enable": "有効にする",
+      "voice": "音声",
+      "defaultVoice": "kat(デフォルト)",
+      "announcementFrequency": "アナウンスの頻度",
+      "fiveMinutes": "5分",
+      "selectInfoToAnnounce": "アナウンスする情報を選択",
+      "timeDistanceAvgPace": "タイム,距離,平均ペース",
+      "volume": "音量",
+      "activitySettings": "アクティビティ設定",
+      "type": "タイプ",
+      "route": "ルート",
+      "tracking": "トラッキング",
+      "autoPause": "オートポーズ",
+      "countdownSettings": "カウントダウンの設定",
+      "trackingMode": "トラッキングモード",
+      "liveTrackingFunction": "ライブトラッキング機能",
+      "pocketTrack": "ポケットトラック",
+      "coaching": "コーチング",
+      "display": "表示",
+      "speed": "速度",
+      "gpsMode": "GPSモード",
+      "on": "オン",
+      "off": "オフ"
+    },
+    "AppSettingsjs": {
+      "settings": "設定",
+      "display": "表示",
+      "profile": "プロフィール設定",
+      "logout": "ログアウト"
+    }
+}
