@@ -11,6 +11,20 @@
     "followers": "followers",
     "following": "following"
   },
+  "ProfileSettingScreenjs": {
+    "profile": "Profile",
+    "FirstName": "First Name",
+    "LastName": "Last Name",
+    "BirthDate": "BirthDate",
+    "Gender": "Gender",
+    "Language": "Language",
+    "Weight": "Weight",
+    "Height": "Height",
+    "FirstDayOfWeek": "First Day of Week"
+  },
+  "LanguageSelectScreen": {
+    "language": "Language"
+  },
   "Datajs": {
     "data": "Data",
     "totalToDate": "Total to date"
@@ -25,7 +39,7 @@
   },
   "ShoeTrackerjs": {
     "shoeTracker": "Shoe Tracker",
-    "pleaseUseTracker": "Please utilize the shoe tracker" ,
+    "pleaseUseTracker": "Please utilize the shoe tracker",
     "startShoeTracker": "Track shoe mileage"
   },
   "Goaljs": {
@@ -54,6 +68,14 @@
     "without": "Without",
     "start": "Start",
     "points": "{count} points"
+  },
+  "StartRunScreenjs": {
+    "Time": "TIME",
+    "Kilometer": "KILOMETER",
+    "CurrentPace": "CURRENT PACE",
+    "AVGPace": "AVG PACE",
+    "Currentkm": "Current {count} km",
+    "kmPace": "KM1 {count} min/km"
   },
   "CommunityScreenjs": {
     "feed": "Feed",

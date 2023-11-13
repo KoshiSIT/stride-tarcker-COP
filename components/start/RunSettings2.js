@@ -50,96 +50,79 @@ const Page1 = ({
       const activityValue = translated[key];
       return { label: activityValue, value: activityValue };
     });
-  class ActivityPop {
-    main() {
-      return this.render();
-    }
-    render() {
-      return (
-        <View style={styles.pageContainer}>
-          <View>
-            <View style={styles.pageTitleContainer}>
-              <MaterialCommunityIcons
-                name="shoe-sneaker"
-                size={50}
-                color="#000033"
-              />
-              <Text style={styles.pageTitle}>{translated.activity}</Text>
-            </View>
-            {stopWatchMode ? (
-              <ScrollView style={styles.scrollContainer}>
-                <View style={styles.rowContainer}>
-                  <Text style={styles.pageDescription}>
-                    {translated.stopWatch}
-                  </Text>
-                  <Switch
-                    value={stopWatchMode}
-                    onValueChange={handleStopWatchMode}
-                    trackColor={{ false: "#767577", true: "#20B2AA" }}
-                    thumbColor={stopWatchMode ? "#f4f3f4" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                  />
-                </View>
-                {activities.map((activity) => (
-                  <TouchableOpacity
-                    style={styles.choiceContainerOn}
-                    kwy={activity.value}
-                    onPress={() => handleSelectActivity(activity.value)}
-                  >
-                    <View style={styles.rowContainer}>
-                      <Text style={styles.pageDescription}>
-                        {activity.label}
-                      </Text>
-                      {selectedActivity === activity.value && (
-                        <Icon name="check" size={30} color="#20B2AA" />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            ) : (
-              <ScrollView style={styles.scrollContainer}>
-                <View style={styles.rowContainer}>
-                  <Text style={styles.pageDescription}>
-                    {translated.stopWatch}
-                  </Text>
-                  <Switch
-                    value={stopWatchMode}
-                    onValueChange={handleStopWatchMode}
-                    trackColor={{ false: "#767577", true: "#20B2AA" }}
-                    thumbColor={stopWatchMode ? "#f4f3f4" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                  />
-                </View>
-                {activities.map((activity) => (
-                  <TouchableOpacity
-                    style={styles.choiceContainerOff}
-                    kwy={activity.value}
-                    onPress={() => handleSelectActivity(activity.value)}
-                  >
-                    <View style={styles.rowContainer}>
-                      <Text style={styles.pageDescription}>
-                        {activity.label}
-                      </Text>
-                      {selectedActivity === activity.value && (
-                        <Icon name="check" size={30} color="#20B2AA" />
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            )}
-            <TouchableOpacity
-              onPress={handleClosePopup}
-              style={styles.okButton}
-            >
-              <Text style={styles.okText}>OK</Text>
-            </TouchableOpacity>
-          </View>
+
+  return (
+    <View style={styles.pageContainer}>
+      <View>
+        <View style={styles.pageTitleContainer}>
+          <MaterialCommunityIcons
+            name="shoe-sneaker"
+            size={50}
+            color="#000033"
+          />
+          <Text style={styles.pageTitle}>{translated.activity}</Text>
         </View>
-      );
-    }
-  }
+        {stopWatchMode ? (
+          <ScrollView style={styles.scrollContainer}>
+            <View style={styles.rowContainer}>
+              <Text style={styles.pageDescription}>{translated.stopWatch}</Text>
+              <Switch
+                value={stopWatchMode}
+                onValueChange={handleStopWatchMode}
+                trackColor={{ false: "#767577", true: "#20B2AA" }}
+                thumbColor={stopWatchMode ? "#f4f3f4" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+              />
+            </View>
+            {activities.map((activity) => (
+              <TouchableOpacity
+                style={styles.choiceContainerOn}
+                key={activity.value}
+                onPress={() => handleSelectActivity(activity.value)}
+              >
+                <View style={styles.rowContainer}>
+                  <Text style={styles.pageDescription}>{activity.label}</Text>
+                  {selectedActivity === activity.value && (
+                    <Icon name="check" size={30} color="#20B2AA" />
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        ) : (
+          <ScrollView style={styles.scrollContainer}>
+            <View style={styles.rowContainer}>
+              <Text style={styles.pageDescription}>{translated.stopWatch}</Text>
+              <Switch
+                value={stopWatchMode}
+                onValueChange={handleStopWatchMode}
+                trackColor={{ false: "#767577", true: "#20B2AA" }}
+                thumbColor={stopWatchMode ? "#f4f3f4" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+              />
+            </View>
+            {activities.map((activity) => (
+              <TouchableOpacity
+                style={styles.choiceContainerOff}
+                kwy={activity.value}
+                onPress={() => handleSelectActivity(activity.value)}
+              >
+                <View style={styles.rowContainer}>
+                  <Text style={styles.pageDescription}>{activity.label}</Text>
+                  {selectedActivity === activity.value && (
+                    <Icon name="check" size={30} color="#20B2AA" />
+                  )}
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+        <TouchableOpacity onPress={handleClosePopup} style={styles.okButton}>
+          <Text style={styles.okText}>OK</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 };
 
 const Page2 = ({ handleClosePopup }) => {

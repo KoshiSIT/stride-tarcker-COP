@@ -11,7 +11,6 @@ import {TranslationContext} from "../../translator";
 export default function SettingsScreen({  }){
 
     const { translations: { RunSettingsjs: translated } } = useContext(TranslationContext);
-
     const [withWarmUp, setWithWarmUp] = useState(false);
     const [withCoolDown, setWithCoolDown] = useState(false);
     const navigation = useNavigation();

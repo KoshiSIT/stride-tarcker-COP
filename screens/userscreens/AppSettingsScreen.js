@@ -41,7 +41,7 @@ export default function AppSettingsScreen({  }){
                         <Text style={styles.optionTitleText}>{translated.display}</Text>
                     </View>
                     <View style={styles.detailContent}>
-                        <TouchableOpacity style={styles.detailItem}>
+                        <TouchableOpacity style={styles.detailItem} onPress={()=>{navigation.navigate('ProfileSetting')}}>
                             <View style = {styles.optionItem1}>
                                 <Text style={styles.detailItemText}>{translated.profile}</Text>
                             </View>
