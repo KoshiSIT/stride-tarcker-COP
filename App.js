@@ -35,6 +35,7 @@ import IntervalDistanceSettingScreen from "./screens/startScreens/settingsScreen
 import CustomScreen from "./screens/startScreens/CustomScreen";
 import StartRunScreen from "./screens/startScreens/StartRunScreen";
 import RusultScreen from "./screens/startScreens/RusultScreen";
+import ResultScreenUpdate from "./screens/startScreens/ResultScreenUpdate";
 import RusultReviewScreen from "./screens/startScreens/ResultReviewScreen";
 import IntervalScreen from "./screens/startScreens/workOutScreens/IntervalScreen";
 import CommunityScreen from "./screens/CommunityScreen";
@@ -163,6 +164,11 @@ const StartStack = () => {
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name="ResultUpdate"
+            component={ResultScreenUpdate}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name="ResultReview"
             component={RusultReviewScreen}
             options={{ headerShown: false }}
@@ -189,6 +195,16 @@ const CommunityStack = () => {
       <Stack.Screen
         name="Community"
         component={CommunityScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ResultReview"
+        component={RusultReviewScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ResultUpdate"
+        component={ResultScreenUpdate}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -311,6 +327,7 @@ function MainContent() {
               <Tab.Screen
                 name={translated.community}
                 component={CommunityStack}
+                options={{ headerShown: false }}
               />
               <Tab.Screen
                 name={translated.explorer}

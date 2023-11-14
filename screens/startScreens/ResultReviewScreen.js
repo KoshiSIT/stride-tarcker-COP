@@ -12,13 +12,14 @@ import {
   Touchable,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 
 import MapView, { Marker } from "react-native-maps";
 import { Svg, Circle } from "react-native-svg";
 import * as Location from "expo-location";
 import { useAppContext } from "../../contexts/AppContext";
 import { useActivityContext } from "../../contexts/ActivityContext";
+import TranslationContext from "../../translator/TranslationContext";
 import Map from "../../components/Map";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
@@ -29,6 +30,7 @@ import FeatherIcon from "react-native-vector-icons/Feather";
 import Constants from "expo-constants";
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
 
+import * as Date from "../../functions/Date";
 import * as ImagePicker from "expo-image-picker";
 import { init } from "contextjs";
 import { FIRESTORE_DB } from "../../firebase";
@@ -41,10 +43,17 @@ import {
   doc,
 } from "firebase/firestore";
 export default function ResultReviewScreen({ route }) {
-  let documentId = null;
   const [selectedImage, setSelectedImage] = useState(null);
   const [resultItem, setResultItem] = useState([]);
   const name = "ResultReview";
+  const navigation = useNavigation();
+  const { currentLocation, handleSetCurrentLocation } = useAppContext();
+  const [time, setTime] = useState(0);
+  const [calorie, setCalorie] = useState(0);
+  const [pictureIndex, setPictureIndex] = useState(0);
+  const {
+    translations: { ResultReviewScreenjs: translated },
+  } = useContext(TranslationContext);
   const handleSetReultItem = (item) => {
     console.log(item);
     setResultItem(item);
@@ -67,14 +76,9 @@ export default function ResultReviewScreen({ route }) {
       setSelectedImage({ localUri: pickerResult.uri });
     }
   };
-
-  const navigation = useNavigation();
-  const { currentLocation, handleSetCurrentLocation } = useAppContext();
-  const [time, setTime] = useState(0);
-  const [calorie, setCalorie] = useState(0);
-  const [pictureIndex, setPictureIndex] = useState(0);
   useEffect(() => {
     getLocationPermission();
+    let documentId = null;
     try {
       documentId = route.params.documentId;
     } catch (e) {
@@ -120,12 +124,14 @@ export default function ResultReviewScreen({ route }) {
       <View style={styles.titleContainer}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("コミュニティ");
+            navigation.navigate("Community");
           }}
         >
           <FontAwesomeIcon name="chevron-left" size={30} color="black" />
         </TouchableOpacity>
-        <Text style={{ fontWeight: "bold", fontSize: 16 }}>結果</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+          {translated.summary}
+        </Text>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("StartRun");
@@ -138,7 +144,9 @@ export default function ResultReviewScreen({ route }) {
         <View style={styles.activityContainer}>
           <View style={styles.resultItem1}>
             <FontAwesome5Icon name="walking" size={30} color="black" />
-            <Text style={styles.activityText}>現在時刻</Text>
+            <Text style={styles.activityText}>
+              {Date.formatDate(resultItem.datetime)}
+            </Text>
           </View>
         </View>
         <View style={styles.pictureContainer}>
@@ -195,17 +203,17 @@ export default function ResultReviewScreen({ route }) {
         <View style={styles.dataContainer}>
           <View style={styles.dataSubItem}>
             <Text style={{ fontSize: 20 }}>{resultItem.time}</Text>
-            <Text>タイム</Text>
+            <Text>{translated.time}</Text>
           </View>
           <View style={styles.dataSubItem}>
             <Text style={{ fontSize: 20 }}>{resultItem.calorie}</Text>
-            <Text>カロリー</Text>
+            <Text>{translated.calories}</Text>
           </View>
         </View>
         <View style={styles.splitContainer}>
           <View style={styles.resultItem1}>
             <FonttistoIcon name="clock" size={30} color="black" />
-            <Text style={styles.activityText}>スプリット</Text>
+            <Text style={styles.activityText}>{translated.splits}</Text>
           </View>
           <View style={styles.resultItem2}>
             <AntDesignIcon name="right" size={20} color="gray" />
@@ -214,14 +222,14 @@ export default function ResultReviewScreen({ route }) {
         <View style={styles.analysisContainer}>
           <View style={styles.resultItem1}>
             <FoundationIcon name="graph-trend" size={30} color="black" />
-            <Text style={styles.activityText}>分析データ</Text>
+            <Text style={styles.activityText}>{translated.charts}</Text>
           </View>
           <View style={styles.resultItem2}>
             <AntDesignIcon name="right" size={20} color="gray" />
           </View>
         </View>
         <View style={styles.detailContainer}>
-          <Text style={styles.activityText}>更に詳しく</Text>
+          <Text style={styles.activityText}>{translated.moreDetails}</Text>
         </View>
         <View style={styles.memoContainer}>
           <View style={styles.resultItem1}>
@@ -230,13 +238,15 @@ export default function ResultReviewScreen({ route }) {
               size={30}
               color="black"
             />
-            <Text style={styles.activityText}>メモ</Text>
+            <Text style={styles.activityText}>{translated.notes}</Text>
           </View>
         </View>
         <View style={styles.weatherContainer}>
           <View style={styles.resultItem1}>
             <FeatherIcon name="sun" size={30} color="black" />
-            <Text style={styles.activityText}>天気はいかがでしたか?</Text>
+            <Text style={styles.activityText}>
+              {translated.HowWasTheWeather}
+            </Text>
           </View>
           <View style={styles.resultItem2}>
             <AntDesignIcon name="right" size={20} color="gray" />
@@ -249,9 +259,7 @@ export default function ResultReviewScreen({ route }) {
               size={30}
               color="black"
             />
-            <Text style={styles.activityText}>
-              シューズトラッカーをご使用ください
-            </Text>
+            <Text style={styles.activityText}>shoes tracker</Text>
           </View>
           <View style={styles.resultItem2}>
             <AntDesignIcon name="right" size={20} color="gray" />
@@ -264,7 +272,7 @@ export default function ResultReviewScreen({ route }) {
               size={30}
               color="black"
             />
-            <Text style={styles.activityText}>一緒にウォーキングした人</Text>
+            <Text style={styles.activityText}>{translated.Iexercisedwith}</Text>
           </View>
           <View style={styles.resultItem2}>
             <AntDesignIcon name="right" size={20} color="gray" />
@@ -273,10 +281,12 @@ export default function ResultReviewScreen({ route }) {
         <TouchableOpacity
           style={styles.editButton}
           onPress={() => {
-            navigation.navigate("Result", { documentId: documentId });
+            navigation.navigate("ResultUpdate", {
+              documentId: route.params.documentId,
+            });
           }}
         >
-          <Text style={styles.editButtonText}>編集</Text>
+          <Text style={styles.editButtonText}>{translated.edit}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

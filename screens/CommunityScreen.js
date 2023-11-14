@@ -12,8 +12,6 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import Constants from "expo-constants";
 import axios from "axios";
-import MapView, { Marker } from "react-native-maps";
-import { Svg, Circle, Polyline } from "react-native-svg";
 import * as Location from "expo-location";
 import { useAppContext } from "../contexts/AppContext";
 import { FIRESTORE_DB, FIREBASE_STORAGE, STORAGE_REF } from "../firebase";
@@ -27,6 +25,7 @@ import {
   query,
 } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
+import Map from "../components/Map";
 
 import * as Date from "../functions/Date";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
@@ -37,6 +36,7 @@ import { TranslationContext, TranslationProvider } from "../translator";
 export default function CommunityScreen({ navigation }) {
   const {
     translations: { CommunityScreenjs: translated },
+    language,
   } = useContext(TranslationContext);
 
   const [selectedTab, setSelectedTab] = useState("feed");
@@ -50,6 +50,7 @@ export default function CommunityScreen({ navigation }) {
     lastName,
   } = useAppContext();
   const [pictureIndex, setPictureIndex] = useState(0);
+  const name = "ResultReview";
   useEffect(() => {
     const activitiesRef = query(
       collection(FIRESTORE_DB, "stride-tracker_DB"),
@@ -94,9 +95,18 @@ export default function CommunityScreen({ navigation }) {
     setSelectedTab(tabName);
   };
 
+  const pressActivity = (documentId) => {
+    navigation.navigate("ResultReview", { documentId: documentId });
+  };
+
   return (
     <TranslationProvider>
       <View style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            {translated.title}
+          </Text>
+        </View>
         <View style={styles.tabContainer}>
           <TouchableOpacity
             style={[
@@ -129,43 +139,53 @@ export default function CommunityScreen({ navigation }) {
                 maxToRenderPerBatch={5}
                 renderItem={({ item }) => (
                   <View>
-                    <View style={styles.userContainer}>
-                      <View style={styles.item1}>
-                        {profileImage !== "" ? (
-                          <Image
-                            source={{ uri: profileImage }}
-                            style={{ width: 25, height: 25, borderRadius: 25 }}
-                          />
-                        ) : (
-                          <FontAwesome5Icon
-                            name="grin-wink"
-                            size={25}
-                            color="black"
-                          />
-                        )}
-                      </View>
-                      <View style={styles.item2}>
-                        <Text style={styles.userNameText}>
-                          {firstName} {lastName}
-                        </Text>
-                        <View style={{ flexDirection: "row" }}>
-                          <Text>{item.activityName}-</Text>
-                          <View>
-                            <Text>{Date.formatDate(item.datetime)}</Text>
+                    {console.log(item)}
+                    <TouchableOpacity onPress={() => pressActivity(item.id)}>
+                      <View style={styles.userContainer}>
+                        <View style={styles.item1}>
+                          {profileImage !== "" ? (
+                            <Image
+                              source={{ uri: profileImage }}
+                              style={{
+                                width: 25,
+                                height: 25,
+                                borderRadius: 25,
+                              }}
+                            />
+                          ) : (
+                            <FontAwesome5Icon
+                              name="grin-wink"
+                              size={25}
+                              color="black"
+                            />
+                          )}
+                        </View>
+                        <View style={styles.item2}>
+                          <Text style={styles.userNameText}>
+                            {firstName} {lastName}
+                          </Text>
+                          <View style={{ flexDirection: "row" }}>
+                            <Text>{item.activityName}-</Text>
+                            <View>
+                              <Text>{Date.formatDate(item.datetime)}</Text>
+                            </View>
                           </View>
                         </View>
                       </View>
-                    </View>
+                    </TouchableOpacity>
                     <View style={styles.dateTimeContainer}>
-                      <Text style={{ fontWeight: "bold", fontSize: 14 }}>
-                        {Date.formatDateToJapaneseDayAndTime(item.datetime)}
+                      <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                        {Date.formatDateToJapaneseDayAndTime(
+                          item.datetime,
+                          language
+                        )}
                       </Text>
                     </View>
                     <View style={styles.timeContainer}>
-                      <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                        {item.time}
+                      <Text style={{ fontSize: 18 }}>
+                        {Date.formatNumber(item.time)}
                       </Text>
-                      <Text style={{ fontSize: 8 }}>{translated.time}</Text>
+                      <Text style={{ fontSize: 10 }}>{translated.time}</Text>
                     </View>
                     <View style={styles.imageContainer}>
                       <ScrollView
@@ -183,63 +203,10 @@ export default function CommunityScreen({ navigation }) {
                           setPictureIndex(index);
                         }}
                       >
-                        {currentLocation && (
-                          <MapView
-                            scrollEnabled={false}
-                            zoomEnabled={false}
-                            style={styles.map}
-                            region={{
-                              latitude: currentLocation.latitude,
-                              longitude: currentLocation.longitude,
-                              latitudeDelta: 0.01,
-                              longitudeDelta: 0.01,
-                            }}
-                          >
-                            {item.locationLog.map((location, index) => (
-                              <Marker
-                                key={index}
-                                coordinate={{
-                                  latitude: location.latitude,
-                                  longitude: location.longitude,
-                                }}
-                                anchor={{ x: 0.5, y: 0.5 }}
-                              >
-                                <View>
-                                  <Svg
-                                    width={24}
-                                    height={24}
-                                    viewBox="0 0 24 24"
-                                  >
-                                    {index === 0 ? (
-                                      <Circle
-                                        cx={12}
-                                        cy={12}
-                                        r={10}
-                                        stroke="white"
-                                        strokeWidth={2}
-                                        fill="#3366CC"
-                                      />
-                                    ) : (
-                                      <Circle
-                                        cx={12}
-                                        cy={12}
-                                        r={10}
-                                        stroke="white"
-                                        strokeWidth={2}
-                                        fill="green"
-                                      />
-                                    )}
-                                  </Svg>
-                                </View>
-                              </Marker>
-                            ))}
-                            <Polyline
-                              coordinates={item.locationLog}
-                              strokeWidth={2}
-                              strokeColor="lightgray"
-                            />
-                          </MapView>
-                        )}
+                        <Map
+                          parentName={name}
+                          locationLog={item.locationLog}
+                        ></Map>
                         {item.image !== "" && (
                           <View style={styles.pictureItem}>
                             <Image
@@ -307,6 +274,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingTop: Constants.statusBarHeight,
+  },
+  titleContainer: {
+    height: 50,
+    width: "100%",
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
   },
   tabContainer: {
     height: 50,

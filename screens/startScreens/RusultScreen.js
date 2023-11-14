@@ -15,9 +15,10 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Modal from "react-native-modal";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { useActivityContext } from "../../contexts/ActivityContext";
 import { useAppContext } from "../../contexts/AppContext";
+import TranslationContext from "../../translator/TranslationContext";
 import PhotoPicker from "../../components/start/PhotoPicker";
 import IoniconsIcon from "react-native-vector-icons/Ionicons";
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
@@ -44,6 +45,9 @@ export default function ResultScreen({ route }) {
   const [memo, setMemo] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageBlob, setImageBlob] = useState(null);
+  const {
+    translations: { ResultScreenjs: translated },
+  } = useContext(TranslationContext);
   const mapItems = [
     { label: "マップはフォロワーに表示される", value: "フォロワー" },
     { label: "マップは自分の身に表示される", value: "自分のみ" },
@@ -161,7 +165,9 @@ export default function ResultScreen({ route }) {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <View></View>
-        <Text style={{ fontWeight: "bold", fontSize: 16 }}>結果のレビュー</Text>
+        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+          {translated.resultAndSave}
+        </Text>
         <TouchableOpacity onPress={() => notSave()}>
           <FontAwesomeIcon name="trash" size={30} color="black" />
         </TouchableOpacity>
@@ -170,18 +176,18 @@ export default function ResultScreen({ route }) {
         <View style={styles.dataContainer}>
           <View style={styles.dataSubItem}>
             <Text style={{ fontSize: 20 }}>{time.toFixed(2)}</Text>
-            <Text>タイム</Text>
+            <Text>{translated.time}</Text>
           </View>
           <View style={styles.dataSubItem}>
             <Text style={{ fontSize: 20 }}>{calorie}</Text>
-            <Text>カロリー</Text>
+            <Text>{translated.calories}</Text>
           </View>
         </View>
         <TouchableOpacity
           style={styles.activityContainer}
           onPress={() => handleActivityName()}
         >
-          <Text style={styles.activityText}>アクティビティ名</Text>
+          <Text style={styles.activityText}>{translated.Name}</Text>
           <TextInput
             style={styles.input}
             value={activityName}
@@ -204,15 +210,15 @@ export default function ResultScreen({ route }) {
               color="black"
             />
             <View style={{ alignItems: "start" }}>
-              <Text style={styles.activityText}>メモ</Text>
+              <Text style={styles.activityText}>{translated.notes}</Text>
               <Text style={{ color: "gray" }}>
-                {memo.length === 0 ? "メモはありません" : memo}
+                {memo.length === 0 ? translated.withoutNotes : memo}
               </Text>
             </View>
           </View>
         </TouchableOpacity>
         <View style={styles.detailContainer}>
-          <Text style={styles.activityText}>更に詳しく</Text>
+          <Text style={styles.activityText}>{translated.MoreDetails}</Text>
         </View>
         <View>
           <RNPickerSelect
@@ -226,7 +232,7 @@ export default function ResultScreen({ route }) {
             <View style={styles.mapContainer}>
               <View style={styles.resultReviewItem1}>
                 <AntDesignIcon name="unlock" size={30} color="black" />
-                <Text style={styles.activityText}>マップ</Text>
+                <Text style={styles.activityText}>{translated.Maps}</Text>
               </View>
               <View style={styles.resultReviewItem2}>
                 <Text style={styles.subText}>{mapSelected}</Text>
@@ -237,7 +243,9 @@ export default function ResultScreen({ route }) {
         <View style={styles.workOutRemindContainer}>
           <View style={styles.resultReviewItem1}>
             <IoniconsIcon name="alarm-outline" size={30} color="black" />
-            <Text style={styles.activityText}>ワークリマインダー</Text>
+            <Text style={styles.activityText}>
+              {translated.WorkoutReminders}
+            </Text>
           </View>
           <View style={styles.resultReviewItem2}>
             <Switch
@@ -253,7 +261,9 @@ export default function ResultScreen({ route }) {
           <TouchableOpacity style={styles.workOutRemindContainer}>
             <View style={styles.resultReviewItem1}>
               <IoniconsIcon name="alarm-outline" size={30} color="black" />
-              <Text style={styles.activityText}>ワークリマインダー</Text>
+              <Text style={styles.activityText}>
+                {translated.WorkoutReminders}
+              </Text>
             </View>
             <View style={styles.resultReviewItem2}>
               <Text style={styles.subText}>明日:午前6時</Text>
@@ -263,7 +273,7 @@ export default function ResultScreen({ route }) {
         <View style={styles.aveHeartRateContainer}>
           <View style={styles.resultReviewItem1}>
             <FontAwesomeIcon name="heartbeat" size={30} color="black" />
-            <Text style={styles.activityText}>平均心拍数</Text>
+            <Text style={styles.activityText}>{translated.AvgHeartRate}</Text>
           </View>
           <View style={styles.resultReviewItem2}>
             <TextInput
@@ -285,9 +295,7 @@ export default function ResultScreen({ route }) {
               size={30}
               color="black"
             />
-            <Text style={styles.activityText}>
-              シューズトラッカーをご使用ください
-            </Text>
+            <Text style={styles.activityText}>shoes tracker</Text>
           </View>
         </View>
         <View style={styles.workTogetherContainer}>
@@ -297,7 +305,7 @@ export default function ResultScreen({ route }) {
               size={30}
               color="black"
             />
-            <Text style={styles.activityText}>一緒にウォーキングした人</Text>
+            <Text style={styles.activityText}>{translated.Iexercisedwith}</Text>
           </View>
           <View style={styles.resultReviewItem2}>
             <AntDesignIcon name="right" size={20} color="lightgray" />
@@ -305,7 +313,7 @@ export default function ResultScreen({ route }) {
         </View>
       </ScrollView>
       <TouchableOpacity style={styles.saveButton} onPress={() => saveResult()}>
-        <Text style={styles.saveButtonText}>保存</Text>
+        <Text style={styles.saveButtonText}>{translated.save}</Text>
       </TouchableOpacity>
       <Modal
         isVisible={isModalVisible}
@@ -314,11 +322,11 @@ export default function ResultScreen({ route }) {
       >
         <View style={styles.memoTitleContainer}>
           <TouchableOpacity onPress={toggleModal}>
-            <Text style={styles.subText}>キャンセル</Text>
+            <Text style={styles.subText}>{translated.cancel}</Text>
           </TouchableOpacity>
-          <Text style={styles.modalTitle}>メモ</Text>
+          <Text style={styles.modalTitle}>{translated.notes}</Text>
           <TouchableOpacity onPress={toggleModal}>
-            <Text style={styles.subText}>追加</Text>
+            <Text style={styles.subText}>{translated.add}</Text>
           </TouchableOpacity>
         </View>
         <TextInput

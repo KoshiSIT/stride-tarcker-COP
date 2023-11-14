@@ -77,7 +77,37 @@
     "Currentkm": "Current {count} km",
     "kmPace": "KM1 {count} min/km"
   },
+  "ResultScreenjs": {
+    "resultAndSave": "結果のレビュー",
+    "time": "タイム",
+    "calories": "カロリー",
+    "Name": "アクティビティ名",
+    "AddaPicture": "写真を追加",
+    "notes": "メモ",
+    "MoreDetails": "更に詳しく",
+    "withoutNotes": "メモはありません",
+    "Maps": "マップ",
+    "Workout Reminders": "ワークリマインダー",
+    "AvgHeartRate": "平均心拍数",
+    "Iexercisedwith": "一緒に{text}したひと",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "add": "追加"
+  },
+  "ResultReviewScreenjs": {
+    "summary": "結果",
+    "time": "タイム",
+    "calories": "カロリー",
+    "splits": "スプリット",
+    "charts": "チャート",
+    "moreDetails": "もっと詳しく",
+    "notes": "ノート",
+    "HowWasTheWeather": "天気はどうでしたか？",
+    "Iexercisedwith": "一緒に{text}したひと",
+    "edit": "編集"
+  },
   "CommunityScreenjs": {
+    "title": "コミュニティ",
     "feed": "フィード",
     "group": "グループ",
     "time": "タイム",

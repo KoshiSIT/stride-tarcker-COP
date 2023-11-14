@@ -77,7 +77,37 @@
     "Currentkm": "Current {count} km",
     "kmPace": "KM1 {count} min/km"
   },
+  "ResultScreenjs": {
+    "resultAndSave": "Result and Save",
+    "time": "time",
+    "calories": "Calories",
+    "Name": "Name",
+    "AddaPicture": "Add a picture",
+    "notes": "Notes",
+    "withoutNotes": "How did it go?",
+    "MoreDetails": "More details",
+    "Maps": "Maps",
+    "WorkoutReminders": "Workout Reminders",
+    "AvgHeartRate": "Avg. Heart Rate",
+    "Iexercisedwith": "I exercised with..",
+    "save": "Save",
+    "cancel": "Cancel",
+    "add": "Add"
+  },
+  "ResultReviewScreenjs": {
+    "summary": "Summary",
+    "time": "time",
+    "calories": "Calories",
+    "splits": "Splits",
+    "charts": "Charts",
+    "moreDetails": "More details",
+    "notes": "Notes",
+    "HowWasTheWeather": "How was the weather?",
+    "Iexercisedwith": "I exercised with..",
+    "edit": "Edit"
+  },
   "CommunityScreenjs": {
+    "title": "Community",
     "feed": "Feed",
     "group": "Group",
     "time": "Time",

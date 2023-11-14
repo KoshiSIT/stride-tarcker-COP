@@ -10,23 +10,38 @@ export const formatDate = (timestamp) => {
     return `${year}/${month}/${day}`;
   }
 };
-export const formatDateToJapaneseDayAndTime = (timestamp) => {
+export const formatNumber = (str) => {
+  const num = parseFloat(str);
+  if (isNaN(num)) {
+    return NaN; // またはエラーを投げる、または別のデフォルト値を返す
+  }
+  return num.toFixed(2);
+};
+
+export const formatDateToJapaneseDayAndTime = (timestamp, language) => {
   if (!timestamp || typeof timestamp.toDate !== "function") {
     return "";
   }
 
   const date = timestamp.toDate();
-  const days = [
-    "日曜日",
-    "月曜日",
-    "火曜日",
-    "水曜日",
-    "木曜日",
-    "金曜日",
-    "土曜日",
-  ];
+  let days = [];
+  let timeOfDay = "";
+  if (language === "ja") {
+    days = [
+      "日曜日",
+      "月曜日",
+      "火曜日",
+      "水曜日",
+      "木曜日",
+      "金曜日",
+      "土曜日",
+    ];
+    timeOfDay = date.getHours() < 12 ? "午前" : "午後";
+  } else if (language === "en") {
+    days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    timeOfDay = date.getHours() < 12 ? "Evening" : "Afternoon";
+  }
   const dayOfWeek = days[date.getDay()];
-  const timeOfDay = date.getHours() < 12 ? "午前" : "午後";
 
-  return `${dayOfWeek}${timeOfDay}`;
+  return `${dayOfWeek}  ${timeOfDay}`;
 };
