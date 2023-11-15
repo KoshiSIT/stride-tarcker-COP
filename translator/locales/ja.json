@@ -69,6 +69,24 @@
     "start": "スタート",
     "points": "{count}分"
   },
+  "ManualEntryScreenjs": {
+    "ManualEntry": "入力",
+    "Weight": "体重",
+    "Running": "ランニング",
+    "Cycling": "サイクリング",
+    "Mountain Biking": "マウンテンバイキング",
+    "Walking": "ウォーキング",
+    "Hiking": "ハイキング",
+    "Downhill Skiing": "ダウンヒルスキー",
+    "Snowboarding": "スノーボード",
+    "Skating": "スケート",
+    "Swimming": "スイミング",
+    "Wheelchair": "車椅子",
+    "Rowing": "ローイング",
+    "Elliptical": "エリプティカル",
+    "Yoga": "ヨガ",
+    "Other": "その他"
+  },
   "StartRunScreenjs": {
     "Time": "タイム",
     "Kilometer": "キロメートル",
@@ -89,10 +107,15 @@
     "Maps": "マップ",
     "Workout Reminders": "ワークリマインダー",
     "AvgHeartRate": "平均心拍数",
+    "shoesTracker": "シューズトラッカー",
     "Iexercisedwith": "一緒に{text}したひと",
     "save": "保存",
     "cancel": "キャンセル",
-    "add": "追加"
+    "add": "追加",
+    "withMaplabel": "マップはフォロワーに表示される",
+    "withMapValue": "フォロワー",
+    "withoutMaplabel": "マップは自分自身に表示される",
+    "withoutMapValue": "自分のみ"
   },
   "ResultReviewScreenjs": {
     "summary": "結果",
@@ -103,6 +126,7 @@
     "moreDetails": "もっと詳しく",
     "notes": "ノート",
     "HowWasTheWeather": "天気はどうでしたか？",
+    "shoesTracker": "シューズトラッカー",
     "Iexercisedwith": "一緒に{text}したひと",
     "edit": "編集"
   },
@@ -176,5 +200,9 @@
     "display": "表示",
     "profile": "プロフィール設定",
     "logout": "ログアウト"
-  }
+  },
+  "PhotoPickerjs": {
+    "AddaPicture": "写真を追加"
+  },
+  "GuideText": {}
 }

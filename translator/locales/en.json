@@ -69,6 +69,24 @@
     "start": "Start",
     "points": "{count} points"
   },
+  "ManualEntryScreenjs": {
+    "ManualEntry": "Manual Entry",
+    "Weight": "Weight",
+    "Running": "Running",
+    "Cycling": "Cycling",
+    "Mountain Biking": "Mountain Biking",
+    "Walking": "Walking",
+    "Hiking": "Hiking",
+    "Downhill Skiing": "Downhill Skiing",
+    "Snowboarding": "Snowboarding",
+    "Skating": "Skating",
+    "Swimming": "Swimming",
+    "Wheelchair": "Wheelchair",
+    "Rowing": "Rowing",
+    "Elliptical": "Elliptical",
+    "Yoga": "Yoga",
+    "Other": "Other"
+  },
   "StartRunScreenjs": {
     "Time": "TIME",
     "Kilometer": "KILOMETER",
@@ -92,7 +110,12 @@
     "Iexercisedwith": "I exercised with..",
     "save": "Save",
     "cancel": "Cancel",
-    "add": "Add"
+    "add": "Add",
+    "shoesTracker": "Shoes Tracker",
+    "withMaplabel": "Map visible to followers",
+    "withMapValue": "Followers",
+    "withoutMaplabel": "Map visible to only me",
+    "withoutMapValue": "Only Me"
   },
   "ResultReviewScreenjs": {
     "summary": "Summary",
@@ -104,6 +127,7 @@
     "notes": "Notes",
     "HowWasTheWeather": "How was the weather?",
     "Iexercisedwith": "I exercised with..",
+    "shoesTracker": "Shoes Tracker",
     "edit": "Edit"
   },
   "CommunityScreenjs": {
@@ -127,7 +151,7 @@
     "cycling": "Cycling",
     "walking": "Walking",
     "mountainBiking": "Mountain Biking",
-    "biking": "Biking",
+    "hiking": "Hiking",
     "downhillSkiing": "Downhill Skiing",
     "snowboarding": "Snowboarding",
     "swimming": "Swimming",
@@ -178,5 +202,9 @@
     "display": "Display",
     "profile": "Profile Settings",
     "logout": "Logout"
-  }
+  },
+  "PhotoPickerjs": {
+    "AddaPicture": "Add a picture"
+  },
+  "GuideText": {}
 }

@@ -42,12 +42,15 @@ export default function ResultScreenUpdate({ route }) {
   console.log(route.params.documentId);
   // const parentName = route.params.parentName;
   const navigation = useNavigation();
+  const {
+    translations: { ResultScreenjs: translated },
+  } = useContext(TranslationContext);
   const { user } = useAppContext();
   const [time, setTime] = useState(0);
   const [pace, setPace] = useState(0);
   const [locationLog, setLocationLog] = useState([]);
   const [calorie, setCalorie] = useState(0);
-  const [mapSelected, setMapSelected] = useState("フォロワー");
+  const [mapSelected, setMapSelected] = useState(translated.withMapValue);
   const [activityName, setActivityName] = useState("running");
   const textInputRef = useRef(null);
   const [isDammy, setIsDammy] = useState(false);
@@ -56,12 +59,9 @@ export default function ResultScreenUpdate({ route }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageBlob, setImageBlob] = useState(null);
 
-  const {
-    translations: { ResultScreenjs: translated },
-  } = useContext(TranslationContext);
   const mapItems = [
-    { label: "マップはフォロワーに表示される", value: "フォロワー" },
-    { label: "マップは自分の身に表示される", value: "自分のみ" },
+    { label: translated.withMaplabel, value: translated.withMapValue },
+    { label: translated.withoutMaplabel, value: translated.withoutMapValue },
   ];
   class Result {
     constructor() {

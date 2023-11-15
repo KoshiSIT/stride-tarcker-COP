@@ -14,6 +14,7 @@ import Constants from "expo-constants";
 import axios from "axios";
 import * as Location from "expo-location";
 import { useAppContext } from "../contexts/AppContext";
+// firebase
 import { FIRESTORE_DB, FIREBASE_STORAGE, STORAGE_REF } from "../firebase";
 import {
   addDoc,
@@ -25,12 +26,15 @@ import {
   query,
 } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
+// components
 import Map from "../components/Map";
 
 import * as Date from "../functions/Date";
+// icons lib
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import AntDesign from "react-native-vector-icons/AntDesign";
+// translation lib
 import { TranslationContext, TranslationProvider } from "../translator";
 
 export default function CommunityScreen({ navigation }) {

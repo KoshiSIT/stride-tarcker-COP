@@ -15,7 +15,7 @@ import Constants from "expo-constants";
 import axios from "axios";
 
 import * as Location from "expo-location";
-import { Page1, Page2, Page3, Page4 } from "../components/start/RunSettings2";
+import { Page1, Page2, Page3, Page4 } from "../components/start/RunSettings";
 import Map from "../components/Map";
 import StopWatch from "../components/StopWatch";
 import { useNavigation } from "@react-navigation/native";
@@ -122,7 +122,7 @@ export default function StartScreen2({}) {
             <Text style={{ fontWeight: "bold", fontSize: 16 }}>RunKeeper</Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("StartRun");
+                navigation.navigate("ManualEntry");
               }}
               style={{ marginRight: 15 }}
             >

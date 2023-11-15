@@ -33,13 +33,17 @@ import IntervalTimeSettingScreen from "./screens/startScreens/settingsScreens/in
 import IntervalDistanceSettingScreen from "./screens/startScreens/settingsScreens/intervalSettingScreens/IntervalDistanceSettingScreen";
 // workOut screens
 import CustomScreen from "./screens/startScreens/CustomScreen";
+import IntervalScreen from "./screens/startScreens/workOutScreens/IntervalScreen";
+// start screens
 import StartRunScreen from "./screens/startScreens/StartRunScreen";
 import RusultScreen from "./screens/startScreens/RusultScreen";
 import ResultScreenUpdate from "./screens/startScreens/ResultScreenUpdate";
 import RusultReviewScreen from "./screens/startScreens/ResultReviewScreen";
-import IntervalScreen from "./screens/startScreens/workOutScreens/IntervalScreen";
+import ManualEntryScreen from "./screens/startScreens/ManualEntryScreen";
+// app screens
 import CommunityScreen from "./screens/CommunityScreen";
 import ExplorerScreen from "./screens/ExplorerScreen";
+// auth screens
 import LoginScreen from "./screens/authscreens/LoginScreen";
 // components
 import Loading from "./components/Loading";
@@ -181,6 +185,11 @@ const StartStack = () => {
           <Stack.Screen
             name="Interval"
             component={IntervalScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ManualEntry"
+            component={ManualEntryScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

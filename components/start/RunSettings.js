@@ -16,6 +16,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Slider from "@react-native-community/slider";
 import { BeginnerWorkOut, Distance } from "./WorkOut";
+import ActivityIcons from "../ActivityIcons";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import TranslationContext from "../../translator/TranslationContext";
@@ -36,7 +37,7 @@ const Page1 = ({
     "cycling",
     "walking",
     "mountainBiking",
-    "biking",
+    "hiking",
     "downhillSkiing",
     "snowboarding",
     "swimming",
@@ -87,9 +88,12 @@ const Page1 = ({
                     onPress={() => handleSelectActivity(activity.value)}
                   >
                     <View style={styles.rowContainer}>
-                      <Text style={styles.pageDescription}>
-                        {activity.label}
-                      </Text>
+                      <View style={{ flexDirection: "row" }}>
+                        <ActivityIcons activity={activity.value} size={30} />
+                        <Text style={styles.pageDescription}>
+                          {activity.label}
+                        </Text>
+                      </View>
                       {selectedActivity === activity.value && (
                         <Icon name="check" size={30} color="#20B2AA" />
                       )}
@@ -118,9 +122,12 @@ const Page1 = ({
                     onPress={() => handleSelectActivity(activity.value)}
                   >
                     <View style={styles.rowContainer}>
-                      <Text style={styles.pageDescription}>
-                        {activity.label}
-                      </Text>
+                      <View style={{ flexDirection: "row" }}>
+                        <ActivityIcons activity={activity.value} size={30} />
+                        <Text style={styles.pageDescription}>
+                          {activity.label}
+                        </Text>
+                      </View>
                       {selectedActivity === activity.value && (
                         <Icon name="check" size={30} color="#20B2AA" />
                       )}
@@ -140,6 +147,8 @@ const Page1 = ({
       );
     }
   }
+  const activityPop = new ActivityPop();
+  return activityPop.main();
 };
 
 const Page2 = ({ handleClosePopup }) => {

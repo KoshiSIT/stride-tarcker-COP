@@ -14,16 +14,16 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useAppContext } from "../../contexts/AppContext";
 import { useActivityContext } from "../../contexts/ActivityContext";
+//  translation lib
 import { useStartScreenContext } from "../../contexts/StartScreenContext";
 import TranslationContext from "../../translator/TranslationContext";
 import React, { useEffect, useState, useRef, useContext } from "react";
 import Constants from "expo-constants";
 import * as Speech from "expo-speech";
 import * as Location from "expo-location";
-import MapView, { Marker, Polyline } from "react-native-maps";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
-import { Svg, Circle, Stop } from "react-native-svg";
+// components lib
 import StopWatch from "../../components/StopWatch";
 import Map from "../../components/Map";
 import * as Run from "../../functions/Run";
