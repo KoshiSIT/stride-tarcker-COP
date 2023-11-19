@@ -45,3 +45,21 @@ export const formatDateToJapaneseDayAndTime = (timestamp, language) => {
 
   return `${dayOfWeek}  ${timeOfDay}`;
 };
+export const getDateRange = (type) => {
+  const now = new Date();
+  let start, end;
+
+  if (type === "week") {
+    end = new Date();
+    start = new Date(end);
+    start.setDate(end.getDate() - 7);
+  } else if (type === "month") {
+    end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    start = new Date(now.getFullYear(), now.getMonth(), 1);
+  } else if (type === "year") {
+    end = new Date(now.getFullYear() + 1, 0, 0);
+    start = new Date(now.getFullYear(), 0, 1);
+  }
+
+  return { start, end };
+};

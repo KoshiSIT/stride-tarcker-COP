@@ -29,7 +29,7 @@ import Map from "../../components/Map";
 import * as Run from "../../functions/Run";
 
 export default function StartRunScreen({}) {
-  const [withPause, setWithPause] = useState(false);
+  const [withPause, setWithPause] = useState(true);
   const navigation = useNavigation();
   const { stopWatchMode, handleStopWatchMode, withAudioGuide, volume } =
     useStartScreenContext();
@@ -38,9 +38,9 @@ export default function StartRunScreen({}) {
     handleSetTime,
     pace,
     handleSetPace,
+    handleSetTotalDistance,
     locationLog,
     handleSetLocationLog,
-    calorie,
     handleSetCalorie,
     resetAllState,
   } = useActivityContext();
@@ -154,13 +154,7 @@ export default function StartRunScreen({}) {
                 ]}
               >
                 {withPause ? (
-                  <TouchableOpacity onPress={() => this.handleStartStop()}>
-                    <FontAwesome5Icon
-                      name="pause-circle"
-                      size={80}
-                      color="#3366CC"
-                    />
-                  </TouchableOpacity>
+                  this.renderStopBUtton()
                 ) : (
                   <View
                     style={{
@@ -170,22 +164,10 @@ export default function StartRunScreen({}) {
                     }}
                   >
                     <View style={{ margin: 10 }}>
-                      <TouchableOpacity onPress={() => this.handleStartStop()}>
-                        <FontAwesome5Icon
-                          name="play-circle"
-                          size={80}
-                          color="#30F9B2"
-                        />
-                      </TouchableOpacity>
+                      {this.renderReStartButton()}
                     </View>
                     <View style={{ margin: 10 }}>
-                      <TouchableOpacity onPress={() => this.handleResultOpen()}>
-                        <FontAwesome5Icon
-                          name="stop-circle"
-                          size={80}
-                          color="#FF3300"
-                        />
-                      </TouchableOpacity>
+                      {this.renderExitButton()}
                     </View>
                   </View>
                 )}
@@ -238,13 +220,7 @@ export default function StartRunScreen({}) {
                 ]}
               >
                 {withPause ? (
-                  <TouchableOpacity onPress={() => this.handleStartStop()}>
-                    <FontAwesome5Icon
-                      name="pause-circle"
-                      size={80}
-                      color="#3366CC"
-                    />
-                  </TouchableOpacity>
+                  this.renderStopBUtton()
                 ) : (
                   <View
                     style={{
@@ -254,22 +230,10 @@ export default function StartRunScreen({}) {
                     }}
                   >
                     <View style={{ margin: 10 }}>
-                      <TouchableOpacity onPress={() => this.handleStartStop()}>
-                        <FontAwesome5Icon
-                          name="play-circle"
-                          size={80}
-                          color="#30F9B2"
-                        />
-                      </TouchableOpacity>
+                      {this.renderReStartButton()}
                     </View>
                     <View style={{ margin: 10 }}>
-                      <TouchableOpacity onPress={() => this.handleResultOpen()}>
-                        <FontAwesome5Icon
-                          name="stop-circle"
-                          size={80}
-                          color="#FF3300"
-                        />
-                      </TouchableOpacity>
+                      {this.renderExitButton()}
                     </View>
                   </View>
                 )}
@@ -277,6 +241,27 @@ export default function StartRunScreen({}) {
             </View>
           )}
         </View>
+      );
+    }
+    renderStopBUtton() {
+      return (
+        <TouchableOpacity onPress={() => this.handleStartStop()}>
+          <FontAwesome5Icon name="pause-circle" size={80} color="#3366CC" />
+        </TouchableOpacity>
+      );
+    }
+    renderReStartButton() {
+      return (
+        <TouchableOpacity onPress={() => this.handleStartStop()}>
+          <FontAwesome5Icon name="play-circle" size={80} color="#30F9B2" />
+        </TouchableOpacity>
+      );
+    }
+    renderExitButton() {
+      return (
+        <TouchableOpacity onPress={() => this.handleResultOpen()}>
+          <FontAwesome5Icon name="stop-circle" size={80} color="#FF3300" />
+        </TouchableOpacity>
       );
     }
     formatTime(time) {
@@ -293,6 +278,7 @@ export default function StartRunScreen({}) {
     }
     handleResultOpen() {
       handleSetCalorie(Run.getCalorie(weight, movingdistance, pace));
+      handleSetTotalDistance(movingdistance);
       navigation.navigate("Result");
       console.log(volume);
       if (withAudioGuide) {
@@ -397,6 +383,7 @@ export default function StartRunScreen({}) {
           newLocationLog[newLocationLog.length - 1].latitude,
           newLocationLog[newLocationLog.length - 1].longitude
         );
+        setMovingDistance((movingdistance) => movingdistance + distanceIn3min);
         setCurrentPace(Run.getPace(distanceIn3min, 180));
 
         return newLocationLog;

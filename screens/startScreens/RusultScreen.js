@@ -34,7 +34,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 export default function ResultScreen({ route }) {
   const documentId = null;
   const navigation = useNavigation();
-  const { time, pace, locationLog, calorie, resetAllState } =
+  const { time, pace, locationLog, calorie, resetAllState, totalDistance } =
     useActivityContext();
   const { user } = useAppContext();
   const [mapSelected, setMapSelected] = useState("フォロワー");
@@ -52,6 +52,7 @@ export default function ResultScreen({ route }) {
     { label: "マップはフォロワーに表示される", value: "フォロワー" },
     { label: "マップは自分の身に表示される", value: "自分のみ" },
   ];
+  console.log("userrrrrrrrrrrrrrrrrr" + user);
   useEffect(() => {
     const fetchActivity = async () => {
       try {
@@ -105,6 +106,7 @@ export default function ResultScreen({ route }) {
         addDoc(collection(FIRESTORE_DB, "stride-tracker_DB"), {
           user: user,
           activityName: activityName,
+          distance: totalDistance,
           locationLog: locationLog,
           time: time,
           pace: pace,
@@ -130,6 +132,7 @@ export default function ResultScreen({ route }) {
         user: user,
         activityName: activityName,
         locationLog: locationLog,
+        distance: totalDistance,
         time: time,
         pace: pace,
         calorie: calorie,
@@ -137,6 +140,7 @@ export default function ResultScreen({ route }) {
         memo: memo,
         map: mapSelected,
         datetime: datetime,
+
         image: "",
       })
         .then((docRef) => {

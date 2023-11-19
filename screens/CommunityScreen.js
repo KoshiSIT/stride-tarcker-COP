@@ -14,20 +14,10 @@ import Constants from "expo-constants";
 import axios from "axios";
 import * as Location from "expo-location";
 import { useAppContext } from "../contexts/AppContext";
-// firebase
-import { FIRESTORE_DB, FIREBASE_STORAGE, STORAGE_REF } from "../firebase";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  where,
-  orderBY,
-  limit,
-  query,
-} from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 // components
 import Map from "../components/Map";
+import Firebase from "../functions/Firebase";
 
 import * as Date from "../functions/Date";
 // icons lib
@@ -55,27 +45,12 @@ export default function CommunityScreen({ navigation }) {
   } = useAppContext();
   const [pictureIndex, setPictureIndex] = useState(0);
   const name = "ResultReview";
+  const fb = new Firebase(user);
+  // fb.getActivities(user);
   useEffect(() => {
-    const activitiesRef = query(
-      collection(FIRESTORE_DB, "stride-tracker_DB"),
-      where("user", "==", user),
-      limit(10)
-    );
-    const subscriber = onSnapshot(activitiesRef, {
-      next: (snapshot) => {
-        const activities = [];
-        snapshot.docs.forEach((doc) => {
-          console.log(doc.data());
-          activities.push({
-            id: doc.id,
-            ...doc.data(),
-          });
-        });
-        setActivities(activities);
-      },
-    });
+    const unsubscribe = fb.getActivities(setActivities);
     getLocationPermission();
-    return () => subscriber();
+    return () => unsubscribe();
   }, []);
 
   const getLocationPermission = async () => {
@@ -136,7 +111,7 @@ export default function CommunityScreen({ navigation }) {
             style={{ backgroundColor: "#F0F8FF", paddingTop: 20 }}
             nestedScrollEnabled={true}
           >
-            {activities.length > 0 && (
+            {activities && activities.length > 0 && (
               <FlatList
                 data={activities}
                 initialNumToRender={5}
