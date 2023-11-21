@@ -27,17 +27,20 @@ import FeatherIcon from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Constants from "expo-constants";
 import RNPickerSelect from "react-native-picker-select";
-import { FIRESTORE_DB, STORAGE_REF } from "../../firebase";
+import { FIRESTORE_DB, STORAGE_REF, FIREBASE_AUTH } from "../../firebase";
 import { addDoc, collection, documentId, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export default function ResultScreen({ route }) {
+  const {
+    translations: { ResultScreenjs: translated },
+  } = useContext(TranslationContext);
   const documentId = null;
   const navigation = useNavigation();
   const { time, pace, locationLog, calorie, resetAllState, totalDistance } =
     useActivityContext();
   const { user } = useAppContext();
-  const [mapSelected, setMapSelected] = useState("フォロワー");
+  const [mapSelected, setMapSelected] = useState(translated.withMapValue);
   const [activityName, setActivityName] = useState("running");
   const textInputRef = useRef(null);
   const [isDammy, setIsDammy] = useState(false);
@@ -45,37 +48,17 @@ export default function ResultScreen({ route }) {
   const [memo, setMemo] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageBlob, setImageBlob] = useState(null);
-  const {
-    translations: { ResultScreenjs: translated },
-  } = useContext(TranslationContext);
+  const test = FIREBASE_AUTH.currentUser;
   const mapItems = [
-    { label: "マップはフォロワーに表示される", value: "フォロワー" },
-    { label: "マップは自分の身に表示される", value: "自分のみ" },
+    { label: translated.withMaplabel, value: translated.withMapValue },
+    { label: translated.withoutMaplabel, value: translated.withoutMapValue },
   ];
-  console.log("userrrrrrrrrrrrrrrrrr" + user);
   useEffect(() => {
-    const fetchActivity = async () => {
-      try {
-        documentId = route.params.documentId;
-        console.log("bbbbbbbbbbbbbbbbbb" + documentId);
-        if (documentId) {
-          const docRef = doc(FIRESTORE_DB, "stride-tracker_DB", documentId);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists) {
-            console.log("Document dataaaaaaaaaaaaaaa:", docSnap.data());
-            const data = docSnap.data();
-            setActivityName(data.activityName);
-            setMapSelected(data.map);
-            setMemo(data.memo);
-            setBpm(data.bpm);
-            setImageBlob(data.image);
-          } else {
-            console.log("No such document!");
-          }
-        }
-      } catch (error) {}
-    };
-    fetchActivity();
+    if (route.params?.documentId) {
+      console.log(route.params.documentId);
+    } else {
+      console.log("no documentId");
+    }
   }, []);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -126,7 +109,6 @@ export default function ResultScreen({ route }) {
           });
       });
     } else {
-      console.log("uploadddddddddddddddddddddddddddddddddddddd");
       console.log(locationLog);
       addDoc(collection(FIRESTORE_DB, "stride-tracker_DB"), {
         user: user,
@@ -155,10 +137,13 @@ export default function ResultScreen({ route }) {
   };
   const uploadImage = async (blob) => {
     const imageRef = ref(STORAGE_REF, "images/" + blob._data.name);
-    console.log(`ref:${imageRef}`);
-    const uploadSnapshot = await uploadBytes(imageRef, blob, {
-      contentType: blob._data.type || "image/jpeg",
-    });
+    if (test) {
+      console.log(test);
+      console.log(`ref:${imageRef}`);
+      const uploadSnapshot = await uploadBytes(imageRef, blob, {
+        contentType: blob._data.type || "image/jpeg",
+      });
+    }
     console.log(blob._data.name);
     console.log(blob._data.size);
     const url = await getDownloadURL(imageRef);

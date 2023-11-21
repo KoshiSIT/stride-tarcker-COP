@@ -16,15 +16,21 @@ import { useNavigation } from "@react-navigation/native";
 import Modal from "react-native-modal";
 
 import React, { useEffect, useState, useRef, useContext } from "react";
-import { useActivityContext } from "../../contexts/ActivityContext";
+// contexts
 import { useAppContext } from "../../contexts/AppContext";
+import { useActivityContext } from "../../contexts/ActivityContext";
 import TranslationContext from "../../translator/TranslationContext";
+// components
 import PhotoPicker from "../../components/start/PhotoPicker";
+// functions
+import Firebase from "../../functions/Firebase";
+// icons lib
 import IoniconsIcon from "react-native-vector-icons/Ionicons";
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 import Constants from "expo-constants";
 import RNPickerSelect from "react-native-picker-select";
 import { FIRESTORE_DB, STORAGE_REF } from "../../firebase";
@@ -36,20 +42,29 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export default function ResultScreenUpdate({ route }) {
-  console.log(route.params.documentId);
   // const parentName = route.params.parentName;
+  let documentExist = false;
+  try {
+    if (route.params.documentId) {
+      documentExist = true;
+    }
+  } catch (error) {}
   const navigation = useNavigation();
   const {
     translations: { ResultScreenjs: translated },
   } = useContext(TranslationContext);
   const { user } = useAppContext();
-  const [time, setTime] = useState(0);
-  const [pace, setPace] = useState(0);
-  const [locationLog, setLocationLog] = useState([]);
-  const [calorie, setCalorie] = useState(0);
+  const fb = new Firebase(user);
+
+  const { time, pace, locationLog, calorie, resetAllState, totalDistance } =
+    useActivityContext();
+
+  const [timeDB, setTimeDB] = useState(0);
+  const [paceDB, setPaceDB] = useState(0);
+  const [locationLogDB, setLocationLogDB] = useState([]);
+  const [calorieDB, setCalorieDB] = useState(0);
   const [mapSelected, setMapSelected] = useState(translated.withMapValue);
   const [activityName, setActivityName] = useState("running");
   const textInputRef = useRef(null);
@@ -59,6 +74,16 @@ export default function ResultScreenUpdate({ route }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageBlob, setImageBlob] = useState(null);
 
+  const setScrennStates = (data) => {
+    setTimeDB(data.time);
+    setPaceDB(data.pace);
+    setLocationLogDB(data.locationLog);
+    setCalorieDB(data.calorie);
+    setActivityName(data.activityName);
+    setMapSelected(data.map);
+    setMemo(data.memo);
+    setBpm(data.bpm);
+  };
   const mapItems = [
     { label: translated.withMaplabel, value: translated.withMapValue },
     { label: translated.withoutMaplabel, value: translated.withoutMapValue },
@@ -74,13 +99,17 @@ export default function ResultScreenUpdate({ route }) {
       return (
         <View style={styles.container}>
           <View style={styles.titleContainer}>
-            <View>
-              <TouchableOpacity onPress={() => this.handleCancel()}>
-                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                  {translated.cancel}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {documentExist ? (
+              <View>
+                <TouchableOpacity onPress={() => this.handleCancel()}>
+                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                    {translated.cancel}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View></View>
+            )}
             <Text style={{ fontWeight: "bold", fontSize: 16 }}>
               {translated.resultAndSave}
             </Text>
@@ -91,11 +120,15 @@ export default function ResultScreenUpdate({ route }) {
           <ScrollView style={styles.mainContainer}>
             <View style={styles.dataContainer}>
               <View style={styles.dataSubItem}>
-                <Text style={{ fontSize: 20 }}>{time.toFixed(2)}</Text>
+                <Text style={{ fontSize: 20 }}>
+                  {documentExist ? timeDB.toFixed(2) : time.toFixed(2)}
+                </Text>
                 <Text>{translated.time}</Text>
               </View>
               <View style={styles.dataSubItem}>
-                <Text style={{ fontSize: 20 }}>{calorie}</Text>
+                <Text style={{ fontSize: 20 }}>
+                  {documentExist ? calorieDB : calorie}
+                </Text>
                 <Text>{translated.calories}</Text>
               </View>
             </View>
@@ -268,22 +301,13 @@ export default function ResultScreenUpdate({ route }) {
     }
     async fetchActivity() {
       try {
-        const documentId = route.params.documentId;
-        if (documentId) {
+        if (documentExist) {
+          const documentId = route.params.documentId;
           const docRef = doc(FIRESTORE_DB, "stride-tracker_DB", documentId);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists) {
-            console.log("Document dataaaaaaaaaaaaaaa:", docSnap.data());
             const data = docSnap.data();
-            console.log("uuuuuuuuuuuuuukiiiiiiiii" + data.time);
-            setTime(data.time);
-            setPace(data.pace);
-            setLocationLog(data.locationLog);
-            setCalorie(data.calorie);
-            setActivityName(data.activityName);
-            setMapSelected(data.map);
-            setMemo(data.memo);
-            setBpm(data.bpm);
+            setScrennStates(data);
           } else {
             console.log("No such document!");
           }
@@ -329,6 +353,66 @@ export default function ResultScreenUpdate({ route }) {
       }
     }
     saveResult() {
+      if (documentExist) {
+        this.updateData();
+      } else {
+        this.addData();
+      }
+    }
+    addData() {
+      datetime = new Date();
+      if (imageBlob !== null) {
+        fb.uploadImage(imageBlob).then((url) => {
+          addDoc(collection(FIRESTORE_DB, "stride-tracker_DB"), {
+            user: user,
+            activityName: activityName,
+            distance: totalDistance,
+            locationLog: locationLog,
+            time: time,
+            pace: pace,
+            calorie: calorie,
+            bpm: bpm,
+            memo: memo,
+            map: mapSelected,
+            image: url,
+            datetime: datetime,
+          })
+            .then((docRef) => {
+              console.log("Document written with ID: ", docRef.id);
+              navigation.navigate("ResultReview", { documentId: docRef.id });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
+      } else {
+        console.log(locationLog);
+        addDoc(collection(FIRESTORE_DB, "stride-tracker_DB"), {
+          user: user,
+          activityName: activityName,
+          locationLog: locationLog,
+          distance: totalDistance,
+          time: time,
+          pace: pace,
+          calorie: calorie,
+          bpm: bpm,
+          memo: memo,
+          map: mapSelected,
+          datetime: datetime,
+
+          image: "",
+        })
+          .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+            navigation.navigate("ResultReview", { documentId: docRef.id });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      resetAllState();
+    }
+    updateData() {
       const datetime = new Date();
       const docRef = doc(
         FIRESTORE_DB,
@@ -338,10 +422,10 @@ export default function ResultScreenUpdate({ route }) {
       const updateData = {
         user: user,
         activityName: activityName,
-        locationLog: locationLog,
-        time: time,
-        pace: pace,
-        calorie: calorie,
+        locationLog: locationLogDB,
+        time: timeDB,
+        pace: paceDB,
+        calorie: calorieDB,
         bpm: bpm,
         memo: memo,
         map: mapSelected,
@@ -352,33 +436,22 @@ export default function ResultScreenUpdate({ route }) {
         updateDoc(docRef, data)
           .then(() => {
             console.log("Document successfully updated!");
-            navigation.goBack();
+            navigation.navigate("ResultReview", { documentId: docRef.id });
           })
           .catch((error) => {
             console.error("Error updating document: ", error);
           });
       };
       if (imageBlob !== null) {
-        this.uploadImage(imageBlob).then((url) => {
+        fb.uploadImage(imageBlob).then((url) => {
           updateData.image = url;
+          console.log(url);
           updateDocument(updateData);
         });
       } else {
         updateData.image = "";
         updateDocument(updateData);
       }
-    }
-    async uploadImage(blob) {
-      const imageRef = ref(STORAGE_REF, "images/" + blob._data.name);
-      console.log(`ref:${imageRef}`);
-      const uploadSnapshot = await uploadBytes(imageRef, blob, {
-        contentType: blob._data.type || "image/jpeg",
-      });
-      console.log(blob._data.name);
-      console.log(blob._data.size);
-      const url = await getDownloadURL(imageRef);
-      console.log(url);
-      return url;
     }
   }
   const result = new Result();

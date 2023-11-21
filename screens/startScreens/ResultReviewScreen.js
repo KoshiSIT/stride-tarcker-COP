@@ -14,13 +14,11 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState, useRef, useContext } from "react";
 
-import MapView, { Marker } from "react-native-maps";
-import { Svg, Circle } from "react-native-svg";
-import * as Location from "expo-location";
 import { useAppContext } from "../../contexts/AppContext";
 import { useActivityContext } from "../../contexts/ActivityContext";
 import TranslationContext from "../../translator/TranslationContext";
 import Map from "../../components/Map";
+// icons lib
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import FonttistoIcon from "react-native-vector-icons/Fontisto";
@@ -32,7 +30,6 @@ import AntDesignIcon from "react-native-vector-icons/AntDesign";
 
 import * as Date from "../../functions/Date";
 import * as ImagePicker from "expo-image-picker";
-import { init } from "contextjs";
 import { FIRESTORE_DB } from "../../firebase";
 import {
   addDoc,
@@ -48,8 +45,6 @@ export default function ResultReviewScreen({ route }) {
   const name = "ResultReview";
   const navigation = useNavigation();
   const { currentLocation, handleSetCurrentLocation } = useAppContext();
-  const [time, setTime] = useState(0);
-  const [calorie, setCalorie] = useState(0);
   const [pictureIndex, setPictureIndex] = useState(0);
   const {
     translations: { ResultReviewScreenjs: translated },
@@ -77,7 +72,6 @@ export default function ResultReviewScreen({ route }) {
     }
   };
   useEffect(() => {
-    getLocationPermission();
     let documentId = null;
     try {
       documentId = route.params.documentId;
@@ -102,22 +96,6 @@ export default function ResultReviewScreen({ route }) {
       return () => subscriber();
     }
   }, []);
-  const getLocationPermission = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status === "granted") {
-      startLocationUpdates();
-    }
-  };
-
-  const startLocationUpdates = async () => {
-    Location.watchPositionAsync(
-      { accuracy: Location.Accuracy.High, timeInterval: 1000 },
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        handleSetCurrentLocation({ latitude, longitude });
-      }
-    );
-  };
   console.log(resultItem.locationLog);
   return (
     <View style={styles.container}>
@@ -202,7 +180,9 @@ export default function ResultReviewScreen({ route }) {
         </View>
         <View style={styles.dataContainer}>
           <View style={styles.dataSubItem}>
-            <Text style={{ fontSize: 20 }}>{resultItem.time}</Text>
+            <Text style={{ fontSize: 20 }}>
+              {Date.formatNumber(resultItem.time)}
+            </Text>
             <Text>{translated.time}</Text>
           </View>
           <View style={styles.dataSubItem}>

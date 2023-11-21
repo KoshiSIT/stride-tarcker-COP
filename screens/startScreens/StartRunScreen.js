@@ -279,7 +279,7 @@ export default function StartRunScreen({}) {
     handleResultOpen() {
       handleSetCalorie(Run.getCalorie(weight, movingdistance, pace));
       handleSetTotalDistance(movingdistance);
-      navigation.navigate("Result");
+      navigation.navigate("ResultUpdate");
       console.log(volume);
       if (withAudioGuide) {
         speakText("アクティビティを終了します。", language, volume);
@@ -319,13 +319,9 @@ export default function StartRunScreen({}) {
   const sr = new StartRun();
   useEffect(() => {
     sr.getLocationPermission();
-    console.log(
-      "initialPositionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
-    );
-    console.log(currentLocation);
-    console.log("currentLocationEnd");
+    // console.log(currentLocation);
     resetAllState();
-    console.log(locationLog);
+    // console.log(locationLog);
     handleSetLocationLog((locationLog) => [...locationLog, currentLocation]);
     console.log(volume);
     if (withAudioGuide) {

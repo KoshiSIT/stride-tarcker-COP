@@ -1,10 +1,10 @@
 {
   "Appjs": {
-    "user": "User",
-    "training": "Training",
-    "start": "Start",
-    "community": "Community",
-    "explorer": "Explorer"
+    "user": "UserTab",
+    "training": "TrainingTab",
+    "start": "StartTab",
+    "community": "CommunityTab",
+    "explorer": "ExplorerTab"
   },
   "UserScreenjs": {
     "total": "total",

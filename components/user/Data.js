@@ -17,7 +17,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import { useContext, useState } from "react";
 import { TranslationContext } from "../../translator";
 
-const Data = () => {
+const Data = ({ weeklyData, monthlyData, yearlyData }) => {
   const {
     translations: { Datajs: translated },
   } = useContext(TranslationContext);
@@ -27,6 +27,7 @@ const Data = () => {
     console.log(tab);
     setSelectedTab(tab);
   };
+
   return (
     <View style={styles.box}>
       <View style={styles.headlineBackground}>
@@ -65,21 +66,27 @@ const Data = () => {
         </View>
         <View style={styles.mainContainer}>
           {selectedTab === "weekly" && (
-            <WeeklyActivities
+            <TermActivities
               activePageIndex={activePageIndex}
               setActivePageIndex={setActivePageIndex}
+              selectedTab={selectedTab}
+              data={weeklyData}
             />
           )}
           {selectedTab === "monthly" && (
-            <MonthlyActivities
+            <TermActivities
               activePageIndex={activePageIndex}
               setActivePageIndex={setActivePageIndex}
+              selectedTab={selectedTab}
+              data={monthlyData}
             />
           )}
           {selectedTab === "yearly" && (
-            <YearlyActivities
+            <TermActivities
               activePageIndex={activePageIndex}
               setActivePageIndex={setActivePageIndex}
+              selectedTab={selectedTab}
+              data={yearlyData}
             />
           )}
         </View>
@@ -95,18 +102,57 @@ const Data = () => {
     </View>
   );
 };
-const WeeklyActivities = ({ activePageIndex, setActivePageIndex }) => {
+const TermActivities = ({
+  activePageIndex,
+  setActivePageIndex,
+  selectedTab,
+  data,
+}) => {
+  console.log(data);
+  let topItemText = {};
+  let caloriesBurnedData = {
+    thisTerm: 0,
+    lastTerm: 0,
+  };
+  let elevationClimbData = {
+    thisTerm: 0,
+    lastTerm: 0,
+  };
+  let timeSpentData = {
+    thisTerm: 0,
+    lastTerm: 0,
+  };
+  if (selectedTab === "weekly") {
+    topItemText = {
+      thisTerm: "This Week",
+      lastTerm: "Last Week",
+    };
+  } else if (selectedTab === "monthly") {
+    topItemText = {
+      thisTerm: "This Month",
+      lastTerm: "Last Month",
+    };
+  } else if (selectedTab === "yearly") {
+    topItemText = {
+      thisTerm: "This Year",
+      lastTerm: "Last Year",
+    };
+  }
+
   return (
     <View style={styles.activitesContainer}>
       <View style={styles.topContainer}>
         <View style={styles.topItem1}>
           <Text style={styles.topItem1Text}>All Activites</Text>
+          <TouchableOpacity style={{ marginLeft: 5 }}>
+            <FontAwesome5Icon name="align-justify" size={20} color="black" />
+          </TouchableOpacity>
         </View>
         <View style={styles.topItem2}>
-          <Text style={styles.topItemText}>This Week</Text>
+          <Text style={styles.topItemText}>{topItemText.thisTerm}</Text>
         </View>
         <View style={styles.topItem3}>
-          <Text style={styles.topItemText}>Last Week</Text>
+          <Text style={styles.topItemText}>{topItemText.lastTerm}</Text>
         </View>
       </View>
       <ScrollView
@@ -161,24 +207,24 @@ const WeeklyActivities = ({ activePageIndex, setActivePageIndex }) => {
           </View>
           <View style={styles.mainItem2}>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
+              <Text style={styles.nameText}>{data.totalDistance}</Text>
             </View>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
+              <Text style={styles.nameText}>{data.averagePace}</Text>
             </View>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
+              <Text style={styles.nameText}>{data.activitiesCount}</Text>
             </View>
           </View>
           <View style={styles.mainItem3}>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
+              <Text style={styles.nameText}>{data.totalDistance}</Text>
             </View>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
+              <Text style={styles.nameText}>{data.averagePace}</Text>
             </View>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
+              <Text style={styles.nameText}>{data.activitiesCount}</Text>
             </View>
           </View>
         </View>
@@ -214,24 +260,24 @@ const WeeklyActivities = ({ activePageIndex, setActivePageIndex }) => {
           </View>
           <View style={styles.mainItem2}>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
+              <Text style={styles.nameText}>TBD</Text>
             </View>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
+              <Text style={styles.nameText}>TBD</Text>
             </View>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
+              <Text style={styles.nameText}>TBD</Text>
             </View>
           </View>
           <View style={styles.mainItem3}>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
+              <Text style={styles.nameText}>TBD</Text>
             </View>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
+              <Text style={styles.nameText}>TBD</Text>
             </View>
             <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
+              <Text style={styles.nameText}>TBD</Text>
             </View>
           </View>
         </View>
@@ -239,294 +285,7 @@ const WeeklyActivities = ({ activePageIndex, setActivePageIndex }) => {
     </View>
   );
 };
-const MonthlyActivities = ({ activePageIndex, setActivePageIndex }) => {
-  return (
-    <View style={styles.activitesContainer}>
-      <View style={styles.topContainer}>
-        <View style={styles.topItem1}>
-          <Text style={styles.topItem1Text}>All Activites</Text>
-        </View>
-        <View style={styles.topItem2}>
-          <Text style={styles.topItemText}>This Week</Text>
-        </View>
-        <View style={styles.topItem3}>
-          <Text style={styles.topItemText}>Last Week</Text>
-        </View>
-      </View>
-      <ScrollView
-        style={{ height: "50%" }}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        decelerationRate="fast"
-        snapToInterval={Dimensions.get("window").width * 1}
-        contentOffset={{
-          x: activePageIndex * Dimensions.get("window").width * 1,
-          y: 0,
-        }}
-        onMomentumScrollEnd={(event) => {
-          const contentOffsetX = event.nativeEvent.contentOffset.x;
-          const index = Math.round(
-            contentOffsetX / Dimensions.get("window").width
-          );
-          setActivePageIndex(index);
-        }}
-        scrollEventThrottle={200}
-      >
-        <View style={styles.mainItemContainer}>
-          <View style={styles.mainItem1}>
-            <View style={styles.columItem}>
-              <FontAwesome5Icon
-                name="route"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Distance</Text>
-            </View>
-            <View style={styles.columItem}>
-              <MateralIcons
-                name="av-timer"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>AVG Pace</Text>
-            </View>
-            <View style={styles.columItem}>
-              <FontAwesome5Icon
-                name="running"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Activities</Text>
-            </View>
-          </View>
-          <View style={styles.mainItem2}>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-          </View>
-          <View style={styles.mainItem3}>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.mainItemContainer}>
-          <View style={styles.mainItem1}>
-            <View style={styles.columItem}>
-              <FontAwesome5Icon
-                name="route"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Calories Burned</Text>
-            </View>
-            <View style={styles.columItem}>
-              <MateralIcons
-                name="av-timer"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Elevation Climb</Text>
-            </View>
-            <View style={styles.columItem}>
-              <Entypo
-                name="time-slot"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Time Spent</Text>
-            </View>
-          </View>
-          <View style={styles.mainItem2}>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-          </View>
-          <View style={styles.mainItem3}>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
-};
-const YearlyActivities = ({ activePageIndex, setActivePageIndex }) => {
-  return (
-    <View style={styles.activitesContainer}>
-      <View style={styles.topContainer}>
-        <View style={styles.topItem1}>
-          <Text style={styles.topItem1Text}>All Activites</Text>
-        </View>
-        <View style={styles.topItem2}>
-          <Text style={styles.topItemText}>This Week</Text>
-        </View>
-        <View style={styles.topItem3}>
-          <Text style={styles.topItemText}>Last Week</Text>
-        </View>
-      </View>
-      <ScrollView
-        style={{ height: "50%" }}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        decelerationRate="fast"
-        snapToInterval={Dimensions.get("window").width * 1}
-        contentOffset={{
-          x: activePageIndex * Dimensions.get("window").width * 1,
-          y: 0,
-        }}
-        onMomentumScrollEnd={(event) => {
-          const contentOffsetX = event.nativeEvent.contentOffset.x;
-          const index = Math.round(
-            contentOffsetX / Dimensions.get("window").width
-          );
-          setActivePageIndex(index);
-        }}
-        scrollEventThrottle={200}
-      >
-        <View style={styles.mainItemContainer}>
-          <View style={styles.mainItem1}>
-            <View style={styles.columItem}>
-              <FontAwesome5Icon
-                name="route"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Distance</Text>
-            </View>
-            <View style={styles.columItem}>
-              <MateralIcons
-                name="av-timer"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>AVG Pace</Text>
-            </View>
-            <View style={styles.columItem}>
-              <FontAwesome5Icon
-                name="running"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Activities</Text>
-            </View>
-          </View>
-          <View style={styles.mainItem2}>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-          </View>
-          <View style={styles.mainItem3}>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.mainItemContainer}>
-          <View style={styles.mainItem1}>
-            <View style={styles.columItem}>
-              <FontAwesome5Icon
-                name="route"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Calories Burned</Text>
-            </View>
-            <View style={styles.columItem}>
-              <MateralIcons
-                name="av-timer"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Elevation Climb</Text>
-            </View>
-            <View style={styles.columItem}>
-              <Entypo
-                name="time-slot"
-                size={20}
-                color="black"
-                style={styles.icon}
-              />
-              <Text style={styles.nameText}>Time Spent</Text>
-            </View>
-          </View>
-          <View style={styles.mainItem2}>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-          </View>
-          <View style={styles.mainItem3}>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>This Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-            <View style={styles.dataItem}>
-              <Text style={styles.nameText}>Last Week</Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
-};
+
 export default Data;
 
 const styles = StyleSheet.create({
@@ -618,7 +377,8 @@ const styles = StyleSheet.create({
   topItem1: {
     width: "50%",
     backgroundColor: "white",
-    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
     borderColor: "#f5f5f5",
     borderWidth: 2,
   },
@@ -694,6 +454,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "lightgray",
     alignItems: "center",
+    justifyContent: "center",
     borderColor: "#f5f5f5",
     borderWidth: 2,
     flexDirection: "row",

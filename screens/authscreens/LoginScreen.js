@@ -12,21 +12,13 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { useAppContext } from "../../contexts/AppContext";
+// auth apis
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { FIREBASE_AUTH } from "../../firebase";
 import Loading from "../../components/Loading";
-import { FIRESTORE_DB, STORAGE_REF } from "../../firebase";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  where,
-  query,
-} from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import Firebase from "../../functions/Firebase";
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -69,63 +61,19 @@ export default function LoginScreen() {
   };
   const signUp = async () => {
     setLoading(true);
-    const storageRef = ref(STORAGE_REF, "images/" + "r1280x720l.jpeg");
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const url = await getDownloadURL(storageRef);
-      await addDoc(collection(FIRESTORE_DB, "user_info"), {
-        user: userCredential.user.uid,
-        firstName: "Ayre",
-        lastName: "Nile",
-        birthday: "1999/01/01",
-        gender: "woman",
-        language: "jp",
-        weight: 60,
-        height: 170,
-        firstDayOfWeek: "sunday",
-        profileImage: url,
-      })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
+      fb.addUserInfo(userCredential.user.uid);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
-  //   const getUserInfo = async (userCredential) => {
-  //     return new Promise((resolve, reject) => {
-  //       const userRef = query(
-  //         collection(FIRESTORE_DB, "user_info"),
-  //         where("user", "==", userCredential.user.uid)
-  //       );
-  //       const subscrier = onSnapshot(userRef, {
-  //         next: (snapshot) => {
-  //           const userInfos = [];
-  //           snapshot.forEach((doc) => {
-  //             console.log(doc.data());
-  //             userInfos.push({
-  //               id: doc.id,
-  //               ...doc.data(),
-  //             });
-  //           });
-  //           resolve(userInfos);
-  //         },
-  //         error: (error) => {
-  //           reject(error);
-  //         },
-  //       });
-  //       return subscrier;
-  //     });
-  //   };
 
   return (
     <View style={styles.container}>

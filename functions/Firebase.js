@@ -8,11 +8,13 @@ import {
   query,
   Timestamp,
   getDocs,
+  updateDoc,
+  doc,
 } from "firebase/firestore";
-import { getDownloadURL, ref } from "firebase/storage";
+import { getDownloadURL, ref, getDoc, uploadBytes } from "firebase/storage";
 import { FIRESTORE_DB, FIREBASE_STORAGE, STORAGE_REF } from "../firebase";
 import { getDateRange } from "./Date";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+
 class Firebase {
   constructor(user) {
     this.user = user;
@@ -124,6 +126,58 @@ class Firebase {
       });
       return subscriber;
     });
+  }
+  async addUserInfo(user) {
+    const stRef = ref(this.storageRef, "images/" + "r1280x720l.jpeg");
+    const url = await getDownloadURL(stRef);
+    await addDoc(collection(this.db, "user_info"), {
+      user: user,
+      firstName: "Ayre",
+      lastName: "Nile",
+      birthday: "1999/01/01",
+      gender: "woman",
+      language: "jp",
+      weight: 60,
+      height: 170,
+      firstDayOfWeek: "sunday",
+      profileImage: url,
+    })
+      .then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch((error) => {
+        console.error("Error adding document: ", error);
+      });
+  }
+  async uploadImage(blob) {
+    const imageRef = ref(this.storageRef, "images/" + blob._data.name);
+    console.log(`imageRef: ${imageRef}`);
+    await uploadBytes(imageRef, blob, {
+      contentType: blob._data.type || "image/jpeg",
+    });
+    const url = await getDownloadURL(imageRef);
+    return url;
+  }
+  async updateUserProfileImage(url) {
+    console.log(`url: ${url}`);
+    const documentId = await this.getDocumentidByUser(this.user);
+    const userRef = doc(this.db, "user_info", documentId);
+    console.log(`userRef: ${userRef}`);
+    await updateDoc(userRef, {
+      profileImage: url,
+    });
+  }
+  async getDocumentidByUser(user) {
+    const userRef = query(
+      collection(this.db, "user_info"),
+      where("user", "==", user)
+    );
+    const snapshot = await getDocs(userRef);
+    let id = "";
+    snapshot.forEach((doc) => {
+      id = doc.id;
+    });
+    return id;
   }
 }
 export default Firebase;

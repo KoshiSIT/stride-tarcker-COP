@@ -13,6 +13,7 @@ import Constants from "expo-constants";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { useAppContext } from "../contexts/AppContext";
+// user components
 import Data from "../components/user/Data";
 import Achivements from "../components/user/Achievements";
 import Activity from "../components/user/Activity";
@@ -20,10 +21,15 @@ import ShoeTracker from "../components/user/ShoeTracker";
 import Goal from "../components/user/Goal";
 import Insite from "../components/user/Insite";
 import WeeklyWorkout from "../components/user/WeeklyWorkout";
+// components
+import PhotoPicker from "../components/start/PhotoPicker";
+import ProfilePicker from "../components/start/ProfilePicker";
+// icons lib
 import FeatherIcon from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+// translation lib
 import { TranslationContext } from "../translator";
 
 export default function UserScreen({}) {
@@ -35,11 +41,13 @@ export default function UserScreen({}) {
     monthlyData,
     yearlyData,
     totalActivitiesCount,
+    user,
   } = useAppContext();
   const navigation = useNavigation();
   const {
     translations: { UserScreenjs: translated },
   } = useContext(TranslationContext);
+  const [imageBlob, setImageBlob] = useState(null);
   useEffect(() => {}, []);
 
   const goAppSettings = () => {
@@ -65,22 +73,11 @@ export default function UserScreen({}) {
         <View style={styles.userContainer}>
           <View style={styles.nameContainer}>
             <TouchableOpacity style={styles.circle}>
-              {profileImage ? (
-                <View>
-                  <Image
-                    source={{ uri: profileImage }}
-                    style={{ width: 50, height: 50, borderRadius: 25 }}
-                  />
-                </View>
-              ) : (
-                <View>
-                  <MaterialCommunityIcons
-                    name="camera-outline"
-                    size={30}
-                    color="black"
-                  />
-                </View>
-              )}
+              <ProfilePicker
+                setImageBlob={setImageBlob}
+                profileImage={profileImage}
+                user={user}
+              />
             </TouchableOpacity>
             <Text style={styles.name}>{firstName + lastName}</Text>
           </View>
@@ -100,7 +97,11 @@ export default function UserScreen({}) {
           </View>
           <View style={styles.subscribeContainer}></View>
         </View>
-        <Data />
+        <Data
+          weeklyData={weeklyData}
+          monthlyData={monthlyData}
+          yearlyData={yearlyData}
+        />
         <Achivements />
         <Activity totalActivitiesCount={totalActivitiesCount} />
         <ShoeTracker />

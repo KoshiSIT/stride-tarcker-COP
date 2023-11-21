@@ -47,7 +47,6 @@ import ExplorerScreen from "./screens/ExplorerScreen";
 import LoginScreen from "./screens/authscreens/LoginScreen";
 // components
 import Loading from "./components/Loading";
-import { Settings } from "react-native";
 
 import { TranslationProvider, TranslationContext } from "./translator";
 import { useContext } from "react";
