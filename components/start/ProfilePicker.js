@@ -8,8 +8,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 // translation lib
 
 const ProfilePicker = ({ profileImage, user }) => {
-  const [image, setImage] = useState("");
-  console.log(`profileImage: ${profileImage}`);
+  const [image, setImage] = useState(profileImage);
+  // console.log(`profileImage: ${profileImage}`);
   const [imageBlob, setImageBlob] = useState(null);
   const fb = new Firebase(user);
   const handleImagePick = async () => {
@@ -32,9 +32,7 @@ const ProfilePicker = ({ profileImage, user }) => {
       setImageBlob(localBlob);
     }
   };
-  useEffect(() => {
-    setImage(profileImage);
-  }, []);
+  useEffect(() => {}, []);
   useEffect(() => {
     if (imageBlob) {
       fb.uploadImage(imageBlob).then((url) => {

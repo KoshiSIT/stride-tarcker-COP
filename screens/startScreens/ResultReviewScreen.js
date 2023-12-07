@@ -28,7 +28,7 @@ import FeatherIcon from "react-native-vector-icons/Feather";
 import Constants from "expo-constants";
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
 
-import * as Date from "../../functions/Date";
+import * as DateHelpers from "../../functions/DateHelpers";
 import * as ImagePicker from "expo-image-picker";
 import { FIRESTORE_DB } from "../../firebase";
 import {
@@ -44,7 +44,6 @@ export default function ResultReviewScreen({ route }) {
   const [resultItem, setResultItem] = useState([]);
   const name = "ResultReview";
   const navigation = useNavigation();
-  const { currentLocation, handleSetCurrentLocation } = useAppContext();
   const [pictureIndex, setPictureIndex] = useState(0);
   const {
     translations: { ResultReviewScreenjs: translated },
@@ -123,7 +122,7 @@ export default function ResultReviewScreen({ route }) {
           <View style={styles.resultItem1}>
             <FontAwesome5Icon name="walking" size={30} color="black" />
             <Text style={styles.activityText}>
-              {Date.formatDate(resultItem.datetime)}
+              {DateHelpers.formatDate(resultItem.datetime)}
             </Text>
           </View>
         </View>
@@ -181,7 +180,7 @@ export default function ResultReviewScreen({ route }) {
         <View style={styles.dataContainer}>
           <View style={styles.dataSubItem}>
             <Text style={{ fontSize: 20 }}>
-              {Date.formatNumber(resultItem.time)}
+              {DateHelpers.formatNumber(resultItem.time)}
             </Text>
             <Text>{translated.time}</Text>
           </View>

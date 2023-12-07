@@ -19,7 +19,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 import Map from "../components/Map";
 import Firebase from "../functions/Firebase";
 
-import * as Date from "../functions/Date";
+import * as Date from "../functions/DateHelpers";
 // icons lib
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
@@ -118,7 +118,7 @@ export default function CommunityScreen({ navigation }) {
                 maxToRenderPerBatch={5}
                 renderItem={({ item }) => (
                   <View>
-                    {console.log(item)}
+                    {/* {console.log(item)} */}
                     <TouchableOpacity onPress={() => pressActivity(item.id)}>
                       <View style={styles.userContainer}>
                         <View style={styles.item1}>
@@ -162,7 +162,7 @@ export default function CommunityScreen({ navigation }) {
                     </View>
                     <View style={styles.timeContainer}>
                       <Text style={{ fontSize: 18 }}>
-                        {Date.formatNumber(item.time)}
+                        {Date.formatTime(item.time)}
                       </Text>
                       <Text style={{ fontSize: 10 }}>{translated.time}</Text>
                     </View>

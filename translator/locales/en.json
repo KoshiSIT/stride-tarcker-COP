@@ -201,7 +201,16 @@
     "settings": "Settings",
     "display": "Display",
     "profile": "Profile Settings",
+    "pushNotifications": "Push Notification",
     "logout": "Logout"
+  },
+  "NotificationsSettingsjs": {
+    "title": "Push Notifications",
+    "activity": "Activity",
+    "workoutReminders": "Workout Reminders",
+    "workoutRemindersDescription": "Notify me when I schedule a good time to workout",
+    "when": "When",
+    "followers ": "Followers"
   },
   "PhotoPickerjs": {
     "AddaPicture": "Add a picture"

@@ -9,8 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import Constants from "expo-constants";
-import axios from "axios";
+
 import { useNavigation } from "@react-navigation/native";
 import { useAppContext } from "../contexts/AppContext";
 // user components
@@ -22,8 +21,10 @@ import Goal from "../components/user/Goal";
 import Insite from "../components/user/Insite";
 import WeeklyWorkout from "../components/user/WeeklyWorkout";
 // components
-import PhotoPicker from "../components/start/PhotoPicker";
 import ProfilePicker from "../components/start/ProfilePicker";
+// functions
+import DateHelpers from "../functions/DateHelpers";
+import Firebase from "../functions/Firebase";
 // icons lib
 import FeatherIcon from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -37,23 +38,31 @@ export default function UserScreen({}) {
     firstName,
     profileImage,
     lastName,
+    height,
     weeklyData,
     monthlyData,
     yearlyData,
-    totalActivitiesCount,
+    allActivitesData,
+    weeklyTotal,
+    monthlyTotal,
+    yearlyTotal,
+    allActivitedTotal,
+    initializeActivitesContext,
     user,
   } = useAppContext();
   const navigation = useNavigation();
   const {
     translations: { UserScreenjs: translated },
   } = useContext(TranslationContext);
-  const [imageBlob, setImageBlob] = useState(null);
+  const fb = new Firebase(user);
   useEffect(() => {}, []);
 
   const goAppSettings = () => {
     navigation.navigate("AppSettings");
   };
-
+  const testFunc = () => {
+    fb.updateUserInfo();
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
@@ -61,7 +70,7 @@ export default function UserScreen({}) {
           <Ionicons name="notifications-outline" size={30} color="black" />
         </TouchableOpacity>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => testFunc()}>
             <AntDesign name="adduser" size={30} color="black" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => goAppSettings()}>
@@ -73,13 +82,10 @@ export default function UserScreen({}) {
         <View style={styles.userContainer}>
           <View style={styles.nameContainer}>
             <TouchableOpacity style={styles.circle}>
-              <ProfilePicker
-                setImageBlob={setImageBlob}
-                profileImage={profileImage}
-                user={user}
-              />
+              <ProfilePicker profileImage={profileImage} user={user} />
             </TouchableOpacity>
             <Text style={styles.name}>{firstName + lastName}</Text>
+            <Text> {height} </Text>
           </View>
           <View style={styles.followContainer}>
             <View style={styles.followItem1}>
@@ -98,16 +104,16 @@ export default function UserScreen({}) {
           <View style={styles.subscribeContainer}></View>
         </View>
         <Data
-          weeklyData={weeklyData}
-          monthlyData={monthlyData}
-          yearlyData={yearlyData}
+          weeklyData={weeklyTotal}
+          monthlyData={monthlyTotal}
+          yearlyData={yearlyTotal}
         />
         <Achivements />
-        <Activity totalActivitiesCount={totalActivitiesCount} />
+        <Activity totalActivitiesCount={allActivitedTotal.activitiesCount} />
         <ShoeTracker />
         <Goal />
-        <Insite totalActivitiesCount={totalActivitiesCount} />
-        <WeeklyWorkout weeklyData={weeklyData} />
+        <Insite totalActivitiesCount={allActivitedTotal.activitiesCount} />
+        <WeeklyWorkout weeklyData={weeklyTotal} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -8,7 +8,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.19.5",
+    "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/slider": "4.4.2",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
@@ -29,7 +29,7 @@
     "expo-speech": "~11.3.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
-    "expo-updates": "~0.18.13",
+    "expo-updates": "~0.18.17",
     "expo-web-browser": "~12.3.2",
     "firebase": "^10.3.0",
     "install": "^0.13.0",
@@ -46,7 +46,10 @@
     "react-native-slider": "^0.11.0",
     "react-native-svg": "13.9.0",
     "react-native-vector-icons": "^9.2.0",
-    "zone": "^0.3.4"
+    "zone": "^0.3.4",
+    "expo-task-manager": "~11.3.0",
+    "expo-notifications": "~0.20.1",
+    "expo-device": "~5.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

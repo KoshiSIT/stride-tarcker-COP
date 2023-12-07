@@ -199,7 +199,16 @@
     "settings": "設定",
     "display": "表示",
     "profile": "プロフィール設定",
+    "pushNotifications": "プッシュ通知",
     "logout": "ログアウト"
+  },
+  "NotificationsSettingsjs": {
+    "titile": "プッシュ通知",
+    "activity": "アクティビティ",
+    "workoutReminders": "ワークアウトリマインダー",
+    "workoutRemindersDescription": "ワークアウトリマインダーを設定する",
+    "when": "時間",
+    "followers": "フォロワー"
   },
   "PhotoPickerjs": {
     "AddaPicture": "写真を追加"

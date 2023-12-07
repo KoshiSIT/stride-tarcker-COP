@@ -28,10 +28,14 @@ export default function LoginScreen() {
   const auth = FIREBASE_AUTH;
   const {
     initailizeUserInfoContext,
+    handleSetYearlyTotal,
+    handleSetAllActivitedTotal,
+    handleSetMonthlyTotal,
+    handleSetWeeklyTotal,
+    handleSetAllActivitedData,
     handleSetWeeklyData,
     handleSetMonthlyData,
     handleSetYearlyData,
-    handleSetTotalActivitiesCount,
   } = useAppContext();
   const fb = new Firebase();
   const signIn = async () => {
@@ -42,17 +46,18 @@ export default function LoginScreen() {
         email,
         password
       );
-      const userInfos = await fb.getUserInfo(userCredential);
-      await initailizeUserInfoContext(userInfos);
-      fb.setUser(userCredential.user.uid);
-      const weeklyData = await fb.getDateRangeData("week");
-      handleSetWeeklyData(weeklyData);
-      const monthlyData = await fb.getDateRangeData("month");
-      handleSetMonthlyData(monthlyData);
-      const yearlyData = await fb.getDateRangeData("year");
-      handleSetYearlyData(yearlyData);
-      const totalActivitiesCount = await fb.getActivitiesCount();
-      handleSetTotalActivitiesCount(totalActivitiesCount);
+      // const userInfos = await fb.getUserInfo(userCredential);
+      // await fb.getAllActivitesData().then((data) => {
+      //   handleSetWeeklyData(data.weeklyData);
+      //   handleSetMonthlyData(data.monthlyData);
+      //   handleSetYearlyData(data.yearlyData);
+      //   handleSetAllActivitedData(data.allActivitedData);
+      //   handleSetWeeklyTotal(data.weeklyTotal);
+      //   handleSetMonthlyTotal(data.monthlyTotal);
+      //   handleSetYearlyTotal(data.yearlyTotal);
+      //   handleSetAllActivitedTotal(data.allActivitedTotal);
+      // });
+      // await initailizeUserInfoContext(userInfos);
     } catch (error) {
       console.log(error);
     } finally {

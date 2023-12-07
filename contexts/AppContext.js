@@ -15,6 +15,8 @@ export function AppProvider({ children }) {
   const [withFovriteNotification, setWithFovriteNotification] = useState(false);
   const [withCommnetNotification, setWithCommnetNotification] = useState(false);
   const [withWorkoutNotification, setWithWorkoutNotification] = useState(false);
+  const [workoutNotificationTime, setWorkoutNotificationTime] = useState("");
+  const [workoutNotificationId, setWorkoutNotificationId] = useState("");
   const [withRunningGroupNotification, setWithRunningGroupNotification] =
     useState(false);
   const [withRaceNotification, setWithRaceNotification] = useState(false);
@@ -22,10 +24,7 @@ export function AppProvider({ children }) {
     withFollowerActivityNotification,
     setWithFollowerActivityNotification,
   ] = useState(false);
-  const [
-    withFollowerActivityNotificationF,
-    setWithFollowerActivityNotificationF,
-  ] = useState(false);
+
   const [withShoesNotification, setWithShoesNotification] = useState(false);
   const [withCharrengeNotification, setWithCharrengeNotification] =
     useState(false);
@@ -44,14 +43,20 @@ export function AppProvider({ children }) {
   const [weeklyData, setWeeklyData] = useState([]);
   const [monthlyData, setMonthlyData] = useState([]);
   const [yearlyData, setYearlyData] = useState([]);
-  const [totalActivitiesCount, setTotalActivitiesCount] = useState(0);
+  const [allActivitedData, setAllActivitedData] = useState([]);
+  const [weeklyTotal, setWeeklyTotal] = useState(null);
+  const [monthlyTotal, setMonthlyTotal] = useState(null);
+  const [yearlyTotal, setYearlyTotal] = useState(null);
+  const [allActivitedTotal, setAllActivitedTotal] = useState(null);
+  // api state
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
+
   const handleSetCurrentLocation = (location) => {
     setCurrentLocation(location);
   };
   const handleSetUser = (user) => {
     setUser(user);
-    console.log("sign in");
-    console.log(`user_id : ${user}`);
   };
   const handleSetFirstName = (firstName) => {
     setFirstName(firstName);
@@ -68,6 +73,9 @@ export function AppProvider({ children }) {
   const handleSetWeight = (weight) => {
     setWeight(weight);
   };
+  const handleSetGender = (gender) => {
+    setGender(gender);
+  };
   const handleSetFirstDayOfWeek = (firstDayOfWeek) => {
     setFirstDayOfWeek(firstDayOfWeek);
   };
@@ -83,15 +91,45 @@ export function AppProvider({ children }) {
   const handleSetYearlyData = (yearlyData) => {
     setYearlyData(yearlyData);
   };
-  const handleSetTotalActivitiesCount = (totalActivitiesCount) => {
-    setTotalActivitiesCount(totalActivitiesCount);
+  const handleSetAllActivitedData = (allActivitedData) => {
+    setAllActivitedData(allActivitedData);
   };
-
-  const initailizeUserInfoContext = (userinfos) => {
-    console.log("call");
-    console.log(userinfos.length);
+  const handleSetWeeklyTotal = (weeklyTotal) => {
+    console.log(weeklyTotal);
+    setWeeklyTotal(weeklyTotal);
+  };
+  const handleSetMonthlyTotal = (monthlyTotal) => {
+    console.log(monthlyTotal);
+    setMonthlyTotal(monthlyTotal);
+  };
+  const handleSetYearlyTotal = (yearlyTotal) => {
+    console.log(yearlyTotal);
+    setYearlyTotal(yearlyTotal);
+  };
+  const handleSetAllActivitedTotal = (allActivitedTotal) => {
+    console.log(allActivitedTotal);
+    setAllActivitedTotal(allActivitedTotal);
+  };
+  const handleSetExpoPushToken = (expoPushToken) => {
+    setExpoPushToken(expoPushToken);
+  };
+  const handleSetNotification = (notification) => {
+    setNotification(notification);
+  };
+  const handleSetWithWorkoutNotification = () => {
+    setWithWorkoutNotification(!withWorkoutNotification);
+  };
+  const handleSetWorkoutNotificationTime = (time) => {
+    console.log(time);
+    setWorkoutNotificationTime(time);
+  };
+  const handleSetWorkoutNotificationId = (id) => {
+    console.log(id);
+    setWorkoutNotificationId(id);
+  };
+  const initializeUserInfoContext = (userinfos) => {
+    console.log("initializeUserInfoContext");
     userinfos.forEach((userinfo) => {
-      handleSetUser(userinfo.user);
       handleSetFirstName(userinfo.firstName);
       handleSetLastName(userinfo.lastName);
       handleSetBirthday(userinfo.birthday);
@@ -99,8 +137,19 @@ export function AppProvider({ children }) {
       handleSetWeight(userinfo.weight);
       handleSetFirstDayOfWeek(userinfo.firstDayOfWeek);
       handleSetProfileImage(userinfo.profileImage);
-      console.log("initailize user info context");
+      handleSetGender(userinfo.user);
     });
+  };
+  const initializeActivitesContext = (data) => {
+    console.log("initializeActivitesContext");
+    handleSetWeeklyData(data.weeklyData);
+    handleSetMonthlyData(data.monthlyData);
+    handleSetYearlyData(data.yearlyData);
+    handleSetAllActivitedData(data.allActivitedData);
+    handleSetWeeklyTotal(data.weeklyTotal);
+    handleSetMonthlyTotal(data.monthlyTotal);
+    handleSetYearlyTotal(data.yearlyTotal);
+    handleSetAllActivitedTotal(data.allActivitedTotal);
   };
   const value = {
     language,
@@ -111,7 +160,7 @@ export function AppProvider({ children }) {
     handleSetWeight,
     user,
     handleSetUser,
-    initailizeUserInfoContext,
+    initializeUserInfoContext,
     firstName,
     handleSetFirstName,
     lastName,
@@ -130,8 +179,29 @@ export function AppProvider({ children }) {
     handleSetMonthlyData,
     yearlyData,
     handleSetYearlyData,
-    totalActivitiesCount,
-    handleSetTotalActivitiesCount,
+    weeklyTotal,
+    handleSetWeeklyTotal,
+    monthlyTotal,
+    handleSetMonthlyTotal,
+    yearlyTotal,
+    handleSetYearlyTotal,
+    allActivitedTotal,
+    handleSetAllActivitedTotal,
+    gender,
+    handleSetGender,
+    allActivitedData,
+    handleSetAllActivitedData,
+    initializeActivitesContext,
+    expoPushToken,
+    handleSetExpoPushToken,
+    notification,
+    handleSetNotification,
+    withWorkoutNotification,
+    handleSetWithWorkoutNotification,
+    workoutNotificationTime,
+    handleSetWorkoutNotificationTime,
+    workoutNotificationId,
+    handleSetWorkoutNotificationId,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

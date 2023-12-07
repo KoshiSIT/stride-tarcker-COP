@@ -21,7 +21,10 @@ const WeeklyWorkout = ({ weeklyData }) => {
       <View style={styles.headlineBackground}>
         <Text style={styles.headlineText}>{translated.weeklyWorkout}</Text>
         <Text style={styles.leftHeadlineText}>
-          {translated.workoutsThisWeek.replace("{count}", 1)}
+          {translated.workoutsThisWeek.replace(
+            "{count}",
+            weeklyData.activitiesCount
+          )}
         </Text>
       </View>
       <TouchableOpacity style={styles.content}>

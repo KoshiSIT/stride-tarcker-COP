@@ -2,7 +2,7 @@ export const formatDate = (timestamp) => {
   if (!timestamp || typeof timestamp.toDate !== "function") {
     return "";
   } else {
-    let date = timestamp.toDate(); // timestampをDateオブジェクトに変換
+    let date = timestamp.toDate();
     let year = date.getFullYear();
     let month = (date.getMonth() + 1).toString().padStart(2, "0");
     let day = date.getDate().toString().padStart(2, "0");
@@ -13,7 +13,7 @@ export const formatDate = (timestamp) => {
 export const formatNumber = (str) => {
   const num = parseFloat(str);
   if (isNaN(num)) {
-    return NaN; // またはエラーを投げる、または別のデフォルト値を返す
+    return NaN;
   }
   return num.toFixed(2);
 };
@@ -62,4 +62,49 @@ export const getDateRange = (type) => {
   }
 
   return { start, end };
+};
+export const getDurationLabel = (datetime) => {
+  const date = new Date(
+    datetime.seconds * 1000 + datetime.nanoseconds / 1000000
+  );
+  const today = new Date();
+  const startOfWeek = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() - today.getDay()
+  );
+  const endOfWeek = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() - today.getDay() + 6
+  );
+  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const startOfYear = new Date(today.getFullYear(), 0, 1);
+  const endOfYear = new Date(today.getFullYear(), 11, 31);
+
+  if (date >= startOfWeek && date <= endOfWeek) {
+    return "weekly";
+  } else if (date >= startOfMonth && date <= endOfMonth) {
+    return "monthly";
+  } else if (date >= startOfYear && date <= endOfYear) {
+    return "yearly";
+  } else {
+    return null;
+  }
+};
+
+export const formatTime = (time) => {
+  let minutes = time;
+  if (typeof minutes === "string") {
+    minutes = parseInt(minutes);
+  }
+  console.log("minutes", minutes);
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  const formattedHours = String(hours);
+  const formattedMinutes = String(remainingMinutes).padStart(2, "0");
+
+  return `${formattedHours}:${formattedMinutes}`;
 };

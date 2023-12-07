@@ -13,7 +13,9 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, getDoc, uploadBytes } from "firebase/storage";
 import { FIRESTORE_DB, FIREBASE_STORAGE, STORAGE_REF } from "../firebase";
-import { getDateRange } from "./Date";
+import { getDateRange, getDurationLabel } from "./DateHelpers";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { init } from "contextjs";
 
 class Firebase {
   constructor(user) {
@@ -26,7 +28,6 @@ class Firebase {
     this.user = user;
   }
   getActivities(setActivites) {
-    console.log("called");
     const activitieRef = query(
       collection(this.db, "stride-tracker_DB"),
       where("user", "==", this.user),
@@ -46,70 +47,97 @@ class Firebase {
     });
     return () => subscriber();
   }
-  async getDateRangeData(type) {
-    return new Promise((resolve, reject) => {
-      console.log("getDateRangeData");
-      const { start, end } = getDateRange(type);
-      const startTimestamp = Timestamp.fromMillis(start.getTime());
-      const endTimestamp = Timestamp.fromMillis(end.getTime());
-      console.log(startTimestamp, endTimestamp);
-      const q = query(
-        collection(this.db, "stride-tracker_DB"),
-        where("user", "==", this.user),
-        where("datetime", ">=", startTimestamp),
-        where("datetime", "<=", endTimestamp)
-      );
-
-      onSnapshot(
-        q,
-        (snapshot) => {
-          let totalDistance = 0;
-          let totalPace = 0;
-          let activitiesCount = 0;
-          snapshot.docs.forEach((doc) => {
-            const data = doc.data();
-            // console.log(data);
-            if (data.distance) {
-              totalDistance += data.distance;
+  getAllActivitesData(initializeActivitesContext) {
+    console.log("getAllActivitesData");
+    console.log(this.user);
+    const q = query(
+      collection(this.db, "stride-tracker_DB"),
+      where("user", "==", this.user)
+    );
+    const firstDataReceived = new Promise((resolve, reject) => {
+      const unsubscribed = onSnapshot(q, (snapshot) => {
+        console.log("get All ActivitesData onSnapshot");
+        let weeklyData = [];
+        let monthlyData = [];
+        let yearlyData = [];
+        let allActivitedData = [];
+        let weeklyTotal = {
+          activitiesCount: 0,
+          totalDistance: 0,
+          averagePace: 0,
+        };
+        let monthlyTotal = {
+          activitiesCount: 0,
+          totalDistance: 0,
+          averagePace: 0,
+        };
+        let yearlyTotal = {
+          activitiesCount: 0,
+          totalDistance: 0,
+          averagePace: 0,
+        };
+        let allActivitedTotal = {
+          activitiesCount: 0,
+          totalDistance: 0,
+          averagePace: 0,
+        };
+        const accumulateData = (dataArray, totalObject, data) => {
+          dataArray.push(data);
+          totalObject.activitiesCount++;
+          if (data.totalDistance) {
+            totalObject.totalDistance += data.totalDistance;
+          }
+          if (data.averagePace) {
+            totalObject.averagePace += data.averagePace;
+          }
+        };
+        snapshot.docs.forEach((doc) => {
+          // console.log("data loop");
+          const data = doc.data();
+          const durationLabel = getDurationLabel(data.datetime);
+          if (durationLabel) {
+            if (durationLabel === "weekly") {
+              accumulateData(weeklyData, weeklyTotal, data);
+              accumulateData(monthlyData, monthlyTotal, data);
+              accumulateData(yearlyData, yearlyTotal, data);
+            } else if (durationLabel === "monthly") {
+              accumulateData(monthlyData, monthlyTotal, data);
+              accumulateData(yearlyData, yearlyTotal, data);
+            } else if (durationLabel === "yearly") {
+              accumulateData(yearlyData, yearlyTotal, data);
             }
-            totalPace += data.pace;
-            activitiesCount++;
-          });
-          const averagePace =
-            activitiesCount > 0 ? totalPace / activitiesCount : 0;
-          const result = {
-            activitiesCount,
-            totalDistance,
-            averagePace,
-          };
-          resolve(result);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
+          }
+          accumulateData(allActivitedData, allActivitedTotal, data);
+        });
+        const result = {
+          weeklyData,
+          monthlyData,
+          yearlyData,
+          allActivitedData,
+          weeklyTotal,
+          monthlyTotal,
+          yearlyTotal,
+          allActivitedTotal,
+        };
+        initializeActivitesContext(result);
+        console.log("resolve");
+        resolve(unsubscribed);
+      });
     });
+    return firstDataReceived;
   }
-  async getActivitiesCount() {
-    return new Promise((resolve, reject) => {
-      const userCollectionRef = query(
-        collection(this.db, "stride-tracker_DB"),
-        where("user", "==", this.user)
-      );
-      getDocs(userCollectionRef).then((snapshot) => {
-        console.log(snapshot.size);
-        resolve(snapshot.size);
-      }, reject);
-    });
-  }
-  async getUserInfo(userCredential) {
-    return new Promise((resolve, reject) => {
-      const userRef = query(
-        collection(this.db, "user_info"),
-        where("user", "==", userCredential.user.uid)
-      );
-      const subscriber = onSnapshot(userRef, {
+
+  getUserInfo(initializeUserInfoContext) {
+    console.log("getUserInfo");
+    console.log(this.user);
+    const userRef = query(
+      collection(this.db, "user_info"),
+      where("user", "==", this.user)
+    );
+    const firstDataReceived = new Promise((resolve, reject) => {
+      const unsubscribed = onSnapshot(userRef, {
         next: (snapshot) => {
+          console.log("getUserInfo onSnapshot");
           const userInfos = [];
           snapshot.forEach((doc) => {
             console.log(doc.data());
@@ -118,14 +146,13 @@ class Firebase {
               ...doc.data(),
             });
           });
-          resolve(userInfos);
-        },
-        error: (error) => {
-          reject(error);
+          initializeUserInfoContext(userInfos);
+          console.log("resolve firebase");
+          resolve(unsubscribed);
         },
       });
-      return subscriber;
     });
+    return firstDataReceived;
   }
   async addUserInfo(user) {
     const stRef = ref(this.storageRef, "images/" + "r1280x720l.jpeg");
@@ -151,7 +178,7 @@ class Firebase {
   }
   async uploadImage(blob) {
     const imageRef = ref(this.storageRef, "images/" + blob._data.name);
-    console.log(`imageRef: ${imageRef}`);
+    // console.log(`imageRef: ${imageRef}`);
     await uploadBytes(imageRef, blob, {
       contentType: blob._data.type || "image/jpeg",
     });
@@ -159,14 +186,23 @@ class Firebase {
     return url;
   }
   async updateUserProfileImage(url) {
-    console.log(`url: ${url}`);
+    // console.log(`url: ${url}`);
     const documentId = await this.getDocumentidByUser(this.user);
     const userRef = doc(this.db, "user_info", documentId);
-    console.log(`userRef: ${userRef}`);
+    // console.log(`userRef: ${userRef}`);
     await updateDoc(userRef, {
       profileImage: url,
     });
   }
+  async updateUserInfo() {
+    const documentId = await this.getDocumentidByUser(this.user);
+    const userRef = doc(this.db, "user_info", documentId);
+    await updateDoc(userRef, {
+      height: Math.random(),
+    });
+    console.log("updateUserInfo");
+  }
+
   async getDocumentidByUser(user) {
     const userRef = query(
       collection(this.db, "user_info"),
@@ -181,3 +217,60 @@ class Firebase {
   }
 }
 export default Firebase;
+
+// async getDateRangeData(type) {
+//   return new Promise((resolve, reject) => {
+//     console.log("getDateRangeData");
+//     const { start, end } = getDateRange(type);
+//     const startTimestamp = Timestamp.fromMillis(start.getTime());
+//     const endTimestamp = Timestamp.fromMillis(end.getTime());
+//     console.log(startTimestamp, endTimestamp);
+//     const q = query(
+//       collection(this.db, "stride-tracker_DB"),
+//       where("user", "==", this.user),
+//       where("datetime", ">=", startTimestamp),
+//       where("datetime", "<=", endTimestamp)
+//     );
+
+//     onSnapshot(
+//       q,
+//       (snapshot) => {
+//         let totalDistance = 0;
+//         let totalPace = 0;
+//         let activitiesCount = 0;
+//         snapshot.docs.forEach((doc) => {
+//           const data = doc.data();
+//           // console.log(data);
+//           if (data.distance) {
+//             totalDistance += data.distance;
+//           }
+//           totalPace += data.pace;
+//           activitiesCount++;
+//         });
+//         const averagePace =
+//           activitiesCount > 0 ? totalPace / activitiesCount : 0;
+//         const result = {
+//           activitiesCount,
+//           totalDistance,
+//           averagePace,
+//         };
+//         resolve(result);
+//       },
+//       (error) => {
+//         reject(error);
+//       }
+//     );
+//   });
+// }
+// async getActivitiesCount() {
+//   return new Promise((resolve, reject) => {
+//     const userCollectionRef = query(
+//       collection(this.db, "stride-tracker_DB"),
+//       where("user", "==", this.user)
+//     );
+//     getDocs(userCollectionRef).then((snapshot) => {
+//       console.log(snapshot.size);
+//       resolve(snapshot.size);
+//     }, reject);
+//   });
+// }

@@ -84,7 +84,7 @@ const Page1 = ({
                 {activities.map((activity) => (
                   <TouchableOpacity
                     style={styles.choiceContainerOn}
-                    kwy={activity.value}
+                    key={activity.value}
                     onPress={() => handleSelectActivity(activity.value)}
                   >
                     <View style={styles.rowContainer}>
@@ -118,7 +118,7 @@ const Page1 = ({
                 {activities.map((activity) => (
                   <TouchableOpacity
                     style={styles.choiceContainerOff}
-                    kwy={activity.value}
+                    key={activity.value}
                     onPress={() => handleSelectActivity(activity.value)}
                   >
                     <View style={styles.rowContainer}>

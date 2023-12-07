@@ -9,7 +9,6 @@ import {
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { Svg, Circle } from "react-native-svg";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import { layer, proceed, withLayers } from "contextjs";
 import EntypoIcons from "react-native-vector-icons/Entypo";
 const Map = ({
   parentName,
@@ -52,20 +51,23 @@ const Map = ({
         );
       } else {
         return (
-          <MapView
-            style={styles.map}
-            ref={mapRef}
-            region={{
-              latitude: currentLocation.latitude,
-              longitude: currentLocation.longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
-            }}
-          >
-            {this.renderMarker()}
+          <View style={{ flex: 1 }}>
+            <MapView
+              style={styles.map}
+              ref={mapRef}
+              region={{
+                latitude: currentLocation.latitude,
+                longitude: currentLocation.longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }}
+            >
+              {this.renderMarker()}
+            </MapView>
+
             {this.renderCurrentLocationButton()}
             {this.renderBackToTimer()}
-          </MapView>
+          </View>
         );
       }
     }
@@ -145,7 +147,16 @@ const Map = ({
             }}
           >
             <View>
-              <FontAwesomeIcon name="location-arrow" size={30} color="gray" />
+              <FontAwesomeIcon
+                name="location-arrow"
+                size={30}
+                color="gray"
+                // style={{
+                //   position: "absolute",
+                //   top: -15,
+                //   left: -12,
+                // }}
+              />
             </View>
           </TouchableOpacity>
         );
@@ -165,9 +176,16 @@ const Map = ({
               alignItems: "center",
             }}
           >
-            <View>
-              <FontAwesomeIcon name="location-arrow" size={30} color="gray" />
-            </View>
+            <FontAwesomeIcon
+              name="location-arrow"
+              size={30}
+              color="gray"
+              // style={{
+              //   position: "absolute",
+              //   top: 380,
+              //   left: 320,
+              // }}
+            />
           </TouchableOpacity>
         );
       }
@@ -175,10 +193,20 @@ const Map = ({
     renderBackToTimer() {
       if (parentName === "StartRun") {
         return (
-          <TouchableOpacity onPress={this.backToTimer}>
-            <View style={styles.backContainer}>
-              <FontAwesomeIcon name="chevron-left" size={30} color="white" />
-            </View>
+          <TouchableOpacity
+            onPress={this.backToTimer}
+            style={styles.backContainer}
+          >
+            <FontAwesomeIcon
+              name="chevron-left"
+              size={30}
+              color="white"
+              // style={{
+              //   position: "absolute",
+              //   top: 515,
+              //   left: 340,
+              // }}
+            />
           </TouchableOpacity>
         );
       } else {
@@ -211,7 +239,8 @@ const Map = ({
 export default Map;
 const styles = StyleSheet.create({
   map: {
-    flex: 1,
+    height: "100%",
+    width: Dimensions.get("window").width,
   },
   map2: {
     height: "100%",

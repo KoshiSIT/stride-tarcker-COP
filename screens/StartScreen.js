@@ -19,14 +19,13 @@ import { Page1, Page2, Page3, Page4 } from "../components/start/RunSettings";
 import Map from "../components/Map";
 import StopWatch from "../components/StopWatch";
 import { useNavigation } from "@react-navigation/native";
-
+// contexts
 import { useStartScreenContext } from "../contexts/StartScreenContext";
 import { useAppContext } from "../contexts/AppContext";
+// icons lib
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
 
 import { useContext } from "react";
 import TranslationContext from "../translator/TranslationContext";

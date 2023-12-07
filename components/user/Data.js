@@ -108,7 +108,6 @@ const TermActivities = ({
   selectedTab,
   data,
 }) => {
-  console.log(data);
   let topItemText = {};
   let caloriesBurnedData = {
     thisTerm: 0,
