@@ -46,6 +46,7 @@ import { proceed } from "contextjs/lib/Layers";
 // /** @jsx customCreateElement */
 export default function StartScreen({}) {
   // use context
+  console.log("StartScreen.js");
   const {
     translations: { StartScreenjs: translated },
   } = useContext(TranslationContext);
