@@ -215,62 +215,22 @@ class Firebase {
     });
     return id;
   }
+  getWorkoutPrestes(handleSetWorkouts) {
+    const workOutPresetRef = query(collection(this.db, "workouts"));
+    const subscriber = onSnapshot(workOutPresetRef, {
+      next: (snapshot) => {
+        const workOutPresets = [];
+        snapshot.docs.forEach((doc) => {
+          workOutPresets.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+        handleSetWorkouts(workOutPresets);
+      },
+    });
+    return () => subscriber();
+  }
 }
+
 export default Firebase;
-
-// async getDateRangeData(type) {
-//   return new Promise((resolve, reject) => {
-//     console.log("getDateRangeData");
-//     const { start, end } = getDateRange(type);
-//     const startTimestamp = Timestamp.fromMillis(start.getTime());
-//     const endTimestamp = Timestamp.fromMillis(end.getTime());
-//     console.log(startTimestamp, endTimestamp);
-//     const q = query(
-//       collection(this.db, "stride-tracker_DB"),
-//       where("user", "==", this.user),
-//       where("datetime", ">=", startTimestamp),
-//       where("datetime", "<=", endTimestamp)
-//     );
-
-//     onSnapshot(
-//       q,
-//       (snapshot) => {
-//         let totalDistance = 0;
-//         let totalPace = 0;
-//         let activitiesCount = 0;
-//         snapshot.docs.forEach((doc) => {
-//           const data = doc.data();
-//           // console.log(data);
-//           if (data.distance) {
-//             totalDistance += data.distance;
-//           }
-//           totalPace += data.pace;
-//           activitiesCount++;
-//         });
-//         const averagePace =
-//           activitiesCount > 0 ? totalPace / activitiesCount : 0;
-//         const result = {
-//           activitiesCount,
-//           totalDistance,
-//           averagePace,
-//         };
-//         resolve(result);
-//       },
-//       (error) => {
-//         reject(error);
-//       }
-//     );
-//   });
-// }
-// async getActivitiesCount() {
-//   return new Promise((resolve, reject) => {
-//     const userCollectionRef = query(
-//       collection(this.db, "stride-tracker_DB"),
-//       where("user", "==", this.user)
-//     );
-//     getDocs(userCollectionRef).then((snapshot) => {
-//       console.log(snapshot.size);
-//       resolve(snapshot.size);
-//     }, reject);
-//   });
-// }

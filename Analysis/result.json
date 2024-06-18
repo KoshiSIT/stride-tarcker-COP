@@ -1,0 +1,3180 @@
+[
+  {
+    "name": "Achievements",
+    "loc": 13,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "ActivityProvider",
+    "loc": 59,
+    "functionCount": 20,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "time"
+      },
+      {
+        "type": "Primitive",
+        "name": "pace"
+      },
+      {
+        "type": "Complex",
+        "name": "locationLog"
+      },
+      {
+        "type": "Primitive",
+        "name": "calorie"
+      },
+      {
+        "type": "Primitive",
+        "name": "totalDistance"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "props": [
+      "children"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleSetTotalDistance",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetTime",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetPace",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetLocationLog",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetCalorie",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "resetTime",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "resetPace",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "resetLocationLog",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "resetCalorie",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "resetAllState",
+        "loc": 6,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "ActivityIcons",
+    "loc": 69,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "activity",
+      "size"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "Activity",
+    "loc": 29,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "totalActivitiesCount"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "AnnoucementFrequencySettingScreen",
+    "loc": 42,
+    "functionCount": 8,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "typeOfAudioGuide",
+        "handleTypeOfAudioGuide"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSelect",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "ExplorerScreen",
+    "loc": 33,
+    "functionCount": 4,
+    "useContextHooks": {
+      "useAppContext": [
+        "user",
+        "expoPushToken",
+        "notification",
+        "handleSetExpoPushToken",
+        "handleSetNotification"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "navigation"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handlePress",
+        "loc": 7,
+        "CC": 1
+      },
+      {
+        "name": "handlePress",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "TrackingSettingScreen",
+    "loc": 46,
+    "functionCount": 9,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "stopWatchMode",
+        "handleStopWatchMode"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "stopWatchModeOn",
+        "loc": 6,
+        "CC": 2
+      },
+      {
+        "name": "stopWatchModeOff",
+        "loc": 6,
+        "CC": 2
+      }
+    ]
+  },
+  {
+    "name": "Insite",
+    "loc": 34,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "totalActivitiesCount"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "IntervalDistanceSettingScreen",
+    "loc": 43,
+    "functionCount": 7,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "intervalDistance",
+        "handleIntervalDistance"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSelect",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Goal",
+    "loc": 25,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "progress"
+      }
+    ],
+    "numberOfStateTypes": 1,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "LanguageSelectScreen",
+    "loc": 46,
+    "functionCount": 6,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Loading",
+    "loc": 13,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "IntervalTimeSettingScreen",
+    "loc": 46,
+    "functionCount": 7,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "intervalTime",
+        "handleIntervalTime"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSelect",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "UserScreen",
+    "loc": 43,
+    "functionCount": 5,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Complex",
+        "name": "accessToken"
+      },
+      {
+        "type": "Complex",
+        "name": "user"
+      }
+    ],
+    "numberOfStateTypes": 1,
+    "children": [],
+    "functions": [
+      {
+        "name": "fetchUserInfo",
+        "loc": 7,
+        "CC": 1
+      },
+      {
+        "name": "signInWithGoogle",
+        "loc": 8,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "LoginScreen",
+    "loc": 109,
+    "functionCount": 4,
+    "useContextHooks": {
+      "useAppContext": [
+        "initailizeUserInfoContext",
+        "handleSetYearlyTotal",
+        "handleSetAllActivitedTotal",
+        "handleSetMonthlyTotal",
+        "handleSetWeeklyTotal",
+        "handleSetAllActivitedData",
+        "handleSetWeeklyData",
+        "handleSetMonthlyData",
+        "handleSetYearlyData"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "email"
+      },
+      {
+        "type": "Primitive",
+        "name": "password"
+      },
+      {
+        "type": "Primitive",
+        "name": "loading"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "children": [
+      "Loading"
+    ],
+    "functions": [
+      {
+        "name": "signIn",
+        "loc": 26,
+        "CC": 1
+      },
+      {
+        "name": "signUp",
+        "loc": 15,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "PhotoPicker",
+    "loc": 52,
+    "functionCount": 2,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Complex",
+        "name": "selectedImage"
+      }
+    ],
+    "numberOfStateTypes": 1,
+    "props": [
+      "setImageBlob"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleImagePick",
+        "loc": 21,
+        "CC": 3
+      }
+    ]
+  },
+  {
+    "name": "ProfilePicker",
+    "loc": 55,
+    "functionCount": 5,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "image"
+      },
+      {
+        "type": "Complex",
+        "name": "imageBlob"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "props": [
+      "profileImage",
+      "user"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleImagePick",
+        "loc": 20,
+        "CC": 3
+      },
+      {
+        "name": "ProfilePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "ProfilePicker",
+        "loc": 8,
+        "CC": 2
+      },
+      {
+        "name": "ProfilePicker",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "ProfileSettingScreen",
+    "loc": 36,
+    "functionCount": 6,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "LanguageSelect",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "PocketTrackingSettingScreen",
+    "loc": 54,
+    "functionCount": 6,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "height",
+        "handleHeight"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSelect",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "RouteSettingScreen",
+    "loc": 29,
+    "functionCount": 6,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "handleRoute"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSelect",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "ShoeTracker",
+    "loc": 18,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "StartScreenProvider",
+    "loc": 138,
+    "functionCount": 38,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "stopWatchMode"
+      },
+      {
+        "type": "Primitive",
+        "name": "selectedActivity"
+      },
+      {
+        "type": "Primitive",
+        "name": "withAudioGuide"
+      },
+      {
+        "type": "Primitive",
+        "name": "typeOfAudioGuide"
+      },
+      {
+        "type": "Primitive",
+        "name": "withAnnouncement"
+      },
+      {
+        "type": "Primitive",
+        "name": "withIntervalTime"
+      },
+      {
+        "type": "Primitive",
+        "name": "withIntervalDistance"
+      },
+      {
+        "type": "Primitive",
+        "name": "intervalTime"
+      },
+      {
+        "type": "Primitive",
+        "name": "intervalDistance"
+      },
+      {
+        "type": "Primitive",
+        "name": "announcementInfo"
+      },
+      {
+        "type": "Primitive",
+        "name": "volume"
+      },
+      {
+        "type": "Primitive",
+        "name": "rroute"
+      },
+      {
+        "type": "Primitive",
+        "name": "withAutoPause"
+      },
+      {
+        "type": "Primitive",
+        "name": "withCountDown"
+      },
+      {
+        "type": "Primitive",
+        "name": "withLiveTracking"
+      },
+      {
+        "type": "Primitive",
+        "name": "withPocketTrack"
+      },
+      {
+        "type": "Primitive",
+        "name": "height"
+      },
+      {
+        "type": "Primitive",
+        "name": "unitOfDistance"
+      },
+      {
+        "type": "Primitive",
+        "name": "unitOfSpeed"
+      }
+    ],
+    "numberOfStateTypes": 3,
+    "props": [
+      "children"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleStopWatchMode",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSelectActivity",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleWithAudioGuide",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleVolumeChange",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleTypeOfAudioGuide",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleWithAnnouncement",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleWithIntervalTime",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleWithIntervalDistance",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleIntervalTime",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleIntervalDistance",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleAnnouncementInfo",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleRroute",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleWithAutoPause",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleWithCountDown",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleWithLiveTracking",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleWithPocketTrack",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleHeight",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleUnitOfDistance",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleUnitOfSpeed",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "TranslationProvider",
+    "loc": 12,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "language"
+      }
+    ],
+    "numberOfStateTypes": 1,
+    "props": [
+      "children"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "TrainingScreen",
+    "loc": 80,
+    "functionCount": 11,
+    "useContextHooks": {
+      "useWorkoutContext": [
+        "workouts",
+        "handleSetWorkouts"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "selectedTab"
+      },
+      {
+        "type": "Complex",
+        "name": "workoutsLocal"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "props": [
+      "navigation"
+    ],
+    "children": [
+      "TranslationProvider"
+    ],
+    "functions": [
+      {
+        "name": "handleSetWorkoutsLocal",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleTabChange",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleDownload",
+        "loc": 6,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "TypeSettingScreen",
+    "loc": 45,
+    "functionCount": 8,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "selectedActivity",
+        "handleSelectActivity"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSelect",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "WeeklyWorkout",
+    "loc": 34,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "weeklyData"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "WorkoutProvider",
+    "loc": 61,
+    "functionCount": 18,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "withWorkout"
+      },
+      {
+        "type": "Complex",
+        "name": "workoutDetails"
+      },
+      {
+        "type": "Primitive",
+        "name": "withRepeat"
+      },
+      {
+        "type": "Primitive",
+        "name": "repeatTimes"
+      },
+      {
+        "type": "Primitive",
+        "name": "withWarmUp"
+      },
+      {
+        "type": "Primitive",
+        "name": "withCoolDown"
+      },
+      {
+        "type": "Complex",
+        "name": "workouts"
+      }
+    ],
+    "numberOfStateTypes": 4,
+    "props": [
+      "children"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleSetWithWorkout",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWorkoutDetails",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWithRepeat",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWithWarmUp",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWithCoolDown",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWorkouts",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetRepeatTimes",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleDeleteWorkout",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "AppProvider",
+    "loc": 213,
+    "functionCount": 55,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "appState"
+      },
+      {
+        "type": "Complex",
+        "name": "currentLocation"
+      },
+      {
+        "type": "Primitive",
+        "name": "isAccountPublic"
+      },
+      {
+        "type": "Primitive",
+        "name": "language"
+      },
+      {
+        "type": "Primitive",
+        "name": "withFovriteNotification"
+      },
+      {
+        "type": "Primitive",
+        "name": "withCommnetNotification"
+      },
+      {
+        "type": "Primitive",
+        "name": "withWorkoutNotification"
+      },
+      {
+        "type": "Primitive",
+        "name": "workoutNotificationTime"
+      },
+      {
+        "type": "Primitive",
+        "name": "workoutNotificationId"
+      },
+      {
+        "type": "Primitive",
+        "name": "withRunningGroupNotification"
+      },
+      {
+        "type": "Primitive",
+        "name": "withRaceNotification"
+      },
+      {
+        "type": "Primitive",
+        "name": "withFollowerActivityNotification"
+      },
+      {
+        "type": "Primitive",
+        "name": "withShoesNotification"
+      },
+      {
+        "type": "Primitive",
+        "name": "withCharrengeNotification"
+      },
+      {
+        "type": "Primitive",
+        "name": "withMotivationNotification"
+      },
+      {
+        "type": "Primitive",
+        "name": "user"
+      },
+      {
+        "type": "Primitive",
+        "name": "firstName"
+      },
+      {
+        "type": "Primitive",
+        "name": "lastName"
+      },
+      {
+        "type": "Primitive",
+        "name": "birthday"
+      },
+      {
+        "type": "Primitive",
+        "name": "gender"
+      },
+      {
+        "type": "Primitive",
+        "name": "height"
+      },
+      {
+        "type": "Primitive",
+        "name": "weight"
+      },
+      {
+        "type": "Primitive",
+        "name": "firstDayOfWeek"
+      },
+      {
+        "type": "Primitive",
+        "name": "profileImage"
+      },
+      {
+        "type": "Complex",
+        "name": "weeklyData"
+      },
+      {
+        "type": "Complex",
+        "name": "monthlyData"
+      },
+      {
+        "type": "Complex",
+        "name": "yearlyData"
+      },
+      {
+        "type": "Complex",
+        "name": "allActivitedData"
+      },
+      {
+        "type": "Complex",
+        "name": "weeklyTotal"
+      },
+      {
+        "type": "Complex",
+        "name": "monthlyTotal"
+      },
+      {
+        "type": "Complex",
+        "name": "yearlyTotal"
+      },
+      {
+        "type": "Complex",
+        "name": "allActivitedTotal"
+      },
+      {
+        "type": "Primitive",
+        "name": "expoPushToken"
+      },
+      {
+        "type": "Primitive",
+        "name": "notification"
+      },
+      {
+        "type": "Primitive",
+        "name": "networkState"
+      }
+    ],
+    "numberOfStateTypes": 5,
+    "props": [
+      "children"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleSetAppState",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetCurrentLocation",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetUser",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetFirstName",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetLastName",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetBirthday",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetHeight",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWeight",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetGender",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetFirstDayOfWeek",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetProfileImage",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWeeklyData",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetMonthlyData",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetYearlyData",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetAllActivitedData",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWeeklyTotal",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "handleSetMonthlyTotal",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "handleSetYearlyTotal",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "handleSetAllActivitedTotal",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "handleSetExpoPushToken",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetNotification",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWithWorkoutNotification",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWorkoutNotificationTime",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "handleSetWorkoutNotificationId",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "handleSetNetworkState",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "initializeUserInfoContext",
+        "loc": 13,
+        "CC": 1
+      },
+      {
+        "name": "initializeUserInfoContext",
+        "loc": 10,
+        "CC": 1
+      },
+      {
+        "name": "initializeActivitesContext",
+        "loc": 11,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "AppSettingsScreen",
+    "loc": 77,
+    "functionCount": 8,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSignOut",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "AnnoucementFrequencySettingScreen",
+    "loc": 122,
+    "functionCount": 23,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "withAnnouncement",
+        "handleWithAnnouncement",
+        "withIntervalTime",
+        "handleWithIntervalTime",
+        "withIntervalDistance",
+        "handleWithIntervalDistance",
+        "intervalTime",
+        "handleIntervalTime",
+        "intervalDistance",
+        "handleIntervalDistance"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [
+      "TranslationProvider"
+    ],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "setAnnouncementOn",
+        "loc": 5,
+        "CC": 2
+      },
+      {
+        "name": "setAnnouncementOff",
+        "loc": 5,
+        "CC": 2
+      },
+      {
+        "name": "setIntervalTimeOff",
+        "loc": 5,
+        "CC": 2
+      },
+      {
+        "name": "setIntervalDistanceOff",
+        "loc": 5,
+        "CC": 2
+      },
+      {
+        "name": "handleAnnouncement",
+        "loc": 7,
+        "CC": 2
+      },
+      {
+        "name": "handleIntervalTimeAnnouncement",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "handleIntervalDistanceAnnouncement",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "ManualEntryScreen",
+    "loc": 64,
+    "functionCount": 7,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [
+      "ActivityIcons",
+      "ActivityIcons"
+    ],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleManualEntry",
+        "loc": 4,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "IntervalScreen",
+    "loc": 155,
+    "functionCount": 18,
+    "useContextHooks": {
+      "useWorkoutContext": [
+        "workouts",
+        "handleSetWorkoutDetails",
+        "handleSetWithRepeat",
+        "handleSetWithWarmUp",
+        "handleSetWithCoolDown",
+        "handleSetRepeatTimes",
+        "handleDeleteWorkout"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "repeatTimes"
+      },
+      {
+        "type": "Primitive",
+        "name": "withWarmUp"
+      },
+      {
+        "type": "Primitive",
+        "name": "withCoolDown"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "props": [
+      "route"
+    ],
+    "children": [
+      "WarmUpOption",
+      "CoolDownOption"
+    ],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "handleSlectWorkOut",
+        "loc": 11,
+        "CC": 1
+      },
+      {
+        "name": "setCurrentWorkout",
+        "loc": 7,
+        "CC": 1
+      },
+      {
+        "name": "handleDeleteThisWorkout",
+        "loc": 8,
+        "CC": 1
+      },
+      {
+        "name": "handleDeleteThisWorkout",
+        "loc": 6,
+        "CC": 1
+      },
+      {
+        "name": "handleWithWarmUp",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleWithCoolDown",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "ManualEntrySaveScreen",
+    "loc": 88,
+    "functionCount": 2,
+    "useContextHooks": {
+      "useAppContext": [
+        "user"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "activity"
+      },
+      {
+        "type": "Primitive",
+        "name": "time"
+      },
+      {
+        "type": "Primitive",
+        "name": "pace"
+      },
+      {
+        "type": "Complex",
+        "name": "locationLog"
+      },
+      {
+        "type": "Primitive",
+        "name": "calorie"
+      },
+      {
+        "type": "Primitive",
+        "name": "totalDistance"
+      },
+      {
+        "type": "Primitive",
+        "name": "mapSelected"
+      },
+      {
+        "type": "Primitive",
+        "name": "activityName"
+      },
+      {
+        "type": "Primitive",
+        "name": "isDummy"
+      },
+      {
+        "type": "Primitive",
+        "name": "bpm"
+      },
+      {
+        "type": "Primitive",
+        "name": "memo"
+      },
+      {
+        "type": "Primitive",
+        "name": "isModalVisible"
+      },
+      {
+        "type": "Complex",
+        "name": "imageBlob"
+      }
+    ],
+    "numberOfStateTypes": 6,
+    "props": [
+      "route"
+    ],
+    "children": [
+      "Name",
+      "Time",
+      "Distance",
+      "Calorie",
+      "PhotoPicker",
+      "Notes",
+      "Activity",
+      "MoreDetails",
+      "MemoModal"
+    ],
+    "functions": []
+  },
+  {
+    "name": "PushNotificationsSettingsScreen",
+    "loc": 82,
+    "functionCount": 4,
+    "useContextHooks": {
+      "useAppContext": [
+        "withWorkoutNotification",
+        "handleSetWithWorkoutNotification",
+        "workoutNotificationTime",
+        "handleSetWorkoutNotificationTime",
+        "handleSetWorkoutNotricationTime"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Map",
+    "loc": 225,
+    "functionCount": 1,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "parentName",
+      "currentLocation",
+      "scrollViewRef",
+      "initialPosition",
+      "locationLog"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "Map",
+        "loc": 22,
+        "CC": 2
+      }
+    ]
+  },
+  {
+    "name": "MemoModal",
+    "loc": 43,
+    "functionCount": 5,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "isModalVisible",
+      "setModalVisible",
+      "memo",
+      "setMemo",
+      "translated"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "toggleModal",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleCancel",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "MemoModal",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Time",
+    "loc": 8,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "time",
+      "translated"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "Notes",
+    "loc": 22,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "toggleModal",
+      "memoHeight",
+      "memo",
+      "translated"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "Name",
+    "loc": 24,
+    "functionCount": 2,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "activityName",
+      "handleActivityName",
+      "translated",
+      "textInputRef"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "Name",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "Name",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Bpm",
+    "loc": 22,
+    "functionCount": 1,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "translated",
+      "bpm",
+      "setBpm"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "Bpm",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Shoes",
+    "loc": 10,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "translated"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "Execise",
+    "loc": 17,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "translated"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "Distance",
+    "loc": 3,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "Calorie",
+    "loc": 3,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "Activity",
+    "loc": 3,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "DateTime",
+    "loc": 3,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "MoreDetails",
+    "loc": 3,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "Maps",
+    "loc": 24,
+    "functionCount": 1,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "mapItems",
+      "mapSelected",
+      "setMapSelected",
+      "translated"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "Maps",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "StopWatch",
+    "loc": 108,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "time"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "BeginnerWorkOut",
+    "loc": 64,
+    "functionCount": 6,
+    "useContextHooks": {
+      "useWorkoutContext": [
+        "workouts"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "handleModaleClose",
+      "fadeAnim"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleWithWorkOut",
+        "loc": 5,
+        "CC": 1
+      },
+      {
+        "name": "handleModaleOpen",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "BeginnerWorkOut",
+        "loc": 12,
+        "CC": 1
+      },
+      {
+        "name": "BeginnerWorkOut",
+        "loc": 1,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Distance",
+    "loc": 48,
+    "functionCount": 4,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "handleModaleClose",
+      "fadeAnim",
+      "distance",
+      "setDistance"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleDistanceIncrement",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleDistanceDecrement",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "UserScreen",
+    "loc": 85,
+    "functionCount": 7,
+    "useContextHooks": {
+      "useAppContext": [
+        "firstName",
+        "profileImage",
+        "lastName",
+        "height",
+        "weeklyData",
+        "monthlyData",
+        "yearlyData",
+        "allActivitesData",
+        "weeklyTotal",
+        "monthlyTotal",
+        "yearlyTotal",
+        "allActivitedTotal",
+        "initializeActivitesContext",
+        "user"
+      ]
+    },
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [],
+    "children": [
+      "ProfilePicker",
+      "Data",
+      "Activity",
+      "ShoeTracker",
+      "Goal",
+      "Insite",
+      "WeeklyWorkout"
+    ],
+    "functions": [
+      {
+        "name": "goAppSettings",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "testFunc",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "RepeatOption",
+    "loc": 31,
+    "functionCount": 4,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "modalVisible"
+      }
+    ],
+    "numberOfStateTypes": 1,
+    "props": [
+      "repeatTimes",
+      "setRepeatTimes",
+      "translated",
+      "disabled"
+    ],
+    "children": [
+      "RepeatsModal"
+    ],
+    "functions": [
+      {
+        "name": "handleToggleModal",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "WarmUpOption",
+    "loc": 24,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "withWarmUp",
+      "handleWithWarmUp",
+      "switchDisabled",
+      "translated"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "CoolDownOption",
+    "loc": 24,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "withCoolDown",
+      "handleWithCoolDown",
+      "switchDisabled",
+      "translated"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "RepeatsModal",
+    "loc": 63,
+    "functionCount": 6,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "modalAnimation"
+      },
+      {
+        "type": "Primitive",
+        "name": "modalValue"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "props": [
+      "modalVisible",
+      "handleToggleModal",
+      "setRepeatTimes",
+      "repeatTimes"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "goBack",
+        "loc": 5,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "CommunityScreen",
+    "loc": 179,
+    "functionCount": 11,
+    "useContextHooks": {
+      "useAppContext": [
+        "user",
+        "profileImage",
+        "firstName",
+        "lastName"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "selectedTab"
+      },
+      {
+        "type": "Complex",
+        "name": "activities"
+      },
+      {
+        "type": "Primitive",
+        "name": "pictureIndex"
+      }
+    ],
+    "numberOfStateTypes": 3,
+    "props": [
+      "navigation"
+    ],
+    "children": [
+      "TranslationProvider",
+      "Map"
+    ],
+    "functions": [
+      {
+        "name": "handleTabChange",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "pressActivity",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "MainContent",
+    "loc": 247,
+    "functionCount": 22,
+    "useContextHooks": {
+      "useAppContext": [
+        "handleSetAppState",
+        "user",
+        "handleSetUser",
+        "initializeUserInfoContext",
+        "initializeActivitesContext",
+        "handleSetExpoPushToken",
+        "handleSetNotification",
+        "withWorkoutNotification",
+        "handleSetWithWorkoutNotification",
+        "workoutNotificationTime",
+        "handleSetWorkoutNotificationTime",
+        "workoutNotificationId",
+        "handleSetWorkoutNotificationId",
+        "networkState",
+        "handleSetNetworkState"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "loading"
+      }
+    ],
+    "numberOfStateTypes": 1,
+    "children": [
+      "Loading",
+      "AuthStack"
+    ],
+    "functions": [
+      {
+        "name": "unsubscribed",
+        "loc": 8,
+        "CC": 2
+      },
+      {
+        "name": "netInfoUnsubscribed",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleAppStateChange",
+        "loc": 26,
+        "CC": 3
+      },
+      {
+        "name": "handleAppStateChange",
+        "loc": 14,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "UserStack",
+    "loc": 31,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "TrainingStack",
+    "loc": 11,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "StartStack",
+    "loc": 97,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "CommunityStack",
+    "loc": 21,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "ExplorerStack",
+    "loc": 11,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "AuthStack",
+    "loc": 11,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "App",
+    "loc": 15,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [
+      "AppProvider",
+      "TranslationProvider",
+      "StartScreenProvider",
+      "ActivityProvider",
+      "WorkoutProvider",
+      "MainContent"
+    ],
+    "functions": []
+  },
+  {
+    "name": "ResultReviewScreen",
+    "loc": 232,
+    "functionCount": 12,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Complex",
+        "name": "selectedImage"
+      },
+      {
+        "type": "Complex",
+        "name": "resultItem"
+      },
+      {
+        "type": "Primitive",
+        "name": "pictureIndex"
+      }
+    ],
+    "numberOfStateTypes": 3,
+    "props": [
+      "route"
+    ],
+    "children": [
+      "Map"
+    ],
+    "functions": [
+      {
+        "name": "handleSetReultItem",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "handleImagePick",
+        "loc": 18,
+        "CC": 3
+      },
+      {
+        "name": "subscriber",
+        "loc": 9,
+        "CC": 2
+      }
+    ]
+  },
+  {
+    "name": "Data",
+    "loc": 85,
+    "functionCount": 5,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "selectedTab"
+      },
+      {
+        "type": "Primitive",
+        "name": "activePageIndex"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "props": [
+      "weeklyData",
+      "monthlyData",
+      "yearlyData"
+    ],
+    "children": [
+      "TermActivities",
+      "TermActivities",
+      "TermActivities"
+    ],
+    "functions": [
+      {
+        "name": "handleTabChange",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "Data",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "Data",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "Data",
+        "loc": 1,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "TermActivities",
+    "loc": 182,
+    "functionCount": 1,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "activePageIndex",
+      "setActivePageIndex",
+      "selectedTab",
+      "data"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "TermActivities",
+        "loc": 7,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "SettingsScreen",
+    "loc": 255,
+    "functionCount": 11,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "selectedActivity",
+        "rroute",
+        "withAutoPause",
+        "handleWithAutoPause",
+        "withCountDown",
+        "handleWithCountDown",
+        "stopWatchMode",
+        "withLiveTracking",
+        "withPocketTrack",
+        "withAudioGuide",
+        "handleWithAudioGuide",
+        "typeOfAudioGuide",
+        "announcementFrequency",
+        "announcementInfo",
+        "volume",
+        "unitOfDistance",
+        "unitOfSpeed"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "withWarmUp"
+      },
+      {
+        "type": "Primitive",
+        "name": "withCoolDown"
+      }
+    ],
+    "numberOfStateTypes": 1,
+    "props": [],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "test",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "StartScreen",
+    "loc": 286,
+    "functionCount": 13,
+    "useContextHooks": {
+      "useWorkoutContext": [
+        "workoutDetails",
+        "handleSetWorkoutDetails",
+        "withWorkout",
+        "handleSetWithWorkout"
+      ],
+      "useStartScreenContext": [
+        "stopWatchMode",
+        "handleStopWatchMode",
+        "selectedActivity",
+        "handleSelectActivity",
+        "withAudioGuide",
+        "handleWithAudioGuide",
+        "volume",
+        "handleVolumeChange"
+      ],
+      "useAppContext": [
+        "currentLocation",
+        "handleSetCurrentLocation"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "showPopup"
+      },
+      {
+        "type": "Primitive",
+        "name": "activePageIndex"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "props": [],
+    "children": [
+      "Map",
+      "Page1",
+      "Page2",
+      "Page3",
+      "Page4",
+      "StopWatch"
+    ],
+    "functions": []
+  },
+  {
+    "name": "CustomScreen",
+    "loc": 96,
+    "functionCount": 8,
+    "useContextHooks": {
+      "useWorkoutContext": [
+        "workouts",
+        "handleSetWorkouts"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "workoutName"
+      },
+      {
+        "type": "Primitive",
+        "name": "repeatTimes"
+      },
+      {
+        "type": "Primitive",
+        "name": "withWarmUp"
+      },
+      {
+        "type": "Primitive",
+        "name": "withCoolDown"
+      },
+      {
+        "type": "Complex",
+        "name": "workoutDetails"
+      }
+    ],
+    "numberOfStateTypes": 4,
+    "props": [],
+    "children": [
+      "WorkoutName",
+      "WorkoutDetail",
+      "WorkoutOption",
+      "SavedWorkOut"
+    ],
+    "functions": [
+      {
+        "name": "handleCancel",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleSave",
+        "loc": 31,
+        "CC": 5
+      },
+      {
+        "name": "areAllPropertiesFilled",
+        "loc": 6,
+        "CC": 4
+      }
+    ]
+  },
+  {
+    "name": "WorkoutName",
+    "loc": 19,
+    "functionCount": 1,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "translated",
+      "workoutName",
+      "setWorkoutName"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "WorkoutName",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "WorkoutDetail",
+    "loc": 103,
+    "functionCount": 14,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "modalVisible"
+      },
+      {
+        "type": "Primitive",
+        "name": "detailContext"
+      },
+      {
+        "type": "Complex",
+        "name": "detailIndex"
+      },
+      {
+        "type": "Primitive",
+        "name": "slideAnim"
+      },
+      {
+        "type": "Primitive",
+        "name": "isSlideout"
+      }
+    ],
+    "numberOfStateTypes": 4,
+    "props": [
+      "translated",
+      "workoutDetails",
+      "setWorkoutDetails"
+    ],
+    "children": [
+      "DetailItem",
+      "DetailItemModal"
+    ],
+    "functions": [
+      {
+        "name": "handleToggleModal",
+        "loc": 13,
+        "CC": 2
+      },
+      {
+        "name": "handleDelete",
+        "loc": 5,
+        "CC": 1
+      },
+      {
+        "name": "DetailItem",
+        "loc": 47,
+        "CC": 3
+      },
+      {
+        "name": "handleSlide",
+        "loc": 11,
+        "CC": 2
+      },
+      {
+        "name": "DetailItem",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DetailItem",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DetailItem",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "DetailItem",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "WorkoutDetail",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "WorkoutDetail",
+        "loc": 1,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "DetailItem",
+    "loc": 47,
+    "functionCount": 6,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "slideAnim"
+      },
+      {
+        "type": "Primitive",
+        "name": "isSlideout"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "props": [
+      "item",
+      "index"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleSlide",
+        "loc": 11,
+        "CC": 2
+      },
+      {
+        "name": "DetailItem",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DetailItem",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DetailItem",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "DetailItem",
+        "loc": 1,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "WorkoutOption",
+    "loc": 37,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "translated",
+      "repeatTimes",
+      "setRepeatTimes",
+      "withWarmUp",
+      "setWithWarmUp",
+      "withCoolDown",
+      "setWithCoolDown"
+    ],
+    "children": [
+      "RepeatOption",
+      "WarmUpOption",
+      "CoolDownOption"
+    ],
+    "functions": []
+  },
+  {
+    "name": "SavedWorkOut",
+    "loc": 10,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "translated"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "DetailItemModal",
+    "loc": 239,
+    "functionCount": 24,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "modalAnimation"
+      },
+      {
+        "type": "Primitive",
+        "name": "distance1"
+      },
+      {
+        "type": "Primitive",
+        "name": "distance2"
+      },
+      {
+        "type": "Primitive",
+        "name": "distanceUnit"
+      },
+      {
+        "type": "Primitive",
+        "name": "minitues"
+      },
+      {
+        "type": "Primitive",
+        "name": "seconds"
+      },
+      {
+        "type": "Primitive",
+        "name": "isTimeSelected"
+      },
+      {
+        "type": "Primitive",
+        "name": "paceSelected"
+      }
+    ],
+    "numberOfStateTypes": 4,
+    "props": [
+      "modalVisible",
+      "handleToggleModal",
+      "setWorkoutDetails",
+      "workoutDetails",
+      "detailContext",
+      "detailIndex"
+    ],
+    "children": [
+      "TimePicker",
+      "DistancePicker"
+    ],
+    "functions": [
+      {
+        "name": "goBack",
+        "loc": 17,
+        "CC": 3
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 36,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 7,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "TimePicker",
+        "loc": 30,
+        "CC": 1
+      },
+      {
+        "name": "TimePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "TimePicker",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "TimePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "TimePicker",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "DistancePicker",
+    "loc": 36,
+    "functionCount": 6,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": [
+      {
+        "name": "DistancePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 7,
+        "CC": 1
+      },
+      {
+        "name": "DistancePicker",
+        "loc": 1,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "TimePicker",
+    "loc": 30,
+    "functionCount": 4,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "children": [],
+    "functions": [
+      {
+        "name": "TimePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "TimePicker",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "TimePicker",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "TimePicker",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Page1",
+    "loc": 129,
+    "functionCount": 6,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "handleClosePopup",
+      "handleStopWatchMode",
+      "handleSelectActivity",
+      "stopWatchMode",
+      "selectedActivity"
+    ],
+    "children": [
+      "ActivityIcons",
+      "ActivityIcons"
+    ],
+    "functions": [
+      {
+        "name": "activities",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "activities",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "Page1",
+        "loc": 19,
+        "CC": 2
+      },
+      {
+        "name": "Page1",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "Page1",
+        "loc": 19,
+        "CC": 2
+      },
+      {
+        "name": "Page1",
+        "loc": 1,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Page2",
+    "loc": 138,
+    "functionCount": 14,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "showModal"
+      },
+      {
+        "type": "Primitive",
+        "name": "distance"
+      }
+    ],
+    "numberOfStateTypes": 2,
+    "props": [
+      "handleClosePopup",
+      "withWorkout",
+      "handleSetWithWorkout"
+    ],
+    "children": [
+      "BeginnerWorkOut",
+      "Distance"
+    ],
+    "functions": [
+      {
+        "name": "handleModaleOpen",
+        "loc": 8,
+        "CC": 1
+      },
+      {
+        "name": "handleModaleClose",
+        "loc": 9,
+        "CC": 1
+      },
+      {
+        "name": "handleModaleClose",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleAlert",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "handleCustomOpen",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "Page2",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "Page2",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "Page2",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "Page2",
+        "loc": 1,
+        "CC": 1
+      },
+      {
+        "name": "Page2",
+        "loc": 1,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Page3",
+    "loc": 50,
+    "functionCount": 3,
+    "useContextHooks": {},
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "withMusic"
+      }
+    ],
+    "numberOfStateTypes": 1,
+    "props": [
+      "handleClosePopup"
+    ],
+    "children": [],
+    "functions": [
+      {
+        "name": "handleWithMusic",
+        "loc": 3,
+        "CC": 1
+      },
+      {
+        "name": "Page3",
+        "loc": 1,
+        "CC": 1
+      }
+    ]
+  },
+  {
+    "name": "Page4",
+    "loc": 123,
+    "functionCount": 0,
+    "useContextHooks": {},
+    "useStateHooks": [],
+    "numberOfStateTypes": 0,
+    "props": [
+      "handleClosePopup",
+      "handleWithAudioGuide",
+      "handleVolumeChange",
+      "withAudioGuide",
+      "volume"
+    ],
+    "children": [],
+    "functions": []
+  },
+  {
+    "name": "StartRunScreen",
+    "loc": 468,
+    "functionCount": 27,
+    "useContextHooks": {
+      "useStartScreenContext": [
+        "stopWatchMode",
+        "selectedActivity",
+        "handleStopWatchMode",
+        "withAudioGuide",
+        "volume"
+      ],
+      "useWorkoutContext": [
+        "withWorkout",
+        "workoutDetails",
+        "withRepeat",
+        "repeatTimes",
+        "withWarmUp",
+        "withCoolDown"
+      ],
+      "useActivityContext": [
+        "time",
+        "handleSetTime",
+        "pace",
+        "handleSetPace",
+        "handleSetTotalDistance",
+        "locationLog",
+        "handleSetLocationLog",
+        "handleSetCalorie"
+      ],
+      "useAppContext": [
+        "appState",
+        "currentLocation",
+        "handleSetCurrentLocation",
+        "weight",
+        "language"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "withPause"
+      },
+      {
+        "type": "Complex",
+        "name": "initialPosition"
+      },
+      {
+        "type": "Primitive",
+        "name": "currentPace"
+      },
+      {
+        "type": "Primitive",
+        "name": "movingdistance"
+      },
+      {
+        "type": "Primitive",
+        "name": "buttonContainerFlex"
+      }
+    ],
+    "numberOfStateTypes": 3,
+    "props": [],
+    "children": [
+      "Map",
+      "StopWatch"
+    ],
+    "functions": []
+  },
+  {
+    "name": "ResultScreenUpdate",
+    "loc": 503,
+    "functionCount": 25,
+    "useContextHooks": {
+      "useAppContext": [
+        "user"
+      ],
+      "useStartScreenContext": [
+        "stopWatchMode",
+        "selectedActivity"
+      ],
+      "useActivityContext": [
+        "time",
+        "pace",
+        "locationLog",
+        "calorie",
+        "totalDistance"
+      ]
+    },
+    "useStateHooks": [
+      {
+        "type": "Primitive",
+        "name": "mode"
+      },
+      {
+        "type": "Primitive",
+        "name": "timeLocal"
+      },
+      {
+        "type": "Primitive",
+        "name": "paceLocal"
+      },
+      {
+        "type": "Complex",
+        "name": "locationLogLocal"
+      },
+      {
+        "type": "Primitive",
+        "name": "totalDistanceLocal"
+      },
+      {
+        "type": "Primitive",
+        "name": "calorieLocal"
+      },
+      {
+        "type": "Primitive",
+        "name": "mapSelected"
+      },
+      {
+        "type": "Primitive",
+        "name": "activityName"
+      },
+      {
+        "type": "Primitive",
+        "name": "isDammy"
+      },
+      {
+        "type": "Primitive",
+        "name": "bpm"
+      },
+      {
+        "type": "Primitive",
+        "name": "memo"
+      },
+      {
+        "type": "Primitive",
+        "name": "isModalVisible"
+      },
+      {
+        "type": "Complex",
+        "name": "imageBlob"
+      }
+    ],
+    "numberOfStateTypes": 6,
+    "props": [
+      "route"
+    ],
+    "children": [
+      "Name",
+      "PhotoPicker",
+      "Notes",
+      "Maps",
+      "Bpm",
+      "Shoes",
+      "MemoModal",
+      "Name",
+      "Distance",
+      "Calorie",
+      "PhotoPicker",
+      "Notes",
+      "Activity",
+      "DateTime",
+      "MoreDetails",
+      "Name",
+      "Distance",
+      "PhotoPicker",
+      "Notes",
+      "Maps",
+      "Bpm",
+      "Shoes"
+    ],
+    "functions": [
+      {
+        "name": "setScreenStates",
+        "loc": 11,
+        "CC": 1
+      },
+      {
+        "name": "updateDocument",
+        "loc": 10,
+        "CC": 1
+      },
+      {
+        "name": "updateDocument",
+        "loc": 4,
+        "CC": 1
+      },
+      {
+        "name": "updateDocument",
+        "loc": 3,
+        "CC": 1
+      }
+    ]
+  }
+]

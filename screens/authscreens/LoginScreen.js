@@ -38,6 +38,7 @@ export default function LoginScreen() {
     handleSetYearlyData,
   } = useAppContext();
   const fb = new Firebase();
+  console.log(auth);
   const signIn = async () => {
     setLoading(true);
     try {
@@ -79,7 +80,7 @@ export default function LoginScreen() {
       setLoading(false);
     }
   };
-
+  console.log("login screen");
   return (
     <View style={styles.container}>
       <View>
@@ -92,6 +93,7 @@ export default function LoginScreen() {
           }}
         />
       </View>
+      <Text>Stride Tracker</Text>
       <View style={styles.authInputContainer}>
         <TextInput
           style={styles.input}

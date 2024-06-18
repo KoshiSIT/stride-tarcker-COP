@@ -10,6 +10,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StartScreenProvider } from "./contexts/StartScreenContext";
 import { ActivityProvider } from "./contexts/ActivityContext";
 import { AppProvider, useAppContext } from "./contexts/AppContext";
+import { WorkoutProvider } from "./contexts/WorkoutContext";
 //
 import { useState, useEffect } from "react";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
@@ -39,10 +40,10 @@ import CustomScreen from "./screens/startScreens/CustomScreen";
 import IntervalScreen from "./screens/startScreens/workOutScreens/IntervalScreen";
 // start screens
 import StartRunScreen from "./screens/startScreens/StartRunScreen";
-import RusultScreen from "./screens/startScreens/RusultScreen";
 import ResultScreenUpdate from "./screens/startScreens/ResultScreenUpdate";
 import RusultReviewScreen from "./screens/startScreens/ResultReviewScreen";
 import ManualEntryScreen from "./screens/startScreens/ManualEntryScreen";
+import ManualEntrySaveScreen from "./screens/startScreens/workOutScreens/ManualEntrySaveScreen";
 // app screens
 import CommunityScreen from "./screens/CommunityScreen";
 import ExplorerScreen from "./screens/ExplorerScreen";
@@ -51,38 +52,24 @@ import LoginScreen from "./screens/authscreens/LoginScreen";
 // components
 import Loading from "./components/Loading";
 // functions
-import {
-  registerForPushNotificationsAsync,
-  scheduleWorkoutNotification,
-} from "./functions/NotificationHelper";
+import NotificationHelper from "./functions/NotificationHelper";
+import SubscribeManager from "./functions/SubscribeManager";
 import Firebase from "./functions/Firebase";
 // translation lib
 import { TranslationProvider, TranslationContext } from "./translator";
 import { useContext } from "react";
 // app API
 import { AppState } from "react-native";
-import { onAuthStateChanged } from "firebase/auth";
-import { FIREBASE_AUTH } from "./firebase";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { FIREBASE_AUTH, FIREBASE_APP } from "./firebase";
 // expo notification
 import * as Notifications from "expo-notifications";
-
-// import taskManager
-import * as TaskManager from "expo-task-manager";
+// netInfo
+import NetInfo from "@react-native-community/netinfo";
+// /** @jsxImportSource "../../../node_modules/react */
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const BACKGROUD_TASK_NAME = "background-location-task";
-TaskManager.defineTask(BACKGROUD_TASK_NAME, async ({ data, error }) => {
-  if (error) {
-    console.log(error);
-    return;
-  }
-  if (data) {
-    const { locations } = data;
-    console.log(locations);
-  }
-  console.log(" task executed");
-});
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -92,8 +79,9 @@ Notifications.setNotificationHandler({
 });
 
 function MainContent() {
-  const auth = FIREBASE_AUTH;
+  const auth = getAuth(FIREBASE_APP);
   const {
+    handleSetAppState,
     user,
     handleSetUser,
     initializeUserInfoContext,
@@ -106,6 +94,8 @@ function MainContent() {
     handleSetWorkoutNotificationTime,
     workoutNotificationId,
     handleSetWorkoutNotificationId,
+    networkState,
+    handleSetNetworkState,
   } = useAppContext();
 
   const [loading, setLoading] = useState(false);
@@ -117,7 +107,6 @@ function MainContent() {
   } = useContext(TranslationContext);
 
   useEffect(() => {
-    // auth state subscription
     const unsubscribed = onAuthStateChanged(auth, (user) => {
       if (user) {
         setLoading(true);
@@ -127,9 +116,10 @@ function MainContent() {
       }
     });
     // notification subscription
-    registerForPushNotificationsAsync().then((token) =>
+    NotificationHelper.registerForPushNotificationsAsync().then((token) =>
       handleSetExpoPushToken(token)
     );
+    NotificationHelper.setForegroundNotificationHandling();
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
@@ -140,54 +130,72 @@ function MainContent() {
         console.log(response);
       });
 
+    // netInfo subscription
+    const netInfoUnsubscribed = NetInfo.addEventListener((state) => {
+      handleSetNetworkState(state.isConnected);
+    });
+
     return () => {
       unsubscribed();
+      netInfoUnsubscribed();
       Notifications.removeNotificationSubscription(notificationListener);
       Notifications.removeNotificationSubscription(responseListener);
     };
   }, []);
 
   useEffect(() => {
-    const fb = new Firebase(user);
     if (user) {
-      let userUnsubscribed = null;
-      let activityUnsubscribed = null;
+      const fb = new Firebase(user);
       (async () => {
         fb.setUser(user);
-        userUnsubscribed = await fb.getUserInfo(initializeUserInfoContext);
-        activityUnsubscribed = await fb.getAllActivitesData(
+        const userUnsubscribed = await fb.getUserInfo(
+          initializeUserInfoContext
+        );
+        const activityUnsubscribed = await fb.getAllActivitesData(
           initializeActivitesContext
         );
+
+        SubscribeManager.subscribeFirebase("user", userUnsubscribed);
+        SubscribeManager.subscribeFirebase("activity", activityUnsubscribed);
+
         console.log("user info");
         setLoading(false);
       })();
       const handleAppStateChange = (nextAppState) => {
-        let unsubscribeFunctions = [userUnsubscribed, activityUnsubscribed];
         console.log("AppState changed to", nextAppState);
         if (nextAppState === "background") {
+          handleSetAppState(nextAppState);
           console.log("Unsubscribing from task manager");
-          unsubscribeFunctions.forEach((unsubscribe) => unsubscribe());
-          unsubscribeFunctions = [];
+          SubscribeManager.broadcastFirebase();
         }
         if (nextAppState === "active") {
+          handleSetAppState(nextAppState);
           console.log("Subscribing to task manager");
           (async () => {
             fb.setUser(user);
-            userUnsubscribed = await fb.getUserInfo(initializeUserInfoContext);
-            activityUnsubscribed = await fb.getAllActivitesData(
+            const userUnsubscribed = await fb.getUserInfo(
+              initializeUserInfoContext
+            );
+            const activityUnsubscribed = await fb.getAllActivitesData(
               initializeActivitesContext
             );
-            unsubscribeFunctions.push(userUnsubscribed);
-            unsubscribeFunctions.push(activityUnsubscribed);
+            SubscribeManager.subscribeFirebase("user", userUnsubscribed);
+            SubscribeManager.subscribeFirebase(
+              "activity",
+              activityUnsubscribed
+            );
           })();
         }
       };
+
       const appStateSubscription = AppState.addEventListener(
         "change",
         handleAppStateChange
       );
+      SubscribeManager.subscribeState("appstate", appStateSubscription);
       return () => {
-        appStateSubscription.remove();
+        SubscribeManager.broadcastFirebase();
+        SubscribeManager.broadcastState();
       };
     }
   }, [user]);
@@ -202,22 +210,27 @@ function MainContent() {
     } catch (error) {
       console.log(error);
     }
+    // if notification is on and schedule time is set
     if (withWorkoutNotification) {
       (async () => {
-        const notificationId = await scheduleWorkoutNotification(
-          workoutNotificationTime
-        );
+        const notificationId =
+          await NotificationHelper.scheduleWorkoutNotification(
+            workoutNotificationTime
+          );
         handleSetWorkoutNotificationId(notificationId);
       })();
     }
   }, [workoutNotificationTime]);
+
   useEffect(() => {
+    // if withWorkoutNotification is on and notification is not scheduled
     if (withWorkoutNotification) {
       (async () => {
         if (workoutNotificationId === null) {
-          const notificationId = await scheduleWorkoutNotification(
-            workoutNotificationTime
-          );
+          const notificationId =
+            await NotificationHelper.scheduleWorkoutNotification(
+              workoutNotificationTime
+            );
           handleSetWorkoutNotificationId(notificationId);
         }
       })();
@@ -229,6 +242,11 @@ function MainContent() {
       })();
     }
   }, [withWorkoutNotification]);
+
+  useEffect(() => {
+    console.log("networkState :" + networkState);
+  }, [networkState]);
+
   if (loading) {
     return <Loading />;
   } else {
@@ -285,7 +303,11 @@ function MainContent() {
               component={UserStack}
               options={{ headerShown: false }}
             />
-            <Tab.Screen name={translated.training} component={TrainingStack} />
+            <Tab.Screen
+              name={translated.training}
+              component={TrainingStack}
+              options={{ headerShown: false }}
+            />
             <Tab.Screen
               name={translated.start}
               component={StartStack}
@@ -350,103 +372,99 @@ const TrainingStack = () => {
 
 const StartStack = () => {
   return (
-    <StartScreenProvider>
-      <ActivityProvider>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            ...TransitionPresets.ModalSlideFromBottomIOS,
-            presentation: "modal",
-          }}
-        >
-          <Stack.Screen
-            name="Start"
-            component={StartScreenMain}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="TypeSetting"
-            component={TypeSettingScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="RouteSetting"
-            component={RouteSettingScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="TrackingSetting"
-            component={TrackingSettingScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="PocketTrackingSetting"
-            component={PocketTrackingSettingScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AudioGuideSetting"
-            component={AudioGuideSettingScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="AnnoucementFrequencySetting"
-            component={AnnoucementFrequencySettingScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="IntervalTimeSetting"
-            component={IntervalTimeSettingScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="IntervalDistanceSetting"
-            component={IntervalDistanceSettingScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="StartRun"
-            component={StartRunScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Result"
-            component={RusultScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ResultUpdate"
-            component={ResultScreenUpdate}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ResultReview"
-            component={RusultReviewScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Custom"
-            component={CustomScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Interval"
-            component={IntervalScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ManualEntry"
-            component={ManualEntryScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </ActivityProvider>
-    </StartScreenProvider>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        ...TransitionPresets.ModalSlideFromBottomIOS,
+        presentation: "modal",
+      }}
+    >
+      <Stack.Screen
+        name="Start"
+        component={StartScreenMain}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TypeSetting"
+        component={TypeSettingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="RouteSetting"
+        component={RouteSettingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="TrackingSetting"
+        component={TrackingSettingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PocketTrackingSetting"
+        component={PocketTrackingSettingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AudioGuideSetting"
+        component={AudioGuideSettingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AnnoucementFrequencySetting"
+        component={AnnoucementFrequencySettingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="IntervalTimeSetting"
+        component={IntervalTimeSettingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="IntervalDistanceSetting"
+        component={IntervalDistanceSettingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="StartRun"
+        component={StartRunScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ResultUpdate"
+        component={ResultScreenUpdate}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ResultReview"
+        component={RusultReviewScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Custom"
+        component={CustomScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Interval"
+        component={IntervalScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ManualEntry"
+        component={ManualEntryScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ManualEntrySave"
+        component={ManualEntrySaveScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
   );
 };
 
@@ -498,7 +516,13 @@ export default function App() {
   return (
     <AppProvider>
       <TranslationProvider>
-        <MainContent />
+        <StartScreenProvider>
+          <ActivityProvider>
+            <WorkoutProvider>
+              <MainContent />
+            </WorkoutProvider>
+          </ActivityProvider>
+        </StartScreenProvider>
       </TranslationProvider>
     </AppProvider>
   );

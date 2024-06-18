@@ -9,6 +9,7 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
+import React from "react";
 
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import MateralIcons from "react-native-vector-icons/MaterialIcons";

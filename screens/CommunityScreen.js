@@ -14,7 +14,7 @@ import Constants from "expo-constants";
 import axios from "axios";
 import * as Location from "expo-location";
 import { useAppContext } from "../contexts/AppContext";
-import { getDownloadURL, ref } from "firebase/storage";
+
 // components
 import Map from "../components/Map";
 import Firebase from "../functions/Firebase";
@@ -35,40 +35,15 @@ export default function CommunityScreen({ navigation }) {
 
   const [selectedTab, setSelectedTab] = useState("feed");
   const [activities, setActivities] = useState([]);
-  const {
-    currentLocation,
-    handleSetCurrentLocation,
-    user,
-    profileImage,
-    firstName,
-    lastName,
-  } = useAppContext();
+  const { user, profileImage, firstName, lastName } = useAppContext();
   const [pictureIndex, setPictureIndex] = useState(0);
   const name = "ResultReview";
   const fb = new Firebase(user);
   // fb.getActivities(user);
   useEffect(() => {
     const unsubscribe = fb.getActivities(setActivities);
-    getLocationPermission();
     return () => unsubscribe();
   }, []);
-
-  const getLocationPermission = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status === "granted") {
-      startLocationUpdates();
-    }
-  };
-
-  const startLocationUpdates = async () => {
-    Location.watchPositionAsync(
-      { accuracy: Location.Accuracy.High, timeInterval: 1000 },
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        handleSetCurrentLocation({ latitude, longitude });
-      }
-    );
-  };
 
   const handleTabChange = (tabName) => {
     setSelectedTab(tabName);
@@ -111,130 +86,113 @@ export default function CommunityScreen({ navigation }) {
             style={{ backgroundColor: "#F0F8FF", paddingTop: 20 }}
             nestedScrollEnabled={true}
           >
-            {activities && activities.length > 0 && (
-              <FlatList
-                data={activities}
-                initialNumToRender={5}
-                maxToRenderPerBatch={5}
-                renderItem={({ item }) => (
-                  <View>
-                    {/* {console.log(item)} */}
-                    <TouchableOpacity onPress={() => pressActivity(item.id)}>
-                      <View style={styles.userContainer}>
-                        <View style={styles.item1}>
-                          {profileImage !== "" ? (
-                            <Image
-                              source={{ uri: profileImage }}
-                              style={{
-                                width: 25,
-                                height: 25,
-                                borderRadius: 25,
-                              }}
-                            />
-                          ) : (
-                            <FontAwesome5Icon
-                              name="grin-wink"
-                              size={25}
-                              color="black"
-                            />
-                          )}
-                        </View>
-                        <View style={styles.item2}>
-                          <Text style={styles.userNameText}>
-                            {firstName} {lastName}
-                          </Text>
-                          <View style={{ flexDirection: "row" }}>
-                            <Text>{item.activityName}-</Text>
-                            <View>
-                              <Text>{Date.formatDate(item.datetime)}</Text>
-                            </View>
-                          </View>
+            {activities.map((item) => (
+              <View key={item.id}>
+                {/* {console.log(item)} */}
+                <TouchableOpacity onPress={() => pressActivity(item.id)}>
+                  <View style={styles.userContainer}>
+                    <View style={styles.item1}>
+                      {profileImage !== "" ? (
+                        <Image
+                          source={{ uri: profileImage }}
+                          style={{
+                            width: 25,
+                            height: 25,
+                            borderRadius: 25,
+                          }}
+                        />
+                      ) : (
+                        <FontAwesome5Icon
+                          name="grin-wink"
+                          size={25}
+                          color="black"
+                        />
+                      )}
+                    </View>
+                    <View style={styles.item2}>
+                      <Text style={styles.userNameText}>
+                        {firstName} {lastName}
+                      </Text>
+                      <View style={{ flexDirection: "row" }}>
+                        <Text>{item.activityName}-</Text>
+                        <View>
+                          <Text>{Date.formatDate(item.datetime)}</Text>
                         </View>
                       </View>
-                    </TouchableOpacity>
-                    <View style={styles.dateTimeContainer}>
-                      <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                        {Date.formatDateToJapaneseDayAndTime(
-                          item.datetime,
-                          language
-                        )}
-                      </Text>
-                    </View>
-                    <View style={styles.timeContainer}>
-                      <Text style={{ fontSize: 18 }}>
-                        {Date.formatTime(item.time)}
-                      </Text>
-                      <Text style={{ fontSize: 10 }}>{translated.time}</Text>
-                    </View>
-                    <View style={styles.imageContainer}>
-                      <ScrollView
-                        horizontal
-                        pagingEnabled
-                        style={styles.pictureScroll}
-                        scrollEnabled={item.image !== ""}
-                        onMomentumScrollEnd={(event) => {
-                          const contentOffsetx =
-                            event.nativeEvent.contentOffset.x;
-                          const index = Math.floor(
-                            (contentOffsetx * 2) /
-                              Dimensions.get("window").width
-                          );
-                          setPictureIndex(index);
-                        }}
-                      >
-                        <Map
-                          parentName={name}
-                          locationLog={item.locationLog}
-                        ></Map>
-                        {item.image !== "" && (
-                          <View style={styles.pictureItem}>
-                            <Image
-                              source={{ uri: item.image }}
-                              style={{ width: "100%", height: "100%" }}
-                            />
-                          </View>
-                        )}
-                      </ScrollView>
-                    </View>
-                    {item.image !== "" ? (
-                      <View style={styles.dotContainer}>
-                        <View
-                          style={[
-                            styles.dot,
-                            pictureIndex === 0 && styles.activeDot,
-                          ]}
-                        ></View>
-                        <View
-                          style={[
-                            styles.dot,
-                            pictureIndex === 1 && styles.activeDot,
-                          ]}
-                        ></View>
-                      </View>
-                    ) : (
-                      <View></View>
-                    )}
-                    <View style={styles.bottomContainer}>
-                      <TouchableOpacity>
-                        <View style={styles.button}>
-                          <FontAwesomeIcon
-                            name="heart-o"
-                            size={25}
-                            color="black"
-                          />
-                        </View>
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <View style={styles.button}>
-                          <AntDesign name="message1" size={25} color="black" />
-                        </View>
-                      </TouchableOpacity>
                     </View>
                   </View>
+                </TouchableOpacity>
+                <View style={styles.dateTimeContainer}>
+                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                    {Date.formatDateToJapaneseDayAndTime(
+                      item.datetime,
+                      language
+                    )}
+                  </Text>
+                </View>
+                <View style={styles.timeContainer}>
+                  <Text style={{ fontSize: 18 }}>
+                    {Date.formatTime(item.time)}
+                  </Text>
+                  <Text style={{ fontSize: 10 }}>{translated.time}</Text>
+                </View>
+                <View style={styles.imageContainer}>
+                  <ScrollView
+                    horizontal
+                    pagingEnabled
+                    style={styles.pictureScroll}
+                    scrollEnabled={item.image !== ""}
+                    onMomentumScrollEnd={(event) => {
+                      const contentOffsetx = event.nativeEvent.contentOffset.x;
+                      const index = Math.floor(
+                        (contentOffsetx * 2) / Dimensions.get("window").width
+                      );
+                      setPictureIndex(index);
+                    }}
+                  >
+                    <Map parentName={name} locationLog={item.locationLog}></Map>
+                    {item.image !== "" && (
+                      <View style={styles.pictureItem}>
+                        <Image
+                          source={{ uri: item.image }}
+                          style={{ width: "100%", height: "100%" }}
+                        />
+                      </View>
+                    )}
+                  </ScrollView>
+                </View>
+                {item.image !== "" ? (
+                  <View style={styles.dotContainer}>
+                    <View
+                      style={[
+                        styles.dot,
+                        pictureIndex === 0 && styles.activeDot,
+                      ]}
+                    ></View>
+                    <View
+                      style={[
+                        styles.dot,
+                        pictureIndex === 1 && styles.activeDot,
+                      ]}
+                    ></View>
+                  </View>
+                ) : (
+                  <View></View>
                 )}
-                keyExtractor={(item) => item.id}
-              />
-            )}
+                <View style={styles.bottomContainer}>
+                  <TouchableOpacity>
+                    <View style={styles.button}>
+                      <FontAwesomeIcon name="heart-o" size={25} color="black" />
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <View style={styles.button}>
+                      <AntDesign name="message1" size={25} color="black" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
           </ScrollView>
         )}
         {selectedTab === "group" && (

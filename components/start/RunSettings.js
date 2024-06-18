@@ -10,6 +10,7 @@ import {
   ScrollView,
   Switch,
   Animated,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState, useRef, useContext } from "react";
@@ -151,23 +152,20 @@ const Page1 = ({
   return activityPop.main();
 };
 
-const Page2 = ({ handleClosePopup }) => {
-  const [withWorkOut, setWithWorkOut] = useState(false);
+const Page2 = ({ handleClosePopup, withWorkout, handleSetWithWorkout }) => {
+  console.log(withWorkout);
   const [showModal, setShowModal] = useState("");
   const [distance, setDistance] = useState(50);
   const fadeAnim = useRef(
     new Animated.Value(Dimensions.get("window").width)
   ).current;
   const navigation = useNavigation();
-  const handleWithWorkOut = () => {
-    setWithWorkOut(true);
-  };
 
   const handleModaleOpen = (pagename) => {
     setShowModal(pagename);
     Animated.timing(fadeAnim, {
       toValue: 0,
-      duration: 500,
+      duration: 300,
       useNativeDriver: true,
     }).start();
   };
@@ -175,13 +173,15 @@ const Page2 = ({ handleClosePopup }) => {
   const handleModaleClose = () => {
     Animated.timing(fadeAnim, {
       toValue: Dimensions.get("window").width,
-      duration: 500,
+      duration: 200,
       useNativeDriver: true,
     }).start(() => {
       setShowModal("");
     });
   };
-
+  const handleAlert = (message) => {
+    Alert.alert("Alert Title", message);
+  };
   const handleCustomOpen = () => {
     navigation.navigate("Custom");
   };
@@ -217,16 +217,19 @@ const Page2 = ({ handleClosePopup }) => {
           <ScrollView style={styles.scrollContainer}>
             <TouchableOpacity
               style={styles.workOutContainer}
-              onPress={() => handleWithWorkOut()}
+              onPress={() => handleSetWithWorkout()}
             >
               <View style={styles.rowContainer}>
                 <Text style={styles.pageDescription}>{translated.none}</Text>
-                {withWorkOut == true && (
+                {withWorkout !== true && (
                   <Icon name="check" size={30} color="#20B2AA" />
                 )}
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.workOutContainer}>
+            <TouchableOpacity
+              style={styles.workOutContainer}
+              onPress={() => handleAlert("not available")}
+            >
               <View style={styles.rowContainer}>
                 <Text style={styles.pageDescription}>
                   {translated.startTrainingPlan}
@@ -235,7 +238,7 @@ const Page2 = ({ handleClosePopup }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.workOutContainer}
-              onPress={() => handleModaleOpen("初心者向けワークアウト")}
+              onPress={() => handleModaleOpen(translated.beginnerWorkout)}
             >
               <View style={styles.rowContainer}>
                 <Text style={styles.pageDescription}>

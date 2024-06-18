@@ -10,6 +10,37 @@ export const formatDate = (timestamp) => {
     return `${year}/${month}/${day}`;
   }
 };
+export const getActivityEnvironment = (activity) => {
+  indoorList = [
+    "walkingTreadmill",
+    "runningTreadmill",
+    "cyclingIndoor",
+    "rowingMachine",
+    "elliptical",
+    "stairStepper",
+    "swimmingPool",
+  ];
+  outdoorList = [
+    "running",
+    "cycling",
+    "walking",
+    "moutainBiking",
+    "hiking",
+    "downhillSkiing",
+    "crossCountrySkiing",
+    "snowboarding",
+    "skating",
+    "swimming",
+    "wheelchair",
+    "rowing",
+    "elliptical",
+  ];
+  if (indoorList.includes(activity)) {
+    return "indoor";
+  } else if (outdoorList.includes(activity)) {
+    return "outdoor";
+  }
+};
 export const formatNumber = (str) => {
   const num = parseFloat(str);
   if (isNaN(num)) {
@@ -17,7 +48,6 @@ export const formatNumber = (str) => {
   }
   return num.toFixed(2);
 };
-
 export const formatDateToJapaneseDayAndTime = (timestamp, language) => {
   if (!timestamp || typeof timestamp.toDate !== "function") {
     return "";
@@ -107,4 +137,87 @@ export const formatTime = (time) => {
   const formattedMinutes = String(remainingMinutes).padStart(2, "0");
 
   return `${formattedHours}:${formattedMinutes}`;
+};
+
+export const formatMinutes = (decimalTime) => {
+  const minutes = Math.floor(decimalTime);
+  const seconds = Math.round((decimalTime - minutes) * 60);
+
+  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+  return `${minutes}:${formattedSeconds}`;
+};
+
+export const formatWorkoutDetails = (workoutDetails) => {
+  //workoutDetails="Fast_Time_2:23" , Slow_Distance_1.25_km
+  // result = "2:23 Fast pace"
+  // result = "1.25 km Slow pace"
+  workoutDetails = workoutDetails.split("_");
+  let pace = workoutDetails[0];
+  let item1 = workoutDetails[1];
+  let item2 = workoutDetails[2];
+  if (item1 === "Time") {
+    item1 = parseFloat(item1);
+    item1 = item1.toFixed(2);
+    return `${item2} ${pace} pace`;
+  } else {
+    item1 = parseFloat(item1);
+    item1 = item1.toFixed(2);
+    return `${item1} ${item2} ${pace} pace`;
+  }
+};
+export const formatWorkoutDetailsToObj = (workoutDetails) => {
+  console.log("formatting");
+  // Fast_1.1_km
+  // {
+  //   distance1 : 1,
+  //   distance2 : 1,
+  //   distanceUnit : "km",
+  //   minutes : 0,
+  //   seconds : 0,
+  //   paceSelected : "Fast",
+  //   isTimeSelected : false,
+  // }
+  // Slow_Time_2:23
+  // {
+  //   distance1 : 0,
+  //   distance2 : 0,
+  //   distanceUnit : "",
+  //   minutes : 2,
+  //   seconds : 23,
+  //   paceSelected : "Slow",
+  //   isTimeSelected : true,
+  // }
+
+  const workoutDetailsObj = {
+    distance1: 0,
+    distance2: 0,
+    distanceUnit: "",
+    minutes: 0,
+    seconds: 0,
+    paceSelected: "",
+    isTimeSelected: false,
+  };
+  if (!workoutDetails) {
+    return workoutDetailsObj;
+  }
+  const workoutDetailsArr = workoutDetails.split("_");
+  const paceSelected = workoutDetailsArr[0];
+  const item1 = workoutDetailsArr[1];
+  const item2 = workoutDetailsArr[2];
+  if (item1 === "Time") {
+    workoutDetailsObj["isTimeSelected"] = true;
+    const time = item2.split(":");
+    workoutDetailsObj["minutes"] = parseInt(time[0]);
+    workoutDetailsObj["seconds"] = parseInt(time[1]);
+  } else {
+    workoutDetailsObj["isTimeSelected"] = false;
+    const distance = item1.split(".");
+    console.log(distance);
+    workoutDetailsObj["distance1"] = parseInt(distance[0]);
+    workoutDetailsObj["distance2"] = parseInt(distance[1]);
+    workoutDetailsObj["distanceUnit"] = item2;
+  }
+  workoutDetailsObj["paceSelected"] = paceSelected;
+  return workoutDetailsObj;
 };

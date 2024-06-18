@@ -11,6 +11,11 @@
     "followers": "followers",
     "following": "following"
   },
+  "TrainningScreenjs": {
+    "title": "Training",
+    "guidedWorkouts": "Guided Workouts",
+    "trainingPlans": "Training Plans"
+  },
   "ProfileSettingScreenjs": {
     "profile": "Profile",
     "FirstName": "First Name",
@@ -93,7 +98,9 @@
     "CurrentPace": "CURRENT PACE",
     "AVGPace": "AVG PACE",
     "Currentkm": "Current {count} km",
-    "kmPace": "KM1 {count} min/km"
+    "kmPace": "KM1 {count} min/km",
+    "warmUp": "Warm Up",
+    "coolDown": "Cool Down"
   },
   "ResultScreenjs": {
     "resultAndSave": "Result and Save",
@@ -215,5 +222,39 @@
   "PhotoPickerjs": {
     "AddaPicture": "Add a picture"
   },
-  "GuideText": {}
+  "GuideText": {},
+  "BeginnerWorkOutjs": {
+    "workout": "Workout",
+    "RunWalkRun": "Run/Walk/Run",
+    "EasyOutAndBack": "Easy Out & Back(30min)",
+    "IntroToIntervals": "Intro to Intervals",
+    "RunWalkIntervalMix": "Run/Walk Interval Mix",
+    "ShortBursts": "Short Bursts",
+    "RampUpAndTaper": "Ramp Up & Taper"
+  },
+  "IntervalScreenjs": {
+    "intervalRunning": "Interval Run",
+    "selectThisWorkout": "Select this workout",
+    "cancel": "Cancel",
+    "workoutDetails": "workoutDetails",
+    "workoutOptions": "workoutOptions",
+    "repeats": "Repeats",
+    "repeatsTimes": "{count} More Times",
+    "warmUp": "Warm Up(5 min)",
+    "coolDown": "Cool Down(5 min)"
+  },
+  "CustomScreenjs": {
+    "custom": "Custom",
+    "close": "Close",
+    "save": "Save",
+    "workoutDetails": "workoutDetails",
+    "workoutOptions": "workoutOptions",
+    "enterName": "Enter a name for this workout",
+    "addNewOption": "Add New Option...",
+    "savedWorkouts": "Saved Workouts",
+    "repeats": "Repeats",
+    "repeatsTimes": "{count} More Times",
+    "warmUp": "Warm Up(5 min)",
+    "coolDown": "Cool Down(5 min)"
+  }
 }

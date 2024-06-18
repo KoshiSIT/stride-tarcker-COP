@@ -23,13 +23,13 @@ export default function ManualEntryScreen({}) {
   const {
     translations: { ManualEntryScreenjs: translated },
   } = useContext(TranslationContext);
-
   const navigation = useNavigation();
   const handleCancel = () => {
     navigation.goBack();
   };
-  const handleManualEntry = () => {
-    navigation.navigate("ManualEntry");
+  const handleManualEntry = (activity) => {
+    console.log("activity: ", activity);
+    navigation.navigate("ResultUpdate", { activity: activity });
   };
   return (
     <View style={styles.container}>
@@ -49,9 +49,7 @@ export default function ManualEntryScreen({}) {
           <View style={styles.detailContent}>
             <TouchableOpacity
               style={styles.detailItem}
-              onPress={() => {
-                () => handleManualEntry();
-              }}
+              onPress={() => handleManualEntry("Running")}
             >
               <View style={styles.optionItem1}>
                 <ActivityIcons activity="Running" size={30} />
@@ -67,9 +65,7 @@ export default function ManualEntryScreen({}) {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.detailItem}
-              onPress={() => {
-                () => handleManualEntry();
-              }}
+              onPress={() => handleManualEntry("Running")}
             >
               <View style={styles.optionItem1}>
                 <ActivityIcons activity="Other" size={30} />

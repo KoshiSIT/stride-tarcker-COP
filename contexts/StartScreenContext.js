@@ -1,3 +1,4 @@
+import React from "react";
 import { createContext, useState, useContext } from "react";
 
 const StartScreenContext = createContext();
@@ -8,7 +9,7 @@ export function useStartScreenContext() {
 
 export function StartScreenProvider({ children }) {
   //page 1 state
-  const [stopWatchMode, setStopWatchMode] = useState(false);
+  const [stopWatchMode, setStopWatchMode] = useState(true);
   const [selectedActivity, setSelectedActivity] = useState("Walking");
   //page 4 state
   const [withAudioGuide, setWithAudioGuide] = useState(false);

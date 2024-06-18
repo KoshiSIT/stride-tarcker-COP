@@ -11,6 +11,11 @@
     "followers": "フォロワー",
     "following": "フォロー中"
   },
+  "TrainningScreenjs": {
+    "title": "トレーニング",
+    "guidedWorkouts": "ガイドワークアウト",
+    "trainingPlans": "トレーニングプラン"
+  },
   "ProfileSettingScreenjs": {
     "profile": "プロフィール",
     "FirstName": "名前",
@@ -93,7 +98,9 @@
     "CurrentPace": "最近のペース",
     "AVGPace": "平均ペース",
     "Currentkm": "Current {count} km",
-    "kmPace": "KM1 {count} min/km"
+    "kmPace": "KM1 {count} min/km",
+    "warmUp": "ウォームアップ",
+    "coolDown": "クールダウン"
   },
   "ResultScreenjs": {
     "resultAndSave": "結果のレビュー",
@@ -213,5 +220,39 @@
   "PhotoPickerjs": {
     "AddaPicture": "写真を追加"
   },
-  "GuideText": {}
+  "GuideText": {},
+  "BeginnerWorkOutjs": {
+    "workout": "Workout",
+    "RunWalkRun": "Run/Walk/Run",
+    "EasyOutAndBack": "Easy Out & Back(30min)",
+    "IntroToIntervals": "Intro to Intervals",
+    "RunWalkIntervalMix": "Run/Walk Interval Mix",
+    "ShortBursts": "Short Bursts",
+    "RampUpAndTaper": "Ramp Up & Taper"
+  },
+  "IntervalScreenjs": {
+    "intervalRunning": "インターバルランニング",
+    "selectThisWorkout": "このワークアウトを選択",
+    "cancel": "キャンセル",
+    "workoutDetails": "ワークアウト詳細",
+    "workoutOptions": "ワークアウトオプション",
+    "repeats": "繰り返す",
+    "repeatsTimes": "あと{count}回",
+    "warmUp": "ウォームアップ(5分)",
+    "coolDown": "クールダウン(5 分)"
+  },
+  "CustomScreenjs": {
+    "custom": "カスタム",
+    "close": "閉じる",
+    "save": "保存",
+    "workoutDetails": "ワークアウト詳細",
+    "workoutOptions": "ワークアウトオプション",
+    "enterName": "ワークアウト名を入力してください",
+    "addNewOption": "新しいオプションを追加",
+    "savedWorkouts": "保存済みのワークアウト",
+    "repeats": "繰り返す",
+    "repeatsTimes": "あと{count}回",
+    "warmUp": "ウォームアップ(5分)",
+    "coolDown": "クールダウン(5 分)"
+  }
 }

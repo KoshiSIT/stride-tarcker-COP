@@ -12,11 +12,13 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
+    "jsEngine": "hermes",
     "ios": {
       "bundleIdentifier": "host.exp.Exponent",
       "supportsTablet": true,
       "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "We need access to your photo library"
+        "NSPhotoLibraryUsageDescription": "We need access to your photo library",
+        "UIBackgroundModes": ["location"]
       }
     },
     "android": {

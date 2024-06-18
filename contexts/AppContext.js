@@ -1,5 +1,17 @@
+import React from "react";
 import { createContext, useState, useEffect, useContext } from "react";
 import { auth } from "../firebase";
+//cop lib
+import { layer } from "contextjs";
+// define layer
+export const stopWatchModeLayer = layer("stopWatchModeLayer");
+export const backgroundLayer = layer("backgroudLayer");
+export const indoorLayer = layer("indoorLayer");
+export const PauseLayer = layer("PauseLayer");
+export const manualEntry = layer("manualEntry");
+export const update = layer("update");
+export const afterActivity = layer("afterActivity");
+
 const AppContext = createContext();
 
 export function useAppContext() {
@@ -8,6 +20,7 @@ export function useAppContext() {
 
 export function AppProvider({ children }) {
   // map current location state
+  const [appState, setAppState] = useState("active");
   const [currentLocation, setCurrentLocation] = useState(null);
   const [isAccountPublic, setIsAccountPublic] = useState(false);
   const [language, setLanguage] = useState("日本語");
@@ -51,7 +64,12 @@ export function AppProvider({ children }) {
   // api state
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
+  // network state
+  const [networkState, setNetworkState] = useState(false);
 
+  const handleSetAppState = (appState) => {
+    setAppState(appState);
+  };
   const handleSetCurrentLocation = (location) => {
     setCurrentLocation(location);
   };
@@ -127,6 +145,10 @@ export function AppProvider({ children }) {
     console.log(id);
     setWorkoutNotificationId(id);
   };
+  const handleSetNetworkState = (networkState) => {
+    setNetworkState(networkState);
+  };
+
   const initializeUserInfoContext = (userinfos) => {
     console.log("initializeUserInfoContext");
     userinfos.forEach((userinfo) => {
@@ -152,6 +174,8 @@ export function AppProvider({ children }) {
     handleSetAllActivitedTotal(data.allActivitedTotal);
   };
   const value = {
+    appState,
+    handleSetAppState,
     language,
     setLanguage,
     currentLocation,
@@ -202,6 +226,8 @@ export function AppProvider({ children }) {
     handleSetWorkoutNotificationTime,
     workoutNotificationId,
     handleSetWorkoutNotificationId,
+    networkState,
+    handleSetNetworkState,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

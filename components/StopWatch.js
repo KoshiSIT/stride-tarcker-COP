@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Svg, Line, Circle } from "react-native-svg";
+import { stopWatchModeLayer } from "../cop/LayerDefinition";
 
 const StopWatch = ({ time }) => {
+  // console.log("stopppppppppppppppppppppppppppppppppppppppppppp");
   class StopWatch {
     constructor() {
       this.clockRadius = 150;
@@ -107,6 +109,45 @@ const StopWatch = ({ time }) => {
       );
     }
   }
+  stopWatchModeLayer.refineClass(StopWatch, {
+    render() {
+      return (
+        <View style={styles.container}>
+          <Svg height="300" width="300">
+            <Circle
+              cx="150"
+              cy="150"
+              r="145"
+              stroke="lightgray"
+              strokeWidth="3"
+              fill="transparent"
+            />
+            {this.renderClockTicks()}
+            <Line
+              x1="150"
+              y1="150"
+              x2="150"
+              y2="70"
+              stroke="black"
+              strokeWidth="4"
+              transform={`rotate(${6 * this.getMinutes()}, 150, 150)`}
+            />
+            <Line
+              x1="150"
+              y1="170"
+              x2="150"
+              y2="19"
+              stroke="#0000CC"
+              strokeWidth="3"
+              transform={`rotate(${6 * this.getSeconds()}, 150, 150)`}
+            />
+            <Circle cx="150" cy="150" r="8" fill="black" />
+            <Circle cx="150" cy="150" r="4" fill="red" />
+          </Svg>
+        </View>
+      );
+    },
+  });
   const stopWatch = new StopWatch();
   return stopWatch.main();
 };

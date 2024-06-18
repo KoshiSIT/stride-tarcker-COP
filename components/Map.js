@@ -7,6 +7,8 @@ import {
   Dimensions,
 } from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
+import { pauseLayer } from "../cop/LayerDefinition";
+import { withLayersZone } from "../context-zone/contextZone";
 import { Svg, Circle } from "react-native-svg";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import EntypoIcons from "react-native-vector-icons/Entypo";
@@ -18,9 +20,9 @@ const Map = ({
   locationLog,
 }) => {
   const mapRef = React.useRef(null);
-  console.log(parentName);
+  // console.log(parentName);
   if (locationLog !== undefined) {
-    console.log(locationLog);
+    // console.log(locationLog);
     if (locationLog.length === 0) {
       locationLog.push({ longitude: 0, latitude: 0 });
     }
@@ -232,6 +234,69 @@ const Map = ({
       }
     }
   }
+  pauseLayer.refineClass(Map, {
+    renderCurrentLocationButton() {
+      if (parentName === "StartRun") {
+        return (
+          <TouchableOpacity
+            onPress={this.goToCurrentLocation}
+            style={{
+              position: "absolute",
+              top: "5%",
+              left: "80%",
+              backgroundColor: "black",
+              borderRadius: 30,
+              height: 40,
+              width: 40,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <View>
+              <FontAwesomeIcon
+                name="location-arrow"
+                size={30}
+                color="red"
+                // style={{
+                //   position: "absolute",
+                //   top: -15,
+                //   left: -12,
+                // }}
+              />
+            </View>
+          </TouchableOpacity>
+        );
+      } else {
+        return (
+          <TouchableOpacity
+            onPress={this.goToCurrentLocation}
+            style={{
+              position: "absolute",
+              top: "55%",
+              left: "80%",
+              backgroundColor: "black",
+              borderRadius: 30,
+              height: 40,
+              width: 40,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <FontAwesomeIcon
+              name="location-arrow"
+              size={30}
+              color="red"
+              // style={{
+              //   position: "absolute",
+              //   top: 380,
+              //   left: 320,
+              // }}
+            />
+          </TouchableOpacity>
+        );
+      }
+    },
+  });
   const map = new Map();
   return map.main();
 };

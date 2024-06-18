@@ -19,20 +19,41 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 // contexts
 import { useAppContext } from "../../contexts/AppContext";
 import { useActivityContext } from "../../contexts/ActivityContext";
+import { useStartScreenContext } from "../../contexts/StartScreenContext";
 import TranslationContext from "../../translator/TranslationContext";
 // components
 import PhotoPicker from "../../components/start/PhotoPicker";
+import {
+  MemoModal,
+  Notes,
+  Maps,
+  Name,
+  Distance,
+  Calorie,
+  Activity,
+  DateTime,
+  MoreDetails,
+  Bpm,
+  Shoes,
+} from "../../components/start/Result";
 // functions
+import * as DateHelpers from "../../functions/DateHelpers";
 import Firebase from "../../functions/Firebase";
 // icons lib
 import IoniconsIcon from "react-native-vector-icons/Ionicons";
-import AntDesignIcon from "react-native-vector-icons/AntDesign";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import FeatherIcon from "react-native-vector-icons/Feather";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+// cop
+import {
+  manualEntryLayer,
+  stopWatchModeLayer,
+  reviewActivityLayer,
+  newActivityLayer,
+} from "../../cop/LayerDefinition";
+// import { withLayersZone } from "../../context-zone/contextZone";
+import { withLayers } from "contextjs";
 
 import Constants from "expo-constants";
-import RNPickerSelect from "react-native-picker-select";
+
 import { FIRESTORE_DB, STORAGE_REF } from "../../firebase";
 import {
   addDoc,
@@ -42,43 +63,53 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
+import { Stop } from "react-native-svg";
 
 export default function ResultScreenUpdate({ route }) {
   // const parentName = route.params.parentName;
   let documentExist = false;
-  try {
-    if (route.params.documentId) {
-      documentExist = true;
-    }
-  } catch (error) {}
   const navigation = useNavigation();
   const {
     translations: { ResultScreenjs: translated },
   } = useContext(TranslationContext);
   const { user } = useAppContext();
   const fb = new Firebase(user);
-
-  const { time, pace, locationLog, calorie, resetAllState, totalDistance } =
+  let manualEntry = "";
+  const [mode, setMode] = useState(""); // GPSMode, stopWatchMode, manualEntry
+  const { stopWatchMode, selectedActivity } = useStartScreenContext();
+  const { time, pace, locationLog, calorie, totalDistance } =
     useActivityContext();
-
-  const [timeDB, setTimeDB] = useState(0);
-  const [paceDB, setPaceDB] = useState(0);
-  const [locationLogDB, setLocationLogDB] = useState([]);
-  const [calorieDB, setCalorieDB] = useState(0);
+  const [timeLocal, setTime] = useState(0);
+  const [paceLocal, setPace] = useState(0);
+  const [locationLogLocal, setLocationLog] = useState([]);
+  const [totalDistanceLocal, setTotalDistance] = useState(0);
+  const [calorieLocal, setCalorie] = useState(0);
   const [mapSelected, setMapSelected] = useState(translated.withMapValue);
   const [activityName, setActivityName] = useState("running");
-  const textInputRef = useRef(null);
   const [isDammy, setIsDammy] = useState(false);
   const [bpm, setBpm] = useState("");
   const [memo, setMemo] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageBlob, setImageBlob] = useState(null);
+  const textInputRef = useRef(null);
 
-  const setScrennStates = (data) => {
-    setTimeDB(data.time);
-    setPaceDB(data.pace);
-    setLocationLogDB(data.locationLog);
-    setCalorieDB(data.calorie);
+  try {
+    if (route.params.documentId) {
+      documentExist = true;
+    }
+  } catch (error) {}
+  try {
+    if (route.params.activity) {
+      manualEntry = route.params.activity;
+    }
+  } catch (error) {}
+
+  const setScreenStates = (data) => {
+    setMode(data.mode);
+    setTime(data.time);
+    setPace(data.pace);
+    setLocationLog(data.locationLog);
+    setCalorie(data.calorie);
     setActivityName(data.activityName);
     setMapSelected(data.map);
     setMemo(data.memo);
@@ -93,102 +124,60 @@ export default function ResultScreenUpdate({ route }) {
       this.name = "Result";
     }
     main() {
+      // if (mode === "manualEntry") {
+      //   return withLayers(manualEntryLayer, () => {
+      //     return this.render();
+      //   });
+      // } else if (mode === "stopWatchMode") {
+      //   return withLayers(stopWatchModeLayer, () => {
+      //     return this.render();
+      //   });
+      // } else {
+      //   return this.render();
+      // }
       return this.render();
     }
-    render() {
+    renderData() {
       return (
-        <View style={styles.container}>
-          <View style={styles.titleContainer}>
-            {documentExist ? (
-              <View>
-                <TouchableOpacity onPress={() => this.handleCancel()}>
-                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                    {translated.cancel}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View></View>
-            )}
-            <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-              {translated.resultAndSave}
-            </Text>
-            <TouchableOpacity onPress={() => this.notSave()}>
-              <FontAwesomeIcon name="trash" size={30} color="black" />
-            </TouchableOpacity>
+        <View style={styles.dataContainer}>
+          <View style={styles.dataSubItem}>
+            <Text style={{ fontSize: 20 }}>{timeLocal.toFixed(2)}</Text>
+            <Text>{translated.time}</Text>
           </View>
-          <ScrollView style={styles.mainContainer}>
-            <View style={styles.dataContainer}>
-              <View style={styles.dataSubItem}>
-                <Text style={{ fontSize: 20 }}>
-                  {documentExist ? timeDB.toFixed(2) : time.toFixed(2)}
-                </Text>
-                <Text>{translated.time}</Text>
-              </View>
-              <View style={styles.dataSubItem}>
-                <Text style={{ fontSize: 20 }}>
-                  {documentExist ? calorieDB : calorie}
-                </Text>
-                <Text>{translated.calories}</Text>
-              </View>
-            </View>
-            <TouchableOpacity
-              style={styles.activityContainer}
-              onPress={() => this.handleActivityName()}
-            >
-              <Text style={styles.activityText}>{translated.Name}</Text>
-              <TextInput
-                style={styles.input}
-                value={activityName}
-                onChangeText={(text) => {
-                  setActivityName(text);
-                }}
-                secureTextEntry={false}
-                ref={textInputRef}
-              />
-            </TouchableOpacity>
+          <View style={styles.dataSubItem}>
+            <Text style={{ fontSize: 20 }}>{calorie}</Text>
+            <Text>{translated.calories}</Text>
+          </View>
+        </View>
+      );
+    }
+    renderMain() {
+      return (
+        <ScrollView style={styles.mainContainer}>
+          <View>
+            {this.renderData()}
+            <Name
+              activityName={activityName}
+              handleActivityName={this.handleActivityName}
+              translated={translated}
+              textInputRef={textInputRef}
+            />
             <PhotoPicker setImageBlob={setImageBlob} />
-            <TouchableOpacity
-              style={[styles.memoContainer, { height: this.memoHeight(memo) }]}
-              onPress={this.toggleModal}
-            >
-              <View style={styles.resultReviewItem1}>
-                <MaterialCommunityIcons
-                  name="clipboard-text-outline"
-                  size={30}
-                  color="black"
-                />
-                <View style={{ alignItems: "start" }}>
-                  <Text style={styles.activityText}>{translated.notes}</Text>
-                  <Text style={{ color: "gray" }}>
-                    {memo.length === 0 ? translated.withoutNotes : memo}
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
+            <Notes
+              toggleModal={this.toggleModal}
+              memoHeight={this.memoHeight}
+              memo={memo}
+              translated={translated}
+            />
             <View style={styles.detailContainer}>
               <Text style={styles.activityText}>{translated.MoreDetails}</Text>
             </View>
-            <View>
-              <RNPickerSelect
-                items={mapItems}
-                onValueChange={(value) => {
-                  setMapSelected(value);
-                }}
-                value={mapSelected}
-                placeholder={{}}
-              >
-                <View style={styles.mapContainer}>
-                  <View style={styles.resultReviewItem1}>
-                    <AntDesignIcon name="unlock" size={30} color="black" />
-                    <Text style={styles.activityText}>{translated.Maps}</Text>
-                  </View>
-                  <View style={styles.resultReviewItem2}>
-                    <Text style={styles.subText}>{mapSelected}</Text>
-                  </View>
-                </View>
-              </RNPickerSelect>
-            </View>
+            <Maps
+              mapItems={mapItems}
+              mapSelected={mapSelected}
+              setMapSelected={setMapSelected}
+              translated={translated}
+            />
             <View style={styles.workOutRemindContainer}>
               <View style={styles.resultReviewItem1}>
                 <IoniconsIcon name="alarm-outline" size={30} color="black" />
@@ -219,102 +208,71 @@ export default function ResultScreenUpdate({ route }) {
                 </View>
               </TouchableOpacity>
             )}
-            <View style={styles.aveHeartRateContainer}>
-              <View style={styles.resultReviewItem1}>
-                <FontAwesomeIcon name="heartbeat" size={30} color="black" />
-                <Text style={styles.activityText}>
-                  {translated.AvgHeartRate}
-                </Text>
-              </View>
-              <View style={styles.resultReviewItem2}>
-                <TextInput
-                  placeholder="0"
-                  style={styles.subText}
-                  value={bpm}
-                  onChangeText={(text) => {
-                    setBpm(text);
-                  }}
-                  keyboardType="numeric"
-                />
-                <Text style={styles.subText}> bpm</Text>
-              </View>
-            </View>
-            <View style={styles.shoeTrackerContainer}>
-              <View style={styles.resultReviewItem1}>
-                <MaterialCommunityIcons
-                  name="shoe-sneaker"
-                  size={30}
-                  color="black"
-                />
-                <Text style={styles.activityText}>shoes tracker</Text>
-              </View>
-            </View>
-            <View style={styles.workTogetherContainer}>
-              <View style={styles.resultReviewItem1}>
-                <MaterialCommunityIcons
-                  name="account-group-outline"
-                  size={30}
-                  color="black"
-                />
-                <Text style={styles.activityText}>
-                  {translated.Iexercisedwith}
-                </Text>
-              </View>
-              <View style={styles.resultReviewItem2}>
-                <AntDesignIcon name="right" size={20} color="lightgray" />
-              </View>
-            </View>
-          </ScrollView>
-          <TouchableOpacity
-            style={styles.saveButton}
-            onPress={() => this.saveResult()}
-          >
-            <Text style={styles.saveButtonText}>{translated.save}</Text>
+            <Bpm bpm={bpm} setBpm={setBpm} translated={translated} />
+            <Shoes translated={translated} />
+          </View>
+        </ScrollView>
+      );
+    }
+    renderDeleteButton() {
+      if (mode === "manualEntry") {
+        return <View></View>;
+      } else {
+        return (
+          <TouchableOpacity onPress={() => this.notSave()}>
+            <FontAwesomeIcon name="trash" size={30} color="black" />
           </TouchableOpacity>
-          <Modal
-            isVisible={isModalVisible}
-            style={styles.memoPopContainer}
-            backdropOpacity={1}
-          >
-            <View style={styles.memoTitleContainer}>
-              <TouchableOpacity onPress={this.toggleModal}>
-                <Text style={styles.subText}>{translated.cancel}</Text>
-              </TouchableOpacity>
-              <Text style={styles.modalTitle}>{translated.notes}</Text>
-              <TouchableOpacity onPress={this.toggleModal}>
-                <Text style={styles.subText}>{translated.add}</Text>
-              </TouchableOpacity>
-            </View>
-            <TextInput
-              style={styles.modalInput}
-              value={memo}
-              onChangeText={(text) => {
-                setMemo(text);
-              }}
-              multiline={true}
-              numberOflines={10}
-              secureTextEntry={false}
-            />
-          </Modal>
+        );
+      }
+    }
+    renderSaveButton() {
+      return (
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={() => this.saveResult()}
+        >
+          <Text style={styles.saveButtonText}>{translated.save}</Text>
+        </TouchableOpacity>
+      );
+    }
+    renderBackButton() {
+      return <View></View>;
+    }
+    render() {
+      return (
+        <View style={styles.container}>
+          <View style={styles.titleContainer}>
+            {this.renderBackButton()}
+            <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+              {translated.resultAndSave}
+            </Text>
+            {this.renderDeleteButton()}
+          </View>
+          {this.renderMain()}
+          {this.renderSaveButton()}
+          <MemoModal
+            isModalVisible={isModalVisible}
+            setModalVisible={setModalVisible}
+            memo={memo}
+            setMemo={setMemo}
+            translated={translated}
+          />
         </View>
       );
     }
     async fetchActivity() {
-      try {
-        if (documentExist) {
-          const documentId = route.params.documentId;
-          const docRef = doc(FIRESTORE_DB, "stride-tracker_DB", documentId);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists) {
-            const data = docSnap.data();
-            setScrennStates(data);
-          } else {
-            console.log("No such document!");
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      setScreenStates({
+        mode: stopWatchMode ? "stopWatchMode" : "GPSMode",
+        time: time,
+        pace: pace,
+        locationLog: locationLog,
+        calorie: calorie,
+        totalDistance: totalDistance,
+        activityName: selectedActivity,
+        map: translated.withMapValue,
+        memo: "",
+        bpm: "",
+      });
     }
     toggleModal() {
       setModalVisible(!isModalVisible);
@@ -343,39 +301,32 @@ export default function ResultScreenUpdate({ route }) {
     handleCancel() {
       navigation.goBack();
     }
-    memoHeight() {
-      const lineHeigh = 40;
-      if (memo.length !== 0) {
-        const lines = Math.ceil(memo.length / 20);
-        return lineHeigh + 10 * lines;
-      } else {
-        return 60;
-      }
-    }
     saveResult() {
-      if (documentExist) {
-        this.updateData();
-      } else {
-        this.addData();
-      }
+      console.log("addData");
+      this.addData();
     }
     addData() {
-      datetime = new Date();
+      const datetime = new Date();
+      const uploadData = {
+        user: user,
+        activity: selectedActivity,
+        mode: mode,
+        activityName: activityName,
+        distance: totalDistanceLocal,
+        locationLog: mode === "GPSMode" ? locationLogLocal : [],
+        time: timeLocal,
+        pace: mode === "GPSMode" ? paceLocal : 0,
+        calorie: calorieLocal,
+        bpm: bpm,
+        memo: memo,
+        map: mapSelected,
+        datetime: datetime,
+      };
       if (imageBlob !== null) {
         fb.uploadImage(imageBlob).then((url) => {
           addDoc(collection(FIRESTORE_DB, "stride-tracker_DB"), {
-            user: user,
-            activityName: activityName,
-            distance: totalDistance,
-            locationLog: locationLog,
-            time: time,
-            pace: pace,
-            calorie: calorie,
-            bpm: bpm,
-            memo: memo,
-            map: mapSelected,
+            ...uploadData,
             image: url,
-            datetime: datetime,
           })
             .then((docRef) => {
               console.log("Document written with ID: ", docRef.id);
@@ -386,20 +337,8 @@ export default function ResultScreenUpdate({ route }) {
             });
         });
       } else {
-        console.log(locationLog);
         addDoc(collection(FIRESTORE_DB, "stride-tracker_DB"), {
-          user: user,
-          activityName: activityName,
-          locationLog: locationLog,
-          distance: totalDistance,
-          time: time,
-          pace: pace,
-          calorie: calorie,
-          bpm: bpm,
-          memo: memo,
-          map: mapSelected,
-          datetime: datetime,
-
+          ...uploadData,
           image: "",
         })
           .then((docRef) => {
@@ -410,7 +349,6 @@ export default function ResultScreenUpdate({ route }) {
             console.log(error);
           });
       }
-      resetAllState();
     }
     updateData() {
       const datetime = new Date();
@@ -422,16 +360,17 @@ export default function ResultScreenUpdate({ route }) {
       const updateData = {
         user: user,
         activityName: activityName,
-        locationLog: locationLogDB,
-        time: timeDB,
-        pace: paceDB,
-        calorie: calorieDB,
+        locationLog: locationLogLocal,
+        time: timeLocal,
+        pace: paceLocal,
+        calorie: calorieLocal,
         bpm: bpm,
         memo: memo,
         map: mapSelected,
         datetime: datetime,
         image: "",
       };
+
       const updateDocument = (data) => {
         updateDoc(docRef, data)
           .then(() => {
@@ -454,17 +393,184 @@ export default function ResultScreenUpdate({ route }) {
       }
     }
   }
+
   const result = new Result();
+  manualEntryLayer.refineClass(Result, {
+    renderMain() {
+      return (
+        <View>
+          <Name
+            activityName={activityName}
+            handleActivityName={this.handleActivityName}
+            translated={translated}
+            textInputRef={textInputRef}
+          />
+          <Distance />
+          <Calorie />
+          <PhotoPicker setImageBlob={setImageBlob} />
+          <Notes
+            toggleModal={this.toggleModal}
+            memoHeight={this.memoHeight}
+            memo={memo}
+            translated={translated}
+          />
+          <Activity />
+          <DateTime />
+          <MoreDetails />
+        </View>
+      );
+    },
+    renderDeleteButton() {
+      return <View></View>;
+    },
+    renderBackButton() {
+      return (
+        <TouchableOpacity onPress={() => this.handleCancel()}>
+          <FontAwesomeIcon name="chevron-left" size={20} color="black" />
+        </TouchableOpacity>
+      );
+    },
+  });
+  stopWatchModeLayer.refineClass(Result, {
+    renderMain() {
+      return (
+        <View>
+          <Name
+            activityName={activityName}
+            handleActivityName={this.handleActivityName}
+            translated={translated}
+            textInputRef={textInputRef}
+          />
+          <Distance />
+          <PhotoPicker setImageBlob={setImageBlob} />
+          <Notes
+            toggleModal={this.toggleModal}
+            memoHeight={this.memoHeight}
+            memo={memo}
+            translated={translated}
+          />
+          <View style={styles.detailContainer}>
+            <Text style={styles.activityText}>{translated.MoreDetails}</Text>
+          </View>
+          <Maps
+            mapItems={mapItems}
+            mapSelected={mapSelected}
+            setMapSelected={setMapSelected}
+            translated={translated}
+          />
+          <View style={styles.workOutRemindContainer}>
+            <View style={styles.resultReviewItem1}>
+              <IoniconsIcon name="alarm-outline" size={30} color="black" />
+              <Text style={styles.activityText}>
+                {translated.WorkoutReminders}
+              </Text>
+            </View>
+            <View style={styles.resultReviewItem2}>
+              <Switch
+                value={isDammy}
+                onValueChange={this.handleDammy}
+                trackColor={{ false: "#767577", true: "#20B2AA" }}
+                thumbColor={isDammy ? "#f4f3f4" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+              />
+            </View>
+          </View>
+          {isDammy && (
+            <TouchableOpacity style={styles.workOutRemindContainer}>
+              <View style={styles.resultReviewItem1}>
+                <IoniconsIcon name="alarm-outline" size={30} color="black" />
+                <Text style={styles.activityText}>
+                  {translated.WorkoutReminders}
+                </Text>
+              </View>
+              <View style={styles.resultReviewItem2}>
+                <Text style={styles.subText}>明日:午前6時</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          <Bpm bpm={bpm} setBpm={setBpm} translated={translated} />
+          <Shoes translated={translated} />
+        </View>
+      );
+    },
+  });
+  reviewActivityLayer.refineClass(Result, {
+    renderBackButton() {
+      return (
+        <TouchableOpacity onPress={() => this.handleCancel()}>
+          <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+            {translated.cancel}
+          </Text>
+        </TouchableOpacity>
+      );
+    },
+    async fetchActivity() {
+      try {
+        const documentId = route.params.documentId;
+        const docRef = doc(FIRESTORE_DB, "stride-tracker_DB", documentId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists) {
+          const data = docSnap.data();
+          setScreenStates(data);
+        } else {
+          console.log("No such document!");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    saveResult() {
+      console.log("updateData");
+      this.updateData();
+    },
+  });
   useEffect(() => {
-    result.fetchActivity();
+    if (manualEntry === "") {
+      if (documentExist) {
+        withLayers(reviewActivityLayer, () => {
+          result.fetchActivity();
+        });
+      } else {
+        result.fetchActivity();
+      }
+    } else {
+      setMode("manualEntry");
+      setActivityName(manualEntry);
+    }
   }, []);
-  return result.main();
+
+  useEffect(() => {
+    console.log("mode:" + mode);
+  }, [mode]);
+
+  if (documentExist && mode === "GPSMode") {
+    return withLayers([reviewActivityLayer], () => {
+      return result.main();
+    });
+  } else if (documentExist && mode === "stopWatchMode") {
+    return withLayers([reviewActivityLayer, stopWatchModeLayer], () => {
+      return result.main();
+    });
+  } else if (documentExist && mode === "manualEntry") {
+    return withLayers([reviewActivityLayer, manualEntryLayer], () => {
+      return result.main();
+    });
+  } else if (!documentExist && mode === "stopWatchMode") {
+    return withLayers([stopWatchModeLayer], () => {
+      return result.main();
+    });
+  } else if (!documentExist && mode === "manualEntry") {
+    return withLayers([manualEntryLayer], () => {
+      return result.main();
+    });
+  } else {
+    return result.main();
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
     paddingTop: Constants.statusBarHeight,
   },
   mainContainer: {
@@ -496,14 +602,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  activityContainer: {
-    height: 60,
-    borderWidth: 1,
-    borderColor: "#F5F5F5",
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-  },
   pictureContainer: {
     height: 60,
     borderWidth: 1,
@@ -512,63 +610,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  memoContainer: {
-    borderWidth: 1,
-    borderColor: "#F5F5F5",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-    height: 60,
-  },
-  memoTitleContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: 60,
-  },
-  memoPopContainer: {
-    margin: 0,
-    backgroundColor: "white",
-    justifyContent: "flex-start",
-    paddingTop: Constants.statusBarHeight,
-  },
   detailContainer: {
     height: 60,
     borderWidth: 1,
     borderColor: "#F5F5F5",
     justifyContent: "center",
   },
-  mapContainer: {
-    height: 60,
-    borderWidth: 1,
-    borderColor: "#F5F5F5",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-  },
   workOutRemindContainer: {
-    height: 60,
-    borderWidth: 1,
-    borderColor: "#F5F5F5",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  aveHeartRateContainer: {
-    height: 60,
-    borderWidth: 1,
-    borderColor: "#F5F5F5",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  shoeTrackerContainer: {
-    height: 60,
-    borderWidth: 1,
-    borderColor: "#F5F5F5",
-    justifyContent: "center",
-  },
-  workTogetherContainer: {
     height: 60,
     borderWidth: 1,
     borderColor: "#F5F5F5",
@@ -587,19 +635,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
   },
-  modalInput: {
-    fontSize: 16,
-  },
   subText: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#000033",
-  },
-  modalTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "black",
-    marginRight: 25,
   },
   saveButton: {
     backgroundColor: "#3366CC",

@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import * as Localization from "expo-localization";
 import translations from "./languages";
